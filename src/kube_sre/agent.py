@@ -2,15 +2,16 @@
 
 import argparse
 import asyncio
+import os
 import sys
 
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
-from langchain_aws import ChatBedrockConverse
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from kube_sre.config import get_settings
+from kube_sre.llm import get_chat_model
 from kube_sre.schemas import TriageReport
 
 SYSTEM_PROMPT = (
@@ -18,6 +19,12 @@ SYSTEM_PROMPT = (
     "Every tool result has an evidence_id; each piece of evidence in your report must cite the "
     "evidence_id of the tool result it came from. Report on the owning workload (use get_owner), not the pod."
 )
+
+
+def _tool_server_env() -> dict[str, str]:
+    """The MCP stdio client passes only a minimal env by default, which drops KUBECONFIG and KUBE_SRE_*.
+    Pass ours through, minus API keys: the tool server never calls an LLM."""
+    return {k: v for k, v in os.environ.items() if not k.endswith("_API_KEY")}
 
 
 async def main(namespace: str) -> None:
@@ -28,14 +35,17 @@ async def main(namespace: str) -> None:
                 "command": sys.executable,
                 "args": ["-m", "kube_sre.tools.k8s_read"],
                 "transport": "stdio",
+                "env": _tool_server_env(),
             }
         }
     )
     tools = await mcp_client.get_tools()
     print(f"Loaded {len(tools)} tools from MCP server: {[t.name for t in tools]}")
+    print(f"Model: {settings.llm_provider}/{settings.agent_model}")
 
-    llm = ChatBedrockConverse(model=settings.model_id, region_name=settings.aws_region)
-    agent = create_agent(llm, tools, system_prompt=SYSTEM_PROMPT, response_format=ToolStrategy(TriageReport))
+    agent = create_agent(
+        get_chat_model(), tools, system_prompt=SYSTEM_PROMPT, response_format=ToolStrategy(TriageReport)
+    )
 
     prompt = (
         f"Inspect the '{namespace}' namespace for any failing or unhealthy pods. "

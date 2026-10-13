@@ -1,5 +1,6 @@
 import os
 from functools import lru_cache
+from typing import Literal
 
 from kubernetes import client, config
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -21,9 +22,11 @@ class Settings(BaseSettings):
     redact_names: bool = True  # Presidio PERSON detection; regex rules always run
     pseudonym_salt: str = "kube-sre"  # stable placeholders across calls and replays
 
-    # LLM
-    aws_region: str = "us-east-1"
-    model_id: str = "amazon.nova-lite-v1:0"
+    # LLM. Credentials come from the provider's own env vars (OPENAI_API_KEY, or AWS credentials).
+    llm_provider: Literal["openai", "bedrock"] = "openai"
+    agent_model: str = "gpt-5-mini"
+    judge_model: str = "gpt-6.1-sol"  # used by evals (Phase 2); must differ from the model under test
+    aws_region: str = "us-east-1"  # bedrock only
 
 
 @lru_cache

@@ -9,3 +9,8 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+
+# Docs stay local; only the README is published
+*.md
+!/README.md
+docs/

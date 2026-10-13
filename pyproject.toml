@@ -3,6 +3,8 @@ name = "kube-sre"
 version = "0.1.0"
 description = "Alert-driven multi-agent SRE system for Kubernetes"
 requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = [
     "en-core-web-sm",
     "fastmcp>=3.4.7",

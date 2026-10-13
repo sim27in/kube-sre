@@ -7,7 +7,7 @@ evidence id) before leaving the server.
 
 import json
 import re
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastmcp import FastMCP
@@ -30,7 +30,10 @@ from kube_sre.tools.models import (
     PodLogs,
     PodSummary,
     ProbeSpec,
+    PVCInfo,
+    PVCList,
     TerminationInfo,
+    WarningEventList,
     WorkloadKind,
     WorkloadSpec,
 )
@@ -108,10 +111,20 @@ def _pod_summary(pod) -> PodSummary:
     )
 
 
+def _recently_restarted(c: ContainerStatus) -> bool:
+    if c.restart_count == 0:
+        return False
+    finished = c.last_termination.finished_at if c.last_termination else None
+    if finished is None:
+        return True
+    age = datetime.now(UTC) - datetime.fromisoformat(finished)
+    return age.total_seconds() < get_settings().recent_restart_seconds
+
+
 def _is_unhealthy(p: PodSummary) -> bool:
     if p.phase not in ("Running", "Succeeded"):
         return True
-    return any(not c.ready or c.restart_count > 0 for c in p.containers)
+    return any(not c.ready or _recently_restarted(c) for c in p.containers)
 
 
 def list_pods_impl(
@@ -143,6 +156,10 @@ def get_pod_logs_impl(
     tail_lines: int = 100,
     since_seconds: int | None = None,
 ) -> PodLogs:
+    if tail_lines < 1:
+        fail("tail_lines must be at least 1.")
+    if since_seconds is not None and since_seconds < 1:
+        fail("since_seconds must be at least 1.")
     pod = core.read_namespaced_pod(pod_name, namespace)
     names = [c.name for c in pod.spec.containers]
     all_names = names + [c.name for c in pod.spec.init_containers or []]
@@ -205,30 +222,72 @@ _EPOCH = datetime.min.replace(tzinfo=UTC)
 
 
 def _event_time(e) -> datetime:
-    return e.last_timestamp or e.event_time or e.metadata.creation_timestamp or _EPOCH
+    series_last = e.series.last_observed_time if e.series else None
+    return e.last_timestamp or series_last or e.event_time or e.metadata.creation_timestamp or _EPOCH
+
+
+def _event_info(e, with_object: bool = False) -> EventInfo:
+    t, obj = _event_time(e), e.involved_object
+    return EventInfo(
+        type=e.type,
+        reason=e.reason,
+        message=e.message,
+        count=e.count or (e.series.count if e.series else 1),
+        last_seen=_ts(t) if t != _EPOCH else None,
+        component=(e.source.component if e.source else None) or e.reporting_component,
+        involved=ObjectRef(kind=obj.kind or "Unknown", name=obj.name) if with_object and obj else None,
+    )
 
 
 def get_events_impl(core: CoreV1Api, namespace: str, name: str, kind: str | None = None) -> EventList:
     selector = f"involvedObject.name={name}" + (f",involvedObject.kind={kind}" if kind else "")
     items = sorted(core.list_namespaced_event(namespace, field_selector=selector).items, key=_event_time, reverse=True)
     cap = get_settings().max_events
-    events = [
-        EventInfo(
-            type=e.type,
-            reason=e.reason,
-            message=e.message,
-            count=e.count or (e.series.count if e.series else 1),
-            last_seen=_ts(_event_time(e)) if _event_time(e) != _EPOCH else None,
-            component=(e.source.component if e.source else None) or e.reporting_component,
-        )
-        for e in items[:cap]
-    ]
     return EventList(
         namespace=namespace,
         object=ObjectRef(kind=kind or "*", name=name),
         truncated=len(items) > cap,
-        events=events,
+        events=[_event_info(e) for e in items[:cap]],
     )
+
+
+def list_warning_events_impl(core: CoreV1Api, namespace: str, since_minutes: int = 60) -> WarningEventList:
+    if since_minutes < 1:
+        fail("since_minutes must be at least 1.")
+    cutoff = datetime.now(UTC) - timedelta(minutes=since_minutes)
+    items = [
+        e
+        for e in core.list_namespaced_event(namespace, field_selector="type=Warning").items
+        if _event_time(e) == _EPOCH or _event_time(e) >= cutoff  # keep events with no timestamp
+    ]
+    items.sort(key=_event_time, reverse=True)
+    cap = get_settings().max_events
+    return WarningEventList(
+        namespace=namespace,
+        since_minutes=since_minutes,
+        truncated=len(items) > cap,
+        events=[_event_info(e, with_object=True) for e in items[:cap]],
+    )
+
+
+# --- storage ----------------------------------------------------------------
+
+
+def list_pvcs_impl(core: CoreV1Api, namespace: str) -> PVCList:
+    pvcs = [
+        PVCInfo(
+            name=p.metadata.name,
+            phase=p.status.phase or "Unknown",
+            storage_class=p.spec.storage_class_name,
+            requested=((p.spec.resources.requests or {}).get("storage") if p.spec.resources else None),
+            capacity=(p.status.capacity or {}).get("storage"),
+            access_modes=p.spec.access_modes or [],
+            volume=p.spec.volume_name,
+        )
+        for p in core.list_namespaced_persistent_volume_claim(namespace).items
+    ]
+    cap = get_settings().max_pods  # same bound as pod listings
+    return PVCList(namespace=namespace, truncated=len(pvcs) > cap, pvcs=pvcs[:cap])
 
 
 # --- ownership --------------------------------------------------------------
@@ -371,11 +430,12 @@ def _run(tool: str, args: dict[str, Any], fn, *api_factories):
 def list_pods(namespace: str = "default", label_selector: str | None = None, only_unhealthy: bool = False) -> PodList:
     """List pods in a namespace with phase, container states, restart counts, exit codes and why the last
     instance died. Start an investigation here. `failing_conditions` explains Pending pods (e.g. Unschedulable).
+    If a workload has fewer pods than expected, or no pods at all, use list_warning_events.
 
     Args:
         namespace: Kubernetes namespace.
         label_selector: Optional selector, e.g. "app=payment-service".
-        only_unhealthy: Return only pods that are not Running/Succeeded, not ready, or have restarted.
+        only_unhealthy: Return only pods that are not Running/Succeeded, not ready, or restarted recently.
     """
     return _run("list_pods", locals(), list_pods_impl, get_core_api)
 
@@ -419,6 +479,30 @@ def get_events(name: str, namespace: str = "default", kind: str | None = None) -
         kind: Optional kind filter, e.g. "Pod" or "ReplicaSet".
     """
     return _run("get_events", locals(), get_events_impl, get_core_api)
+
+
+@mcp.tool()
+def list_warning_events(namespace: str = "default", since_minutes: int = 60) -> WarningEventList:
+    """List Warning events for every object in a namespace, most recent first, each with the object it is
+    about. Catches failures that never produce a pod: ReplicaSet FailedCreate (quota, admission webhooks,
+    missing ServiceAccount), PVC ProvisioningFailed, and failed scheduling.
+
+    Args:
+        namespace: Kubernetes namespace.
+        since_minutes: Only events seen within this many minutes.
+    """
+    return _run("list_warning_events", locals(), list_warning_events_impl, get_core_api)
+
+
+@mcp.tool()
+def list_pvcs(namespace: str = "default") -> PVCList:
+    """List PersistentVolumeClaims with phase, storage class, requested size and bound volume. A Pending PVC
+    keeps pods that mount it Pending; call get_events(name=<pvc>, kind="PersistentVolumeClaim") for why.
+
+    Args:
+        namespace: Kubernetes namespace.
+    """
+    return _run("list_pvcs", locals(), list_pvcs_impl, get_core_api)
 
 
 @mcp.tool()

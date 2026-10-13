@@ -84,6 +84,9 @@ class EventInfo(BaseModel):
     count: int = 1
     last_seen: str | None = None
     component: str | None = None
+    involved: ObjectRef | None = Field(
+        default=None, description="The object the event is about (namespace-wide listings only)."
+    )
 
 
 class EventList(ToolResult):
@@ -91,6 +94,32 @@ class EventList(ToolResult):
     object: ObjectRef
     truncated: bool = False
     events: list[EventInfo] = Field(description="Most recent first.")
+
+
+class WarningEventList(ToolResult):
+    namespace: str
+    since_minutes: int
+    truncated: bool = False
+    events: list[EventInfo] = Field(description="Warning events for any object in the namespace, most recent first.")
+
+
+# --- storage ----------------------------------------------------------------
+
+
+class PVCInfo(BaseModel):
+    name: str
+    phase: str  # Pending, Bound, Lost
+    storage_class: str | None = None
+    requested: str | None = None
+    capacity: str | None = None  # set once bound
+    access_modes: list[str] = Field(default_factory=list)
+    volume: str | None = None
+
+
+class PVCList(ToolResult):
+    namespace: str
+    truncated: bool = False
+    pvcs: list[PVCInfo]
 
 
 # --- ownership and specs ----------------------------------------------------

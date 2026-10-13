@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     max_log_lines: int = 500
     max_events: int = 30
     max_pods: int = 100
+    recent_restart_seconds: int = 3600  # a running, ready pod counts as unhealthy if it restarted this recently
 
     # Redaction
     redact_names: bool = True  # Presidio PERSON detection; regex rules always run
@@ -27,6 +28,10 @@ class Settings(BaseSettings):
     agent_model: str = "gpt-5-mini"
     judge_model: str = "gpt-6.1-sol"  # used by evals (Phase 2); must differ from the model under test
     aws_region: str = "us-east-1"  # bedrock only
+
+    # Agent run bounds. LangGraph counts each model call and each tool round as a step.
+    agent_recursion_limit: int = 40
+    agent_timeout_seconds: int = 300
 
 
 @lru_cache

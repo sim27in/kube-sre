@@ -52,6 +52,11 @@ _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
     ),
 ]
 
+# Keys whose values are free text (logs, messages, conditions). Person-name detection runs only on these:
+# on identifiers it mistakes workload names like "grafana" or "kafka" for people, and the agent can no
+# longer call tools with the pseudonym it gets back. Secret, email and IP rules run on every string.
+FREE_TEXT_KEYS = frozenset({"text", "message", "note", "failing_conditions", "conditions", "value", "detail"})
+
 _EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 _IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
 
@@ -107,7 +112,7 @@ def _redact_names(text: str, counts: Counter[str]) -> str:
     return text
 
 
-def redact(text: str) -> RedactionResult:
+def redact(text: str, names: bool = True) -> RedactionResult:
     counts: Counter[str] = Counter()
     for name, pattern, replacement in _SECRET_RULES:
         text, n = pattern.subn(replacement, text)
@@ -120,21 +125,23 @@ def redact(text: str) -> RedactionResult:
 
     text = _EMAIL.sub(_email, text)
     text = _IPV4.sub(lambda m: _redact_ip(m, counts), text)
-    if get_settings().redact_names and any(c.isalpha() for c in text):
+    if names and get_settings().redact_names and any(c.isalpha() for c in text):
         text = _redact_names(text, counts)
     return RedactionResult(text=text, counts=counts)
 
 
-def redact_obj(obj: Any, counts: Counter[str] | None = None) -> Any:
-    """Redact every string inside a JSON-like structure (dicts, lists, scalars)."""
+def redact_obj(obj: Any, counts: Counter[str] | None = None, names: bool = True) -> Any:
+    """Redact every string inside a JSON-like structure (dicts, lists, scalars).
+
+    Inside a dict, person-name detection applies only to values under FREE_TEXT_KEYS."""
     if counts is None:
         counts = Counter()
     if isinstance(obj, str):
-        result = redact(obj)
+        result = redact(obj, names=names)
         counts.update(result.counts)
         return result.text
     if isinstance(obj, dict):
-        return {k: redact_obj(v, counts) for k, v in obj.items()}
+        return {k: redact_obj(v, counts, names=k in FREE_TEXT_KEYS) for k, v in obj.items()}
     if isinstance(obj, list):
-        return [redact_obj(v, counts) for v in obj]
+        return [redact_obj(v, counts, names) for v in obj]
     return obj

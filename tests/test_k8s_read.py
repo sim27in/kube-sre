@@ -24,6 +24,10 @@ from kubernetes.client import (
     V1ObjectMeta,
     V1ObjectReference,
     V1OwnerReference,
+    V1PersistentVolumeClaim,
+    V1PersistentVolumeClaimList,
+    V1PersistentVolumeClaimSpec,
+    V1PersistentVolumeClaimStatus,
     V1Pod,
     V1PodCondition,
     V1PodList,
@@ -35,6 +39,7 @@ from kubernetes.client import (
     V1ReplicaSetSpec,
     V1ResourceRequirements,
     V1SecretKeySelector,
+    V1VolumeResourceRequirements,
 )
 from kubernetes.client.rest import ApiException
 
@@ -46,6 +51,8 @@ from kube_sre.tools.k8s_read import (
     get_owner_impl,
     get_pod_logs_impl,
     list_pods_impl,
+    list_pvcs_impl,
+    list_warning_events_impl,
 )
 
 NS = "demo"
@@ -107,10 +114,11 @@ PENDING_POD = _pod(
 
 
 class FakeCore:
-    def __init__(self, pods, logs=None, events=()):
+    def __init__(self, pods, logs=None, events=(), pvcs=()):
         self.pods = {p.metadata.name: p for p in pods}
         self.logs = logs or {}
         self.events = list(events)
+        self.pvcs = list(pvcs)
         self.log_calls = []
         self.selectors = []
 
@@ -129,6 +137,9 @@ class FakeCore:
     def list_namespaced_event(self, namespace, field_selector):
         self.selectors.append(field_selector)
         return CoreV1EventList(items=self.events)
+
+    def list_namespaced_persistent_volume_claim(self, namespace):
+        return V1PersistentVolumeClaimList(items=self.pvcs)
 
 
 class FakeApps:
@@ -160,6 +171,20 @@ def test_list_pods_reports_last_termination_and_owner():
 def test_list_pods_only_unhealthy():
     result = list_pods_impl(FakeCore([OOM_POD, HEALTHY_POD, PENDING_POD]), NS, only_unhealthy=True)
     assert {p.name for p in result.pods} == {OOM_POD.metadata.name, "big-1"}
+
+
+def _restarted_ready_pod(minutes_ago):
+    last = V1ContainerStateTerminated(
+        reason="Error", exit_code=1, finished_at=datetime.now(UTC) - timedelta(minutes=minutes_ago)
+    )
+    status = _running("web", restarts=1, last=last).model_copy(update={"ready": True})
+    return _pod(f"web-{minutes_ago}", ["web"], [status])
+
+
+def test_old_restart_is_not_unhealthy():
+    pods = [_restarted_ready_pod(minutes_ago=3 * 24 * 60), _restarted_ready_pod(minutes_ago=5)]
+    result = list_pods_impl(FakeCore(pods), NS, only_unhealthy=True)
+    assert [p.name for p in result.pods] == ["web-5"]
 
 
 def test_pending_pod_explains_scheduling_failure():
@@ -218,6 +243,12 @@ def test_multi_container_pod_requires_container():
     assert logs.container == "proxy"
 
 
+@pytest.mark.parametrize("args", [{"tail_lines": 0}, {"tail_lines": -5}, {"since_seconds": 0}])
+def test_invalid_log_window_rejected(args):
+    with pytest.raises(ToolError, match="at least 1"):
+        get_pod_logs_impl(FakeCore([HEALTHY_POD]), "web-1", NS, **args)
+
+
 def test_unknown_container_rejected():
     with pytest.raises(ToolError, match="no container 'nope'"):
         get_pod_logs_impl(FakeCore([SIDECAR_POD]), "api-1", NS, container="nope")
@@ -238,10 +269,10 @@ def test_logs_capped_keeping_most_recent_lines(monkeypatch):
 # --- get_events -------------------------------------------------------------
 
 
-def _event(reason, minutes_ago, count=1):
+def _event(reason, minutes_ago, count=1, kind=None, name="x"):
     return CoreV1Event(
         metadata=V1ObjectMeta(name=reason),
-        involved_object=V1ObjectReference(name="x"),
+        involved_object=V1ObjectReference(kind=kind, name=name),
         type="Warning",
         reason=reason,
         message=reason.lower(),
@@ -257,6 +288,46 @@ def test_events_most_recent_first_and_filtered_by_kind():
     assert [e.reason for e in result.events] == ["BackOff", "Failed", "Pulling"]
     assert result.events[0].count == 7
     assert core.selectors == ["involvedObject.name=x,involvedObject.kind=Pod"]
+
+
+def test_warning_events_namespace_wide_with_object_and_window():
+    core = FakeCore(
+        [],
+        events=[
+            _event("FailedCreate", 2, kind="ReplicaSet", name="api-6b9"),
+            _event("ProvisioningFailed", 10, kind="PersistentVolumeClaim", name="data"),
+            _event("BackOff", 3 * 60, kind="Pod", name="old-1"),
+        ],
+    )
+    result = list_warning_events_impl(core, NS, since_minutes=60)
+    assert [(e.reason, e.involved.kind, e.involved.name) for e in result.events] == [
+        ("FailedCreate", "ReplicaSet", "api-6b9"),
+        ("ProvisioningFailed", "PersistentVolumeClaim", "data"),
+    ]
+    assert core.selectors == ["type=Warning"]
+
+
+# --- list_pvcs --------------------------------------------------------------
+
+
+def test_list_pvcs_reports_pending_claim():
+    pvc = V1PersistentVolumeClaim(
+        metadata=V1ObjectMeta(name="data"),
+        spec=V1PersistentVolumeClaimSpec(
+            storage_class_name="fast-ssd",
+            access_modes=["ReadWriteOnce"],
+            resources=V1VolumeResourceRequirements(requests={"storage": "10Gi"}),
+        ),
+        status=V1PersistentVolumeClaimStatus(phase="Pending"),
+    )
+    claim = list_pvcs_impl(FakeCore([], pvcs=[pvc]), NS).pvcs[0]
+    assert (claim.name, claim.phase, claim.storage_class, claim.requested, claim.volume) == (
+        "data",
+        "Pending",
+        "fast-ssd",
+        "10Gi",
+        None,
+    )
 
 
 # --- get_owner --------------------------------------------------------------

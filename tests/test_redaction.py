@@ -64,6 +64,25 @@ def test_k8s_lines_left_intact():
     assert redact(line).text == line
 
 
+def test_redact_obj_keeps_identifiers_and_redacts_names_in_free_text():
+    # Presidio tags "grafana" and "kafka" as PERSON; pseudonymising them breaks follow-up tool calls.
+    out = redact_obj(
+        {
+            "workload": {"kind": "Deployment", "name": "grafana"},
+            "containers": [{"name": "kafka", "message": "User John Smith reported the checkout failure"}],
+            "text": "User John Smith reported the checkout failure",
+        }
+    )
+    assert out["workload"]["name"] == "grafana"
+    assert out["containers"][0]["name"] == "kafka"
+    assert "John Smith" not in out["containers"][0]["message"]
+    assert "John Smith" not in out["text"]
+
+
+def test_secrets_redacted_in_identifier_fields_too():
+    assert "hunter2" not in redact_obj({"name": "password=hunter2"})["name"]
+
+
 def test_redact_obj_walks_nested_structures():
     counts = Counter()
     out = redact_obj({"logs": ["password=abc123"], "n": 3, "nested": {"k": "AKIAIOSFODNN7EXAMPLE"}}, counts)

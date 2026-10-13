@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-processor
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics-processor
+  template:
+    metadata:
+      labels:
+        app: analytics-processor
+    spec:
+      containers:
+      - name: memory-hog
+        image: python:3.11-slim
+        # Forces a memory spike on startup inside a container capped at 32MB RAM
+        command: ["python", "-c", "x = 'A' * 100 * 1024 * 1024"]
+        resources:
+          limits:
+            memory: "32Mi"

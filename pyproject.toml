@@ -1,0 +1,44 @@
+[project]
+name = "kube-sre"
+version = "0.1.0"
+description = "Alert-driven multi-agent SRE system for Kubernetes"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=3.4.7",
+    "kubernetes>=36.0.3",
+    "langchain>=1.4.2",
+    "langchain-aws>=1.7.9",
+    "langchain-mcp-adapters>=0.3.2",
+    "langgraph>=1.2.12",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kube_sre"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "kind: integration tests that need a running kind cluster",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["baselines"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# StrEnum changes str() output; revisit when the label space is fixed in Phase 2.
+ignore = ["UP042"]

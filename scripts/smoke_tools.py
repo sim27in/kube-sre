@@ -1,5 +1,5 @@
-# test_tools.py
-from mcp_server import get_cluster_pods, get_pod_events, get_pod_logs
+# Manual smoke check against a live cluster (not part of pytest).
+from kube_sre.tools.k8s_read import get_cluster_pods, get_pod_events
 
 print("--- TESTING: List Cluster Pods ---")
 pods = get_cluster_pods(namespace="default")

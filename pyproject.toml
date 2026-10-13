@@ -4,12 +4,14 @@ version = "0.1.0"
 description = "Alert-driven multi-agent SRE system for Kubernetes"
 requires-python = ">=3.12"
 dependencies = [
+    "en-core-web-sm",
     "fastmcp>=3.4.7",
     "kubernetes>=36.0.3",
     "langchain>=1.4.2",
     "langchain-aws>=1.7.9",
     "langchain-mcp-adapters>=0.3.2",
     "langgraph>=1.2.12",
+    "presidio-analyzer>=2.2.364",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
 ]
@@ -29,6 +31,7 @@ packages = ["src/kube_sre"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "-m 'not kind'"
 markers = [
     "kind: integration tests that need a running kind cluster",
 ]
@@ -42,3 +45,6 @@ extend-exclude = ["baselines"]
 select = ["E", "F", "I", "UP", "B"]
 # StrEnum changes str() output; revisit when the label space is fixed in Phase 2.
 ignore = ["UP042"]
+
+[tool.uv.sources]
+en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }

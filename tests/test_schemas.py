@@ -13,7 +13,7 @@ def _report(**overrides):
         "category": "oom_killed",
         "severity": "high",
         "root_cause": "Container exceeds its 64Mi memory limit.",
-        "evidence": [{"source": "events", "detail": "OOMKilled, exit code 137"}],
+        "evidence": [{"evidence_id": "ev-0123456789", "source": "events", "detail": "OOMKilled, exit code 137"}],
         "proposed_actions": [
             {
                 "action_type": "patch_resources",

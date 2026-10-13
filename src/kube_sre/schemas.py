@@ -5,18 +5,18 @@ from pydantic import BaseModel, Field
 
 class Severity(str, Enum):
     CRITICAL = "critical"  # user-facing outage, no healthy replicas
-    HIGH = "high"          # service degraded or crash-looping
-    MEDIUM = "medium"      # partial impact, some replicas healthy
-    LOW = "low"            # no current impact, warning signs only
+    HIGH = "high"  # service degraded or crash-looping
+    MEDIUM = "medium"  # partial impact, some replicas healthy
+    LOW = "low"  # no current impact, warning signs only
 
 
 class FailureCategory(str, Enum):
-    IMAGE_PULL = "image_pull"            # ErrImagePull / ImagePullBackOff
-    OOM_KILLED = "oom_killed"            # container exceeded memory limit
-    CRASH_LOOP = "crash_loop"            # app exits on startup (non-OOM)
-    CONFIG_ERROR = "config_error"        # missing/invalid ConfigMap, Secret, env
-    SCHEDULING = "scheduling"            # Pending: insufficient resources, taints, affinity
-    PROBE_FAILURE = "probe_failure"      # liveness/readiness probe failing
+    IMAGE_PULL = "image_pull"  # ErrImagePull / ImagePullBackOff
+    OOM_KILLED = "oom_killed"  # container exceeded memory limit
+    CRASH_LOOP = "crash_loop"  # app exits on startup (non-OOM)
+    CONFIG_ERROR = "config_error"  # missing/invalid ConfigMap, Secret, env
+    SCHEDULING = "scheduling"  # Pending: insufficient resources, taints, affinity
+    PROBE_FAILURE = "probe_failure"  # liveness/readiness probe failing
     OTHER = "other"
 
 
@@ -37,6 +37,7 @@ class ActionType(str, Enum):
 
 
 class Evidence(BaseModel):
+    evidence_id: str = Field(description="The evidence_id of the tool result this observation comes from.")
     source: EvidenceSource = Field(description="Which tool/signal this evidence came from.")
     detail: str = Field(description="The specific observation, quoted from tool output where possible.")
 

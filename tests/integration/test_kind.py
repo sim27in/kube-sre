@@ -16,8 +16,16 @@ pytestmark = pytest.mark.kind
 K8S_DIR = Path(__file__).parents[2] / "k8s"
 
 
+@pytest.fixture(scope="session")
+def cluster():
+    try:
+        get_core_api().get_api_resources(_request_timeout=3)
+    except Exception as e:  # no kubeconfig, Docker down, kind stopped
+        pytest.skip(f"no reachable cluster ({type(e).__name__}); start Docker and the kind cluster")
+
+
 @pytest.fixture
-def namespace():
+def namespace(cluster):
     core = get_core_api()
     name = f"kube-sre-it-{uuid.uuid4().hex[:6]}"
     core.create_namespace(V1Namespace(metadata=V1ObjectMeta(name=name)))

@@ -178,6 +178,34 @@ def test_previous_logs_read_from_dead_instance():
     assert core.log_calls[0]["previous"] is True
 
 
+GONE = "unable to retrieve container logs for containerd://6a1ee389f188"
+
+
+def test_previous_falls_back_to_crashed_instance_during_backoff():
+    # Observed on kind: in CrashLoopBackOff, previous=True hits an already-removed container and the
+    # kubelet returns an error string as the log body; the crashed instance is served as "current".
+    pod = OOM_POD.metadata.name
+    core = FakeCore([OOM_POD], logs={(pod, "memory-hog", True): GONE, (pod, "memory-hog", False): "allocating\n"})
+    logs = get_pod_logs_impl(core, pod, NS, previous=True)
+    assert logs.text == "allocating\n"
+    assert logs.previous is False
+    assert "most recent crashed instance" in logs.note
+
+
+def test_current_logs_during_backoff_are_labelled():
+    pod = OOM_POD.metadata.name
+    core = FakeCore([OOM_POD], logs={(pod, "memory-hog", False): "allocating\n"})
+    assert "most recent crashed instance" in get_pod_logs_impl(core, pod, NS).note
+
+
+def test_kubelet_error_string_never_returned_as_log_text():
+    pod = OOM_POD.metadata.name
+    core = FakeCore([OOM_POD], logs={(pod, "memory-hog", True): GONE, (pod, "memory-hog", False): GONE})
+    logs = get_pod_logs_impl(core, pod, NS, previous=True)
+    assert logs.text == ""
+    assert "no longer available" in logs.note
+
+
 def test_previous_rejected_when_container_never_restarted():
     with pytest.raises(ToolError, match="no previous instance"):
         get_pod_logs_impl(FakeCore([HEALTHY_POD]), "web-1", NS, previous=True)
@@ -333,3 +361,15 @@ def test_mcp_missing_kubeconfig_is_a_tool_error(monkeypatch):
     result = _call("list_pods", {"namespace": NS})
     assert result.is_error
     assert "Cannot reach the Kubernetes API" in result.content[0].text
+
+
+def test_previous_falls_back_when_container_just_terminated():
+    # The window between the crash and back-off: state is terminated, not waiting.
+    status = OOM_POD.status.container_statuses[0].model_copy(
+        update={"state": V1ContainerState(terminated=V1ContainerStateTerminated(reason="OOMKilled", exit_code=137))}
+    )
+    pod = OOM_POD.model_copy(update={"status": V1PodStatus(phase="Running", container_statuses=[status])})
+    name = pod.metadata.name
+    core = FakeCore([pod], logs={(name, "memory-hog", True): GONE, (name, "memory-hog", False): "allocating\n"})
+    logs = get_pod_logs_impl(core, name, NS, previous=True)
+    assert logs.text == "allocating\n" and logs.note

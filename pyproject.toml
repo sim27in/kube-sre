@@ -14,6 +14,7 @@ dependencies = [
     "presidio-analyzer>=2.2.364",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
+    "python-dotenv>=1.2.4",
 ]
 
 [dependency-groups]

@@ -70,6 +70,7 @@ class PodLogs(ToolResult):
     previous: bool
     lines: int
     truncated: bool = Field(description="True if older lines were dropped to fit the size cap.")
+    note: str | None = Field(default=None, description="Which instance these logs came from, or why they are empty.")
     text: str
 
 

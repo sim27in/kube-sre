@@ -6,6 +6,7 @@ evidence id) before leaving the server.
 """
 
 import json
+import re
 from datetime import UTC, datetime
 from typing import Any
 
@@ -37,6 +38,7 @@ from kube_sre.tools.models import (
 mcp = FastMCP("kube-sre-k8s-read")
 
 _MAX_ENV_VALUE = 200
+_LOGS_GONE = re.compile(r"^unable to retrieve container logs for \S+\s*$")
 
 
 def _ts(dt: datetime | None) -> str | None:
@@ -151,22 +153,40 @@ def get_pod_logs_impl(
     elif container not in all_names:
         fail(f"Pod {pod_name} has no container {container!r}; containers are {all_names}.")
 
-    if previous:
-        statuses = (pod.status.container_statuses or []) + (pod.status.init_container_statuses or [])
-        cs = next((s for s in statuses if s.name == container), None)
-        if cs is None or not (cs.last_state and cs.last_state.terminated):
-            fail(f"Container {container!r} has no previous instance (it has not restarted). Use previous=False.")
+    statuses = (pod.status.container_statuses or []) + (pod.status.init_container_statuses or [])
+    cs = next((s for s in statuses if s.name == container), None)
+    has_died = bool(cs and cs.last_state and cs.last_state.terminated)
+    # Dead (just terminated, or waiting in back-off) rather than running a fresh instance.
+    not_running = bool(has_died and not (cs.state and cs.state.running))
+    if previous and not has_died:
+        fail(f"Container {container!r} has no previous instance (it has not restarted). Use previous=False.")
 
     settings = get_settings()
-    text = core.read_namespaced_pod_log(
-        pod_name,
-        namespace,
-        container=container,
-        previous=previous,
-        tail_lines=min(tail_lines, settings.max_log_lines),
-        since_seconds=since_seconds,
-    )
-    text, truncated = _tail_bytes(text or "", settings.max_log_bytes)
+
+    def read(prev: bool) -> str:
+        return core.read_namespaced_pod_log(
+            pod_name,
+            namespace,
+            container=container,
+            previous=prev,
+            tail_lines=min(tail_lines, settings.max_log_lines),
+            since_seconds=since_seconds,
+        )
+
+    note = None
+    text = read(previous) or ""
+    # While a crashed container is not running (just terminated, or waiting in back-off) the kubelet
+    # serves the crashed instance as the "current" logs, and `previous` can point at an older instance
+    # it has already garbage-collected. It reports that as log text, not an HTTP error.
+    crashed_note = "Container is not running; these are the logs of its most recent crashed instance."
+    if previous and not_running and _LOGS_GONE.match(text):
+        previous, text, note = False, read(False) or "", crashed_note
+    elif not previous and not_running:
+        note = crashed_note
+    if _LOGS_GONE.match(text):
+        text, note = "", "Logs for this container instance are no longer available on the node."
+
+    text, truncated = _tail_bytes(text, settings.max_log_bytes)
     return PodLogs(
         pod=pod_name,
         namespace=namespace,
@@ -174,6 +194,7 @@ def get_pod_logs_impl(
         previous=previous,
         lines=text.count("\n") + (1 if text and not text.endswith("\n") else 0),
         truncated=truncated,
+        note=note,
         text=text,
     )
 
@@ -370,9 +391,11 @@ def get_pod_logs(
 ) -> PodLogs:
     """Get recent logs from one container of a pod.
 
-    For CrashLoopBackOff or OOMKilled containers the current instance has usually just restarted and has
-    little output: set previous=True to read the logs of the instance that died. Output is capped; the
-    most recent lines are kept.
+    For a container that crashed and is running again, set previous=True to read the instance that died.
+    For a container that is not running (terminated or in CrashLoopBackOff), the default call already
+    returns the crashed instance's logs (previous=True falls back to it automatically). `note` says which
+    instance the logs came from.
+    Output is capped; the most recent lines are kept.
 
     Args:
         pod_name: Pod name.

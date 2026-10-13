@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import sys
 
+from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
 from langchain_aws import ChatBedrockConverse
@@ -51,6 +52,7 @@ async def main(namespace: str) -> None:
 
 
 if __name__ == "__main__":
+    load_dotenv()  # LangSmith and AWS settings from .env; exported vars take precedence
     parser = argparse.ArgumentParser()
     parser.add_argument("--namespace", default="default")
     asyncio.run(main(parser.parse_args().namespace))

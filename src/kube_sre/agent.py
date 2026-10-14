@@ -57,7 +57,7 @@ async def main(namespace: str) -> None:
 async def _investigate(tools: list[BaseTool], namespace: str) -> None:
     settings = get_settings()
     print(f"Loaded {len(tools)} tools from MCP server: {[t.name for t in tools]}")
-    print(f"Model: {settings.llm_provider}/{settings.agent_model}")
+    print(f"Model: {settings.agent_model}")
 
     agent = create_agent(
         get_chat_model(), tools, system_prompt=SYSTEM_PROMPT, response_format=ToolStrategy(TriageReport)
@@ -97,7 +97,7 @@ async def _investigate(tools: list[BaseTool], namespace: str) -> None:
 
 
 if __name__ == "__main__":
-    load_dotenv()  # LangSmith and AWS settings from .env; exported vars take precedence
+    load_dotenv()  # OpenAI and LangSmith settings from .env; exported vars take precedence
     parser = argparse.ArgumentParser()
     parser.add_argument("--namespace", default="default")
     asyncio.run(main(parser.parse_args().namespace))

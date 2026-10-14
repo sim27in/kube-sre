@@ -102,7 +102,6 @@ Settings are read from `KUBE_SRE_*` environment variables or `.env`. See [`confi
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `KUBE_SRE_LLM_PROVIDER` | `openai` | `openai` or `bedrock` (Bedrock is untested) |
 | `KUBE_SRE_AGENT_MODEL` | `gpt-5-mini` | Model the agent uses |
 | `KUBE_SRE_KUBE_CONTEXT` | current context | kubeconfig context to use |
 | `KUBE_SRE_AGENT_RECURSION_LIMIT` | `40` | Maximum agent steps before giving up |

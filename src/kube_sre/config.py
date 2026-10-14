@@ -1,6 +1,5 @@
 import os
 from functools import lru_cache
-from typing import Literal
 
 from kubernetes import client, config
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,11 +22,9 @@ class Settings(BaseSettings):
     redact_names: bool = True  # Presidio PERSON detection; regex rules always run
     pseudonym_salt: str = "kube-sre"  # stable placeholders across calls and replays
 
-    # LLM. Credentials come from the provider's own env vars (OPENAI_API_KEY, or AWS credentials).
-    llm_provider: Literal["openai", "bedrock"] = "openai"
+    # LLM (OpenAI). The key comes from OPENAI_API_KEY.
     agent_model: str = "gpt-5-mini"
     judge_model: str = "gpt-6.1-sol"  # used by evals (Phase 2); must differ from the model under test
-    aws_region: str = "us-east-1"  # bedrock only
 
     # Agent run bounds. LangGraph counts each model call and each tool round as a step.
     agent_recursion_limit: int = 40

@@ -1,11 +1,13 @@
 import asyncio
 import sys
 
+from dotenv import load_dotenv
+
 # Updated Import: Use create_agent from langchain.agents
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
-from langchain_aws import ChatBedrockConverse
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langchain_openai import ChatOpenAI
 
 from schemas import TriageReport
 
@@ -28,11 +30,8 @@ async def main():
         f"Loaded {len(tools)} tools from MCP server: {[t.name for t in tools]}"
     )
 
-    # 3. Initialize AWS Bedrock Model
-    llm = ChatBedrockConverse(
-        model="amazon.nova-lite-v1:0",
-        region_name="us-east-1",
-    )
+    # 3. Initialize the model. Same model as v1, so evals compare the tools, not the models.
+    llm = ChatOpenAI(model="gpt-5-mini")
 
     # 4. Create Agent using create_agent; final answer must match TriageReport
     agent = create_agent(llm, tools, response_format=ToolStrategy(TriageReport))
@@ -55,4 +54,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    load_dotenv()  # finds the repo-root .env by walking up from this file; exported vars take precedence
     asyncio.run(main())

@@ -1,18 +1,11 @@
-"""Chat model factory, so the provider is a setting rather than a code change."""
+"""Chat model factory, so the agent and the eval judge build their models the same way."""
 
 from langchain_core.language_models import BaseChatModel
+from langchain_openai import ChatOpenAI
 
 from kube_sre.config import get_settings
 
 
 def get_chat_model(model: str | None = None) -> BaseChatModel:
-    """Return a chat model for the configured provider. `model` defaults to the agent model."""
-    settings = get_settings()
-    model = model or settings.agent_model
-    if settings.llm_provider == "openai":
-        from langchain_openai import ChatOpenAI
-
-        return ChatOpenAI(model=model)
-    from langchain_aws import ChatBedrockConverse
-
-    return ChatBedrockConverse(model=model, region_name=settings.aws_region)
+    """Return an OpenAI chat model. `model` defaults to the agent model."""
+    return ChatOpenAI(model=model or get_settings().agent_model)

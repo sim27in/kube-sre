@@ -1,16 +1,16 @@
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     CRITICAL = "critical"  # user-facing outage, no healthy replicas
     HIGH = "high"  # service degraded or crash-looping
     MEDIUM = "medium"  # partial impact, some replicas healthy
     LOW = "low"  # no current impact, warning signs only
 
 
-class FailureCategory(str, Enum):
+class FailureCategory(StrEnum):
     IMAGE_PULL = "image_pull"  # ErrImagePull / ImagePullBackOff
     OOM_KILLED = "oom_killed"  # container exceeded memory limit
     CRASH_LOOP = "crash_loop"  # app exits on startup (non-OOM)
@@ -20,15 +20,17 @@ class FailureCategory(str, Enum):
     OTHER = "other"
 
 
-class EvidenceSource(str, Enum):
+class EvidenceSource(StrEnum):
     POD_STATUS = "pod_status"
     LOGS = "logs"
     EVENTS = "events"
     METRICS = "metrics"
     SPEC = "spec"
+    OWNERSHIP = "ownership"  # get_owner
+    STORAGE = "storage"  # PVC status
 
 
-class ActionType(str, Enum):
+class ActionType(StrEnum):
     ROLLOUT_RESTART = "rollout_restart"
     SET_IMAGE = "set_image"
     PATCH_RESOURCES = "patch_resources"

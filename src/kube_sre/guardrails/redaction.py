@@ -16,6 +16,14 @@ from typing import Any
 
 from kube_sre.config import get_settings
 
+# Names that hold a secret value: DB_PASSWORD, STRIPE_API_KEY, --client-secret.
+_SECRET_NAME = (
+    r"(?:aws[_-])?(?:secret(?:[_-]access)?[_-]key|password|passwd|pwd|secret|token|api[_-]?key"
+    r"|access[_-]?key|client[_-]?secret)"
+)
+# A name that ends in one of them, so PASSWORD_FILE and MAX_TOKENS don't count.
+_SECRET_NAME_SUFFIX = re.compile(rf"(?i)(?:^|[^a-z0-9]){_SECRET_NAME}$")
+
 # (name, pattern, replacement). Order matters: specific patterns run before generic key=value.
 _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
     (
@@ -42,11 +50,20 @@ _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
         r"\1<redacted:credentials>@",
     ),
     (
+        "cli_flag",
+        # A secret-named flag and its value, space-separated, as in `sh -c "app --db-password hunter2"`.
+        # The flag must end in the secret word (--password-file takes a path); $(VAR) references are kept.
+        re.compile(
+            rf"(?i)(?<![\w-])(--?(?:[a-z0-9]+[_-])*{_SECRET_NAME})(\s+)(?!\$)"
+            r"(\"[^\"]*\"|'[^']*'|[^\s\"'-][^\s\"';&|]*)"
+        ),
+        r"\1\2<redacted:secret>",
+    ),
+    (
         "key_value",
         re.compile(
             # Lookbehind instead of \b so prefixed names (DB_PASSWORD, STRIPE_API_KEY) match.
-            r"(?i)(?<![a-z0-9])((?:aws_)?(?:secret(?:_access)?_key|password|passwd|pwd|secret|token|api[_-]?key"
-            r"|access[_-]?key|client[_-]?secret))(\"?\s*[=:]\s*\"?)([^\s\"',;&]+)"
+            rf"(?i)(?<![a-z0-9])({_SECRET_NAME})(\"?\s*[=:]\s*\"?)([^\s\"',;&]+)"
         ),
         r"\1\2<redacted:secret>",
     ),
@@ -128,6 +145,31 @@ def redact(text: str, names: bool = True) -> RedactionResult:
     if names and get_settings().redact_names and any(c.isalpha() for c in text):
         text = _redact_names(text, counts)
     return RedactionResult(text=text, counts=counts)
+
+
+SECRET_MARKER = "<redacted:secret>"
+
+
+def is_secret_name(name: str) -> bool:
+    """True for a variable or flag name whose value is a secret: DB_PASSWORD, --client-secret.
+
+    The string rules can't catch these values: the name and the value arrive as separate fields or list items."""
+    return bool(_SECRET_NAME_SUFFIX.search(name))
+
+
+def _is_secret_flag(arg: str) -> bool:
+    return arg.startswith("-") and "=" not in arg and is_secret_name(arg)
+
+
+def redact_argv(argv: list[str] | None) -> list[str] | None:
+    """Redact the item after a secret-named flag (`--db-password hunter2`). `--flag=value` is one string,
+    which the key=value rule already handles. `$(VAR)` references name a variable, not a secret, and stay."""
+    if argv is None:
+        return None
+    return [
+        SECRET_MARKER if i and _is_secret_flag(argv[i - 1]) and not arg.startswith("$") else arg
+        for i, arg in enumerate(argv)
+    ]
 
 
 def redact_obj(obj: Any, counts: Counter[str] | None = None, names: bool = True) -> Any:

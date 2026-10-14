@@ -1,0 +1,18 @@
+namespace: search
+summary: The liveness probe checks port 8080 but nginx listens on 80, so the kubelet keeps restarting it.
+wait:
+  - event_reason: Unhealthy
+  - restarts: 2
+incidents:
+  - workload: search-api
+    kind: Deployment
+    categories: [probe_failure]
+    needs_spec: true
+    root_cause: >-
+      The liveness probe checks HTTP port 8080, but the nginx container listens on port 80. The probe
+      gets connection refused, and the kubelet kills and restarts the container repeatedly.
+    key_facts:
+      - the liveness probe fails (connection refused) and the kubelet restarts the container
+      - the probe targets port 8080 while the container serves on port 80
+    fixes:
+      - change the liveness probe port to 80 (or to the port the app actually serves)

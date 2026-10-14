@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: order-worker}
+  template:
+    metadata:
+      labels: {app: order-worker}
+    spec:
+      containers:
+        - name: worker
+          image: python:3.11-slim
+          command:
+            - python
+            - -c
+            - |
+              print("order-worker 2.4.1 starting", flush=True)
+              print("loading shard map", flush=True)
+
+              def load_shards():
+                  return {}
+
+              def orders_per_shard(total, shards):
+                  return total // len(shards)
+
+              shards = load_shards()
+              print("shards loaded:", len(shards), flush=True)
+              print("batch size:", orders_per_shard(1200, shards), flush=True)

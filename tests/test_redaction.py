@@ -2,7 +2,7 @@ from collections import Counter
 
 import pytest
 
-from kube_sre.guardrails.redaction import redact, redact_obj
+from kube_sre.guardrails.redaction import is_secret_name, redact, redact_argv, redact_obj
 
 # (seeded line, the secret substring that must not survive, expected marker)
 SEEDED_SECRETS = [
@@ -81,6 +81,50 @@ def test_redact_obj_keeps_identifiers_and_redacts_names_in_free_text():
 
 def test_secrets_redacted_in_identifier_fields_too():
     assert "hunter2" not in redact_obj({"name": "password=hunter2"})["name"]
+
+
+@pytest.mark.parametrize("name", ["DB_PASSWORD", "STRIPE_API_KEY", "GITHUB_TOKEN", "--client-secret", "--secret-key"])
+def test_secret_names(name):
+    assert is_secret_name(name)
+
+
+@pytest.mark.parametrize("name", ["PASSWORD_FILE", "MAX_TOKENS", "LOG_LEVEL", "--port"])
+def test_names_that_are_not_secrets(name):
+    assert not is_secret_name(name)
+
+
+def test_redact_argv_hides_value_after_secret_flag():
+    argv = ["serve", "--db-password", "hunter2", "--port", "8080", "--token=abc"]
+    assert redact_argv(argv) == ["serve", "--db-password", "<redacted:secret>", "--port", "8080", "--token=abc"]
+    assert redact_argv(["--password", "$(DB_PASSWORD)"]) == ["--password", "$(DB_PASSWORD)"]
+    assert redact_argv(None) is None
+
+
+@pytest.mark.parametrize(
+    ("line", "expected"),
+    [
+        ('sh -c "app --db-password hunter2 --port 80"', 'sh -c "app --db-password <redacted:secret> --port 80"'),
+        ("app --password 'two words' --verbose", "app --password <redacted:secret> --verbose"),
+        ("server -token s3cret", "server -token <redacted:secret>"),
+        ("app --client-secret abc123 && run", "app --client-secret <redacted:secret> && run"),
+        ("app --secret-key=abc123", "app --secret-key=<redacted:secret>"),
+    ],
+)
+def test_secret_flag_inside_a_string(line, expected):
+    assert redact(line, names=False).text == expected
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "app --password $(DB_PASSWORD)",  # a reference, not the secret
+        "app --password-file /etc/pw",  # the flag takes a path
+        "app --password --port 80",  # no value
+        "app --max-tokens 512",
+    ],
+)
+def test_secret_flag_rule_keeps_non_secrets(line):
+    assert redact(line, names=False).text == line
 
 
 def test_redact_obj_walks_nested_structures():

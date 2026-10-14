@@ -17,6 +17,7 @@ from kubernetes.config.config_exception import ConfigException
 from urllib3.exceptions import MaxRetryError
 
 from kube_sre.config import get_apps_api, get_core_api, get_settings
+from kube_sre.guardrails.redaction import SECRET_MARKER, is_secret_name, redact_argv
 from kube_sre.tools.boundary import fail, finalize
 from kube_sre.tools.models import (
     ContainerSpec,
@@ -42,6 +43,11 @@ mcp = FastMCP("kube-sre-k8s-read")
 
 _MAX_ENV_VALUE = 200
 _LOGS_GONE = re.compile(r"^unable to retrieve container logs for \S+\s*$")
+
+
+def _now() -> datetime:
+    """Current time. The eval replay server pins it to when the snapshot was recorded."""
+    return datetime.now(UTC)
 
 
 def _ts(dt: datetime | None) -> str | None:
@@ -117,12 +123,14 @@ def _recently_restarted(c: ContainerStatus) -> bool:
     finished = c.last_termination.finished_at if c.last_termination else None
     if finished is None:
         return True
-    age = datetime.now(UTC) - datetime.fromisoformat(finished)
+    age = _now() - datetime.fromisoformat(finished)
     return age.total_seconds() < get_settings().recent_restart_seconds
 
 
 def _is_unhealthy(p: PodSummary) -> bool:
-    if p.phase not in ("Running", "Succeeded"):
+    if p.phase == "Succeeded":
+        return False  # finished (e.g. a Job); its containers are never ready again
+    if p.phase != "Running":
         return True
     return any(not c.ready or _recently_restarted(c) for c in p.containers)
 
@@ -144,7 +152,8 @@ def _tail_bytes(text: str, max_bytes: int) -> tuple[str, bool]:
         return text, False
     cut = raw[-max_bytes:].decode(errors="ignore")
     newline = cut.find("\n")
-    return (cut[newline + 1 :] if newline != -1 else cut), True
+    # Drop the partial first line, unless it's all there is: one line longer than the cap keeps its tail.
+    return (cut[newline + 1 :] if 0 <= newline < len(cut) - 1 else cut), True
 
 
 def get_pod_logs_impl(
@@ -254,7 +263,7 @@ def get_events_impl(core: CoreV1Api, namespace: str, name: str, kind: str | None
 def list_warning_events_impl(core: CoreV1Api, namespace: str, since_minutes: int = 60) -> WarningEventList:
     if since_minutes < 1:
         fail("since_minutes must be at least 1.")
-    cutoff = datetime.now(UTC) - timedelta(minutes=since_minutes)
+    cutoff = _now() - timedelta(minutes=since_minutes)
     items = [
         e
         for e in core.list_namespaced_event(namespace, field_selector="type=Warning").items
@@ -347,7 +356,8 @@ def _env(c) -> list[EnvRef]:
     for e in c.env or []:
         vf = e.value_from
         if vf is None:
-            out.append(EnvRef(var=e.name, source="value", value=(e.value or "")[:_MAX_ENV_VALUE]))
+            value = SECRET_MARKER if e.value and is_secret_name(e.name) else (e.value or "")[:_MAX_ENV_VALUE]
+            out.append(EnvRef(var=e.name, source="value", value=value))
         elif vf.secret_key_ref:
             r = vf.secret_key_ref
             out.append(EnvRef(var=e.name, source="secret", source_name=r.name, key=r.key, optional=r.optional))
@@ -371,8 +381,8 @@ def _container_spec(c) -> ContainerSpec:
     return ContainerSpec(
         name=c.name,
         image=c.image,
-        command=c.command,
-        args=c.args,
+        command=redact_argv(c.command),
+        args=redact_argv(c.args),
         requests=dict(res.requests or {}) if res else {},
         limits=dict(res.limits or {}) if res else {},
         liveness=_probe(c.liveness_probe),

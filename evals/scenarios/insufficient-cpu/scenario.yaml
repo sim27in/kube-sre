@@ -1,0 +1,18 @@
+namespace: ml
+summary: The pod requests 64 CPUs on an 8-CPU node and stays Pending.
+wait:
+  - pod_phase: Pending
+  - event_reason: FailedScheduling
+incidents:
+  - workload: model-trainer
+    kind: Deployment
+    categories: [scheduling]
+    needs_spec: true
+    root_cause: >-
+      The container requests 64 CPUs, more than any node can offer, so the scheduler cannot place the
+      pod (Insufficient cpu) and it stays Pending.
+    key_facts:
+      - the pod is unschedulable because of insufficient CPU
+      - the CPU request is 64 cores
+    fixes:
+      - lower the CPU request to fit the nodes, or add nodes with enough CPU

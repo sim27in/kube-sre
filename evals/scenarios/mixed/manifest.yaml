@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: api-gateway}
+  template:
+    metadata:
+      labels: {app: api-gateway}
+    spec:
+      containers:
+        - name: gateway
+          image: nginx:2.99-alpine
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-aggregator
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: metrics-aggregator}
+  template:
+    metadata:
+      labels: {app: metrics-aggregator}
+    spec:
+      containers:
+        - name: aggregator
+          image: python:3.11-slim
+          command:
+            - python
+            - -c
+            - |
+              print("aggregating metrics window", flush=True)
+              window = "A" * 200 * 1024 * 1024
+          resources:
+            limits: {memory: 48Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-page
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: status-page}
+  template:
+    metadata:
+      labels: {app: status-page}
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.27-alpine
+          ports: [{containerPort: 80}]

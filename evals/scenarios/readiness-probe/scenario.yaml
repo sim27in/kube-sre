@@ -1,0 +1,18 @@
+namespace: profile
+summary: The readiness probe hits /healthz, which nginx answers with 404, so the pod is never ready.
+wait:
+  - event_reason: Unhealthy
+settle_seconds: 20
+incidents:
+  - workload: profile-web
+    kind: Deployment
+    categories: [probe_failure]
+    needs_spec: true
+    root_cause: >-
+      The readiness probe requests /healthz on port 80, which the nginx container answers with 404,
+      so the pod never becomes ready and receives no traffic.
+    key_facts:
+      - the readiness probe fails with HTTP 404
+      - the probe path /healthz does not exist in the app
+    fixes:
+      - point the readiness probe at a path that exists (e.g. /) or add a /healthz endpoint to the app

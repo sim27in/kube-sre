@@ -1,0 +1,17 @@
+namespace: notifications
+summary: An init container waits for a database host that does not resolve, so the app never starts.
+wait:
+  - restarts: 2
+incidents:
+  - workload: notifier
+    kind: Deployment
+    categories: [crash_loop, config_error, other]
+    root_cause: >-
+      The init container wait-for-db exits with an error because the host notifications-db does not
+      resolve (there is no such Service), so the pod is stuck in Init:CrashLoopBackOff and the main
+      container never starts.
+    key_facts:
+      - the init container wait-for-db fails and is crash-looping
+      - it cannot resolve the host notifications-db
+    fixes:
+      - create the notifications-db Service (or deploy the database), or fix the hostname the init container uses

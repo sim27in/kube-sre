@@ -1,0 +1,741 @@
+{
+ "captured_at": "2026-10-14T11:37:47.837998+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"notifier\",\"namespace\":\"notifications\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"notifier\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"notifier\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"notifier\"}],\"initContainers\":[{\"command\":[\"sh\",\"-c\",\"echo 'waiting for database notifications-db'; nslookup notifications-db\"],\"image\":\"busybox:1.36\",\"name\":\"wait-for-db\"}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "name": "notifier",
+    "namespace": "notifications",
+    "resourceVersion": "71387",
+    "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "notifier"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "notifier"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "notifier",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "initContainers": [
+       {
+        "command": [
+         "sh",
+         "-c",
+         "echo 'waiting for database notifications-db'; nslookup notifications-db"
+        ],
+        "image": "busybox:1.36",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "wait-for-db",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "ReplicaSet \"notifier-6746ffc74c\" is progressing.",
+      "reason": "ReplicaSetUpdated",
+      "status": "True",
+      "type": "Progressing"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71379",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Successfully assigned notifications/notifier-6746ffc74c-xrc9t to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de6242544bbb44",
+    "namespace": "notifications",
+    "resourceVersion": "71385",
+    "uid": "8a84e53d-e634-47f9-8008-c26cf8ff1d87"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Pulling image \"busybox:1.36\"",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de62426b580f27",
+    "namespace": "notifications",
+    "resourceVersion": "71433",
+    "uid": "890c51a3-b30c-431b-816c-90729c3fa355"
+   },
+   "reason": "Pulling",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:26+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:37:26+00:00",
+   "message": "Successfully pulled image \"busybox:1.36\" in 8.232s (1m47.339s including waiting). Image size: 1906887 bytes.",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:26+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de625b69517a5c",
+    "namespace": "notifications",
+    "resourceVersion": "71967",
+    "uid": "f54cd78f-9ce5-4147-af28-20880c80d17a"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:26+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:37:38+00:00",
+   "message": "Container created",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:26+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de625b69cf4910",
+    "namespace": "notifications",
+    "resourceVersion": "72075",
+    "uid": "e3b0436f-73ed-46fc-b247-802454db38d7"
+   },
+   "reason": "Created",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:26+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:37:38+00:00",
+   "message": "Container started",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:26+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de625b6c23fcec",
+    "namespace": "notifications",
+    "resourceVersion": "72077",
+    "uid": "523995e1-4560-405a-88e5-37cf68bc129e"
+   },
+   "reason": "Started",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:37:27+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:37:38+00:00",
+   "message": "Container image \"busybox:1.36\" already present on machine and can be accessed by the pod",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:27+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de625b9d07bb86",
+    "namespace": "notifications",
+    "resourceVersion": "72074",
+    "uid": "fa3bb9e3-4ad1-49f1-8561-ce313dd43517"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:28+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.initContainers{wait-for-db}",
+    "kind": "Pod",
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "resourceVersion": "71382",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "lastTimestamp": "2026-10-14T11:37:39+00:00",
+   "message": "Back-off restarting failed container wait-for-db in pod notifier-6746ffc74c-xrc9t_notifications(40284577-309f-4a21-abb6-0c5e4bdc7b09)",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:28+00:00",
+    "name": "notifier-6746ffc74c-xrc9t.18de625bd8f8ab66",
+    "namespace": "notifications",
+    "resourceVersion": "72086",
+    "uid": "77b03188-d9d7-4abb-a428-01935424c016"
+   },
+   "reason": "BackOff",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "notifier-6746ffc74c",
+    "namespace": "notifications",
+    "resourceVersion": "71375",
+    "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Created pod: notifier-6746ffc74c-xrc9t",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "notifier-6746ffc74c.18de6242540f46b4",
+    "namespace": "notifications",
+    "resourceVersion": "71380",
+    "uid": "a51e5b69-def3-4c47-8bcd-5fc0361f7342"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "notifier",
+    "namespace": "notifications",
+    "resourceVersion": "71373",
+    "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Scaled up replica set notifier-6746ffc74c from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "notifier.18de624253bd55d1",
+    "namespace": "notifications",
+    "resourceVersion": "71377",
+    "uid": "0406a570-b1f3-462e-8193-09af0214daf8"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "notifier-6746ffc74c-xrc9t/notifier/current": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-xrc9t\\\" is waiting to start: PodInitializing\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  },
+  "notifier-6746ffc74c-xrc9t/notifier/previous": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-xrc9t\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  },
+  "notifier-6746ffc74c-xrc9t/wait-for-db/current": {
+   "text": "2026-10-14T11:37:38.727542839Z waiting for database notifications-db\n2026-10-14T11:37:38.728416922Z Server:\t\t10.96.0.10\n2026-10-14T11:37:38.728424547Z Address:\t10.96.0.10:53\n2026-10-14T11:37:38.728425381Z \n2026-10-14T11:37:38.728426214Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728426881Z \n2026-10-14T11:37:38.728427631Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728428256Z \n2026-10-14T11:37:38.728428922Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728429547Z \n2026-10-14T11:37:38.728430256Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728430881Z \n2026-10-14T11:37:38.728431547Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728432172Z \n2026-10-14T11:37:38.728432881Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728433506Z \n"
+  },
+  "notifier-6746ffc74c-xrc9t/wait-for-db/previous": {
+   "text": "unable to retrieve container logs for containerd://eeec65a8ddd3058cb77cf9600fc7a941316344033a2dfd9a8c0cc418345d0290"
+  }
+ },
+ "namespace": "notifications",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generateName": "notifier-6746ffc74c-",
+    "generation": 1,
+    "labels": {
+     "app": "notifier",
+     "pod-template-hash": "6746ffc74c"
+    },
+    "name": "notifier-6746ffc74c-xrc9t",
+    "namespace": "notifications",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "notifier-6746ffc74c",
+      "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+     }
+    ],
+    "resourceVersion": "72087",
+    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+   },
+   "spec": {
+    "containers": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "notifier",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-nq2ng",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "initContainers": [
+     {
+      "command": [
+       "sh",
+       "-c",
+       "echo 'waiting for database notifications-db'; nslookup notifications-db"
+      ],
+      "image": "busybox:1.36",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "wait-for-db",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-nq2ng",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-nq2ng",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "containers with incomplete status: [wait-for-db]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotInitialized",
+      "status": "False",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "containers with unready status: [notifier]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "containers with unready status: [notifier]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imageID": "",
+      "lastState": {},
+      "name": "notifier",
+      "ready": false,
+      "restartCount": 0,
+      "started": false,
+      "state": {
+       "waiting": {
+        "reason": "PodInitializing"
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-nq2ng",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "initContainerStatuses": [
+     {
+      "containerID": "containerd://31222045699cff43de790eb4193edcecd2eac5f9018f16c98d261789d21acc06",
+      "image": "docker.io/library/busybox:1.36",
+      "imageID": "docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662",
+      "lastState": {
+       "terminated": {
+        "containerID": "containerd://eeec65a8ddd3058cb77cf9600fc7a941316344033a2dfd9a8c0cc418345d0290",
+        "exitCode": 1,
+        "finishedAt": "2026-10-14T11:37:27+00:00",
+        "reason": "Error",
+        "startedAt": "2026-10-14T11:37:27+00:00"
+       }
+      },
+      "name": "wait-for-db",
+      "ready": false,
+      "resources": {},
+      "restartCount": 2,
+      "started": false,
+      "state": {
+       "terminated": {
+        "containerID": "containerd://31222045699cff43de790eb4193edcecd2eac5f9018f16c98d261789d21acc06",
+        "exitCode": 1,
+        "finishedAt": "2026-10-14T11:37:38+00:00",
+        "reason": "Error",
+        "startedAt": "2026-10-14T11:37:38+00:00"
+       }
+      },
+      "user": {
+       "linux": {
+        "gid": 0,
+        "supplementalGroups": [
+         0,
+         10
+        ],
+        "uid": 0
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-nq2ng",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Pending",
+    "podIP": "10.244.0.11",
+    "podIPs": [
+     {
+      "ip": "10.244.0.11"
+     }
+    ],
+    "qosClass": "BestEffort",
+    "resources": {},
+    "startTime": "2026-10-14T11:35:38+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "notifier",
+     "pod-template-hash": "6746ffc74c"
+    },
+    "name": "notifier-6746ffc74c",
+    "namespace": "notifications",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "notifier",
+      "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+     }
+    ],
+    "resourceVersion": "71384",
+    "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "notifier",
+      "pod-template-hash": "6746ffc74c"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "notifier",
+       "pod-template-hash": "6746ffc74c"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "notifier",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "initContainers": [
+       {
+        "command": [
+         "sh",
+         "-c",
+         "echo 'waiting for database notifications-db'; nslookup notifications-db"
+        ],
+        "image": "busybox:1.36",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "wait-for-db",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

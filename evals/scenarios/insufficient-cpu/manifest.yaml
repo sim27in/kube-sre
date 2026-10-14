@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-trainer
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: model-trainer}
+  template:
+    metadata:
+      labels: {app: model-trainer}
+    spec:
+      containers:
+        - name: trainer
+          image: python:3.11-slim
+          command: ["python", "-c", "import time; time.sleep(86400)"]
+          resources:
+            requests: {cpu: "64", memory: 1Gi}

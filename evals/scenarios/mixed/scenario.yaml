@@ -1,0 +1,29 @@
+namespace: platform
+summary: Two failures (bad image, OOM) next to a healthy Deployment; both must be reported, the healthy one not.
+wait:
+  - container_reason: [ErrImagePull, ImagePullBackOff]
+  - container_reason: OOMKilled
+  - restarts: 2
+incidents:
+  - workload: api-gateway
+    kind: Deployment
+    categories: [image_pull]
+    root_cause: >-
+      The container image nginx:2.99-alpine does not exist in the registry, so the image pull fails
+      and the pod never starts.
+    key_facts:
+      - the image nginx:2.99-alpine cannot be pulled because the tag does not exist
+    fixes:
+      - set the image to a tag that exists, or roll back to the previous revision
+  - workload: metrics-aggregator
+    kind: Deployment
+    categories: [oom_killed]
+    needs_spec: true
+    root_cause: >-
+      The container allocates about 200MB at startup but its memory limit is 48Mi, so it is OOMKilled
+      (exit code 137) and crash-loops.
+    key_facts:
+      - the container is OOMKilled for exceeding its memory limit
+      - the memory limit is 48Mi, below what the process needs
+    fixes:
+      - raise the memory limit well above 200MB, or reduce the process's memory use

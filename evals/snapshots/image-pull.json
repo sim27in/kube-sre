@@ -1,0 +1,622 @@
+{
+ "captured_at": "2026-10-14T11:37:25.811236+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"checkout-web\",\"namespace\":\"storefront\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"checkout-web\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"checkout-web\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.299.0\",\"name\":\"web\",\"ports\":[{\"containerPort\":80}]}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "name": "checkout-web",
+    "namespace": "storefront",
+    "resourceVersion": "71369",
+    "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "checkout-web"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "checkout-web"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.299.0",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "web",
+        "ports": [
+         {
+          "containerPort": 80,
+          "protocol": "TCP"
+         }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "ReplicaSet \"checkout-web-f4f7d86f9\" is progressing.",
+      "reason": "ReplicaSetUpdated",
+      "status": "True",
+      "type": "Progressing"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71361",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Successfully assigned storefront/checkout-web-f4f7d86f9-vsphz to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de62424badeb9a",
+    "namespace": "storefront",
+    "resourceVersion": "71366",
+    "uid": "41d9d4f0-1e68-4a06-a669-b1b867c7906a"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{web}",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71363",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Pulling image \"nginx:1.299.0\"",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de6242630a41c0",
+    "namespace": "storefront",
+    "resourceVersion": "71415",
+    "uid": "4a9f4ce3-fc7b-4f99-a5f3-9b1d21024002"
+   },
+   "reason": "Pulling",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{web}",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71363",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "message": "Failed to pull image \"nginx:1.299.0\": rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:1.299.0\": failed to resolve reference \"docker.io/library/nginx:1.299.0\": docker.io/library/nginx:1.299.0: not found",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:18+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de62597ea759da",
+    "namespace": "storefront",
+    "resourceVersion": "71949",
+    "uid": "035c7dc0-f017-4701-87db-aea93ad5ca5a"
+   },
+   "reason": "Failed",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{web}",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71363",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "message": "Error: ErrImagePull",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:18+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de62597eabf50d",
+    "namespace": "storefront",
+    "resourceVersion": "71950",
+    "uid": "203f4e04-4998-401c-a8e3-88220e4c0a3f"
+   },
+   "reason": "Failed",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{web}",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71363",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "message": "Back-off pulling image \"nginx:1.299.0\"",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:18+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de625981b07fb9",
+    "namespace": "storefront",
+    "resourceVersion": "71951",
+    "uid": "6b039e41-e52d-46b3-bb8b-4d7bd14ad9db"
+   },
+   "reason": "BackOff",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{web}",
+    "kind": "Pod",
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "resourceVersion": "71363",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "message": "Error: ImagePullBackOff",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:18+00:00",
+    "name": "checkout-web-f4f7d86f9-vsphz.18de625981b1a022",
+    "namespace": "storefront",
+    "resourceVersion": "71952",
+    "uid": "81978c86-26cd-4fb0-8ab8-f8ade6aec2f9"
+   },
+   "reason": "Failed",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "checkout-web-f4f7d86f9",
+    "namespace": "storefront",
+    "resourceVersion": "71358",
+    "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Created pod: checkout-web-f4f7d86f9-vsphz",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "checkout-web-f4f7d86f9.18de62424b80c991",
+    "namespace": "storefront",
+    "resourceVersion": "71362",
+    "uid": "b115bb95-0d4e-4434-8868-c2262745b6e4"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "checkout-web",
+    "namespace": "storefront",
+    "resourceVersion": "71357",
+    "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Scaled up replica set checkout-web-f4f7d86f9 from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "checkout-web.18de62424b4a3cb9",
+    "namespace": "storefront",
+    "resourceVersion": "71359",
+    "uid": "017998c5-d772-49bc-ab98-047009aebfcd"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "checkout-web-f4f7d86f9-vsphz/web/current": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-vsphz\\\" is waiting to start: image can't be pulled\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  },
+  "checkout-web-f4f7d86f9-vsphz/web/previous": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-vsphz\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  }
+ },
+ "namespace": "storefront",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generateName": "checkout-web-f4f7d86f9-",
+    "generation": 1,
+    "labels": {
+     "app": "checkout-web",
+     "pod-template-hash": "f4f7d86f9"
+    },
+    "name": "checkout-web-f4f7d86f9-vsphz",
+    "namespace": "storefront",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "checkout-web-f4f7d86f9",
+      "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+     }
+    ],
+    "resourceVersion": "71953",
+    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+   },
+   "spec": {
+    "containers": [
+     {
+      "image": "nginx:1.299.0",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "web",
+      "ports": [
+       {
+        "containerPort": 80,
+        "protocol": "TCP"
+       }
+      ],
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-jrzfn",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-jrzfn",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "containers with unready status: [web]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "containers with unready status: [web]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "image": "nginx:1.299.0",
+      "imageID": "",
+      "lastState": {},
+      "name": "web",
+      "ready": false,
+      "restartCount": 0,
+      "started": false,
+      "state": {
+       "waiting": {
+        "message": "rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:1.299.0\": failed to resolve reference \"docker.io/library/nginx:1.299.0\": docker.io/library/nginx:1.299.0: not found",
+        "reason": "ErrImagePull"
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-jrzfn",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Pending",
+    "podIP": "10.244.0.10",
+    "podIPs": [
+     {
+      "ip": "10.244.0.10"
+     }
+    ],
+    "qosClass": "BestEffort",
+    "resources": {},
+    "startTime": "2026-10-14T11:35:38+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "checkout-web",
+     "pod-template-hash": "f4f7d86f9"
+    },
+    "name": "checkout-web-f4f7d86f9",
+    "namespace": "storefront",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "checkout-web",
+      "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+     }
+    ],
+    "resourceVersion": "71367",
+    "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "checkout-web",
+      "pod-template-hash": "f4f7d86f9"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "checkout-web",
+       "pod-template-hash": "f4f7d86f9"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.299.0",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "web",
+        "ports": [
+         {
+          "containerPort": 80,
+          "protocol": "TCP"
+         }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

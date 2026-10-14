@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: checkout-web}
+  template:
+    metadata:
+      labels: {app: checkout-web}
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.299.0
+          ports: [{containerPort: 80}]

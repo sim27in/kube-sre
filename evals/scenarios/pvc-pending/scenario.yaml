@@ -1,0 +1,18 @@
+namespace: inventory
+summary: A StatefulSet's volume claim asks for a StorageClass that does not exist.
+wait:
+  - pod_phase: Pending
+  - event_reason: ProvisioningFailed
+incidents:
+  - workload: inventory-db
+    kind: StatefulSet
+    categories: [scheduling, config_error, other]
+    root_cause: >-
+      The StatefulSet's volume claim requests StorageClass fast-ssd, which does not exist, so the PVC
+      stays Pending and the pod that mounts it cannot be scheduled.
+    key_facts:
+      - the PVC is Pending because StorageClass fast-ssd is not found
+      - the pod is Pending because its PVC is unbound
+    fixes:
+      - use a StorageClass that exists (the cluster has "standard"); the volumeClaimTemplate is immutable,
+        so recreate the StatefulSet and delete the Pending PVC, or create a fast-ssd StorageClass

@@ -6,7 +6,7 @@ An LLM agent that investigates failing Kubernetes workloads with read-only tools
 
 It's a learning project that runs entirely on your machine against a local [kind](https://kind.sigs.k8s.io/) cluster. The only external service is the LLM API.
 
-> **Status:** early. Phase 1 of the roadmap is done: typed tools, redaction, evidence ids and a citation check. An eval harness comes next.
+> **Status:** early. Phases 1 and 2 are done: typed tools, redaction, evidence ids, a citation check, and an offline eval harness. On 13 recorded failure scenarios the agent gets the root cause fully right in 97% of runs, up from 54% for the original prototype.
 
 ## What it does
 
@@ -47,6 +47,35 @@ agent.py ──MCP stdio──▶ tool server (tools/k8s_read.py) ──▶ Kube
 - **Evidence ids.** Each tool result gets a deterministic `ev-…` id (a hash of the call and its redacted output). The report schema requires evidence to cite one, and the agent flags any cited id that no tool returned.
 - **Read-only.** The tools never write to the cluster and never read Secret values; `describe_workload` shows which Secret keys a container references, not their contents.
 - **Frozen baseline.** The original prototype is kept in [`baselines/v0`](baselines/v0) so later changes can be measured against it.
+
+## Evals
+
+13 failure scenarios live in [`evals/scenarios`](evals/scenarios), each a manifest plus the known answer (workload, accepted categories, root cause, key facts, valid fixes). Each was applied to kind once and **snapshotted at the API level** ([`evals/snapshots`](evals/snapshots)): pods, events, PVCs, workloads and every container's logs. At eval time a fake Kubernetes client serves the snapshot to the *unchanged* tool server, so any tool call with any arguments works offline, for both the v1 tools and the frozen v0 ones. Evals need an OpenAI key but no cluster.
+
+Each run is scored in code (incident found, workload named, category, false positives, invalid citations, whether it read the spec when the answer is only there) and by an LLM judge (root cause and remediation, 0-2 each, against the key facts). A run passes only if everything is right.
+
+gpt-5-mini, 13 scenarios × 3 runs each:
+
+| | v0 prototype | v1, Phase 1 prompt | **v1, current** |
+|---|---|---|---|
+| Runs passed | 44% | 64% | **79%** |
+| Incidents detected | 92% | 97% | **100%** |
+| Root cause fully correct | 54% | 87% | **97%** |
+| Remediation fixes the cause | 74% | 79% | **85%** |
+| False positives | 2 | 1 | **0** |
+| Invalid citations | n/a | 0 / 169 | 0 / 179 |
+| Tokens per run (in / out) | 4.5k / 2.0k | 7.0k / 2.3k | 9.7k / 2.8k |
+
+v0 fails exactly where its tools are blind: it can't read a workload spec (so it never sees a 32Mi limit or a 64-CPU request), can't pick an init container's logs, and has no namespace-wide events, so on a Deployment whose pods are all rejected by a ResourceQuota it lists pods 20 times until the step limit. The jump from 64% to 79% is four system prompt rules, each added because a failing scenario pointed at it.
+
+```sh
+uv run python -m kube_sre.evals run                       # v0 and v1, all scenarios, 3 repeats (78 agent runs)
+uv run python -m kube_sre.evals run --agents v1 --scenarios oom-killed mixed --repeats 1
+uv run python -m kube_sre.evals rescore evals/results/<run>   # re-judge after editing a scenario
+uv run python -m kube_sre.evals record oom-killed        # re-record a snapshot (needs kind)
+```
+
+Results go to `evals/results/<timestamp>/` as `runs.jsonl` (every report, tool call and judge verdict) and `summary.md`.
 
 ## Setup
 
@@ -108,11 +137,12 @@ Settings are read from `KUBE_SRE_*` environment variables or `.env`. See [`confi
 | `KUBE_SRE_AGENT_TIMEOUT_SECONDS` | `300` | Wall-clock limit for one investigation |
 | `KUBE_SRE_MAX_LOG_BYTES` | `16000` | Log output cap per call; the most recent lines are kept |
 | `KUBE_SRE_REDACT_NAMES` | `true` | Person-name detection with Presidio (regex rules always run) |
+| `KUBE_SRE_JUDGE_MODEL` | `gpt-6.1-sol` | Eval judge; must differ from the agent model |
 
 ## Development
 
 ```sh
-uv run pytest            # unit tests, no cluster or API key needed
+uv run pytest            # unit tests, including snapshot replay; no cluster or API key needed
 uv run pytest -m kind    # integration tests against the kind cluster
 uv run ruff check . && uv run ruff format --check src tests
 ```
@@ -129,7 +159,10 @@ src/kube_sre/
   tools/models.py       typed tool outputs
   tools/boundary.py     redaction + evidence id for every tool result
   guardrails/redaction.py
+  evals/                scenarios, snapshot record/replay, scoring, LLM judge, runner (python -m kube_sre.evals)
 baselines/v0/           the original prototype, frozen
+evals/scenarios/        13 broken setups with their known answers
+evals/snapshots/        recorded API state per scenario
 k8s/                    broken demo apps
 tests/                  unit tests; tests/integration needs kind
 ```
@@ -142,8 +175,8 @@ Everything stays local: kind on a laptop, no cloud deployment. Each phase ends w
 |---|---|---|
 | 0 | Repo setup, frozen v0 baseline | ✅ |
 | 1 | Typed tools, redaction, evidence ids, citation check | ✅ |
-| 2 | Eval harness: ~12 failure scenarios, recorded tool calls so evals run offline, an LLM judge for root causes, v0 vs v1 | next |
-| 3 | Alert-driven: Alertmanager webhook, Prometheus and Loki tools, log compression, `make up` for the whole local stack | planned |
+| 2 | Eval harness: 13 failure scenarios, API snapshots so evals run offline, an LLM judge for root causes, v0 vs v1 | ✅ |
+| 3 | Alert-driven: Alertmanager webhook, Prometheus and Loki tools, log compression, `make up` for the whole local stack | next |
 | 4 | LangGraph multi-agent, scored against the single agent on the same tools and model | stretch |
 | 5 | Runbook RAG with local embeddings, incident memory | stretch |
 | 6 | Remediation behind human approval and a deny-by-default policy | stretch |
@@ -155,7 +188,10 @@ Everything stays local: kind on a laptop, no cloud deployment. Each phase ends w
 - **The kubelet reports missing logs as log text.** For a crash-looping container, `previous=True` can return "unable to retrieve container logs…" with HTTP 200. The tool detects it and falls back to the right instance.
 - **Name detection mistook `grafana` and `kafka` for people.** The agent would have received a pseudonym instead of the workload name. Name detection now runs only on free-text fields.
 - **MCP tools from `get_tools()` start a new server process per call.** One persistent session made runs much faster.
-- **The same model takes different paths on the same cluster.** One run checked the workload spec and found the 32Mi limit; another skipped it and only named the symptom. That's why the evals will run each scenario several times.
+- **The same model takes different paths on the same cluster.** One run checked the workload spec and found the 32Mi limit; another skipped it and only named the symptom. Measured: the agent read the spec in 47% of the runs that needed it.
+- **A prompt fix that works on its target can still be a regression.** "Read the spec before blaming limits or probes" took spec reads to 100%, and the agent then read a healthy Deployment's spec and reported old probe warnings as an incident (3 of 3 runs). Only the full scenario set showed it.
+- **Check the grader before the agent.** The first baseline failed correct diagnoses for not quoting an exit code. Key facts must state the diagnosis, not the evidence, and reading the judge's reasoning for every failure was the only way to catch it.
+- **Record the API, not the tool calls.** Tool-call cassettes break the moment the agent picks a different argument. A snapshot of the API state replays any call, for both agent versions.
 
 ## License
 

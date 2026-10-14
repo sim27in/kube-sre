@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-builder
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: report-builder}
+  template:
+    metadata:
+      labels: {app: report-builder}
+    spec:
+      containers:
+        - name: builder
+          image: python:3.11-slim
+          command:
+            - python
+            - -c
+            - |
+              print("report-builder: loading dataset into memory", flush=True)
+              data = "A" * 100 * 1024 * 1024
+              print("dataset loaded", flush=True)
+          resources:
+            requests: {memory: 32Mi}
+            limits: {memory: 32Mi}

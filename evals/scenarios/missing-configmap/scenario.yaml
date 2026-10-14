@@ -1,0 +1,15 @@
+namespace: catalog
+summary: The container loads its env from a ConfigMap that does not exist.
+wait:
+  - container_reason: CreateContainerConfigError
+incidents:
+  - workload: catalog-api
+    kind: Deployment
+    categories: [config_error]
+    root_cause: >-
+      The container takes its environment from the ConfigMap catalog-config (envFrom), which does not
+      exist in the namespace, so the container cannot be created (CreateContainerConfigError).
+    key_facts:
+      - the ConfigMap catalog-config is referenced but not found
+    fixes:
+      - create the catalog-config ConfigMap, or point the Deployment at the correct ConfigMap name

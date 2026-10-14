@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: search-api}
+  template:
+    metadata:
+      labels: {app: search-api}
+    spec:
+      containers:
+        - name: api
+          image: nginx:1.27-alpine
+          ports: [{containerPort: 80}]
+          livenessProbe:
+            httpGet: {path: /, port: 8080}
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 2

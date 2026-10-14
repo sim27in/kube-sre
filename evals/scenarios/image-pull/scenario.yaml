@@ -1,0 +1,15 @@
+namespace: storefront
+summary: Deployment points at an nginx tag that does not exist.
+wait:
+  - container_reason: [ErrImagePull, ImagePullBackOff]
+incidents:
+  - workload: checkout-web
+    kind: Deployment
+    categories: [image_pull]
+    root_cause: >-
+      The container image nginx:1.299.0 does not exist in the registry, so the image pull fails
+      and the pod never starts.
+    key_facts:
+      - the image nginx:1.299.0 cannot be pulled because the tag does not exist
+    fixes:
+      - set the image to a tag that exists (kubectl set image) or roll back to the previous revision

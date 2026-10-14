@@ -1,0 +1,17 @@
+namespace: orders
+summary: An application bug (ZeroDivisionError on an empty shard map) crashes the process at startup.
+wait:
+  - restarts: 2
+incidents:
+  - workload: order-worker
+    kind: Deployment
+    categories: [crash_loop]
+    root_cause: >-
+      The application crashes at startup with a ZeroDivisionError: it divides by the number of shards
+      but the shard map it loads is empty. The process exits with code 1 and crash-loops.
+    key_facts:
+      - the process exits with a ZeroDivisionError during startup
+      - the error comes from an empty shard map (division by len(shards))
+    fixes:
+      - fix the application code or its shard configuration, or roll back to a working image version
+      - restarting or adding memory/CPU does not help

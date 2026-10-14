@@ -1,0 +1,6 @@
+namespace: website
+summary: Control case. Everything is healthy; the report should have no incidents.
+wait:
+  - all_ready: true
+settle_seconds: 10
+incidents: []

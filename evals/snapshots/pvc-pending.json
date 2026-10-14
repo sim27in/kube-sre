@@ -1,0 +1,401 @@
+{
+ "captured_at": "2026-10-14T11:35:46.710878+00:00",
+ "daemonsets": [],
+ "deployments": [],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "name": "data-inventory-db-0",
+    "namespace": "inventory",
+    "resourceVersion": "71518",
+    "uid": "5eed320d-f564-4dc4-b707-76490a768465"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "storageclass.storage.k8s.io \"fast-ssd\" not found",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "data-inventory-db-0.18de624290be5a5c",
+    "namespace": "inventory",
+    "resourceVersion": "71523",
+    "uid": "358257e8-0d1a-4615-9d4d-025adb6d5f43"
+   },
+   "reason": "ProvisioningFailed",
+   "reportingComponent": "persistentvolume-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "persistentvolume-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "inventory-db-0",
+    "namespace": "inventory",
+    "resourceVersion": "71520",
+    "uid": "c5f32976-4139-4dbb-94bc-501100b9bcd1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "inventory-db-0.18de624290f6a772",
+    "namespace": "inventory",
+    "resourceVersion": "71521",
+    "uid": "34ad2f10-b328-467b-a6b1-c56f40d7c472"
+   },
+   "reason": "FailedScheduling",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "name": "inventory-db",
+    "namespace": "inventory",
+    "resourceVersion": "71516",
+    "uid": "aac0626e-de8f-4c77-a341-cfd593f9305d"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Create Claim data-inventory-db-0 Pod inventory-db-0 in StatefulSet inventory-db success",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "inventory-db.18de624290bbf9cc",
+    "namespace": "inventory",
+    "resourceVersion": "71519",
+    "uid": "5fc58751-25ea-4410-b345-c0faf9ffdfa6"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "statefulset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "statefulset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "name": "inventory-db",
+    "namespace": "inventory",
+    "resourceVersion": "71516",
+    "uid": "aac0626e-de8f-4c77-a341-cfd593f9305d"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Create Pod inventory-db-0 in StatefulSet inventory-db successful",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "inventory-db.18de624290f27828",
+    "namespace": "inventory",
+    "resourceVersion": "71522",
+    "uid": "9b977720-efeb-419e-8e0e-995fe9bd8ae9"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "statefulset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "statefulset-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "inventory-db-0/db/current": {
+   "text": ""
+  },
+  "inventory-db-0/db/previous": {
+   "text": ""
+  }
+ },
+ "namespace": "inventory",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generateName": "inventory-db-",
+    "generation": 1,
+    "labels": {
+     "app": "inventory-db",
+     "apps.kubernetes.io/pod-index": "0",
+     "controller-revision-hash": "inventory-db-6cc64f8c6",
+     "statefulset.kubernetes.io/pod-name": "inventory-db-0"
+    },
+    "name": "inventory-db-0",
+    "namespace": "inventory",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "StatefulSet",
+      "name": "inventory-db",
+      "uid": "aac0626e-de8f-4c77-a341-cfd593f9305d"
+     }
+    ],
+    "resourceVersion": "71524",
+    "uid": "c5f32976-4139-4dbb-94bc-501100b9bcd1"
+   },
+   "spec": {
+    "containers": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "db",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/lib/data",
+        "name": "data"
+       },
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-hmw8l",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "hostname": "inventory-db-0",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "inventory-db",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "data",
+      "persistentVolumeClaim": {
+       "claimName": "data-inventory-db-0"
+      }
+     },
+     {
+      "name": "kube-api-access-hmw8l",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "message": "0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found",
+      "observedGeneration": 1,
+      "reason": "Unschedulable",
+      "status": "False",
+      "type": "PodScheduled"
+     }
+    ],
+    "phase": "Pending",
+    "qosClass": "BestEffort"
+   }
+  }
+ ],
+ "pvcs": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "finalizers": [
+     "kubernetes.io/pvc-protection"
+    ],
+    "labels": {
+     "app": "inventory-db"
+    },
+    "name": "data-inventory-db-0",
+    "namespace": "inventory",
+    "resourceVersion": "71518",
+    "uid": "5eed320d-f564-4dc4-b707-76490a768465"
+   },
+   "spec": {
+    "accessModes": [
+     "ReadWriteOnce"
+    ],
+    "resources": {
+     "requests": {
+      "storage": "1Gi"
+     }
+    },
+    "storageClassName": "fast-ssd",
+    "volumeMode": "Filesystem"
+   },
+   "status": {
+    "phase": "Pending"
+   }
+  }
+ ],
+ "replicasets": [],
+ "statefulsets": [
+  {
+   "metadata": {
+    "annotations": {
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"StatefulSet\",\"metadata\":{\"annotations\":{},\"name\":\"inventory-db\",\"namespace\":\"inventory\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"inventory-db\"}},\"serviceName\":\"inventory-db\",\"template\":{\"metadata\":{\"labels\":{\"app\":\"inventory-db\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"db\",\"volumeMounts\":[{\"mountPath\":\"/var/lib/data\",\"name\":\"data\"}]}]}},\"volumeClaimTemplates\":[{\"metadata\":{\"name\":\"data\"},\"spec\":{\"accessModes\":[\"ReadWriteOnce\"],\"resources\":{\"requests\":{\"storage\":\"1Gi\"}},\"storageClassName\":\"fast-ssd\"}}]}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "name": "inventory-db",
+    "namespace": "inventory",
+    "resourceVersion": "71526",
+    "uid": "aac0626e-de8f-4c77-a341-cfd593f9305d"
+   },
+   "spec": {
+    "persistentVolumeClaimRetentionPolicy": {
+     "whenDeleted": "Retain",
+     "whenScaled": "Retain"
+    },
+    "podManagementPolicy": "OrderedReady",
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "inventory-db"
+     }
+    },
+    "serviceName": "inventory-db",
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "inventory-db"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "db",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+         {
+          "mountPath": "/var/lib/data",
+          "name": "data"
+         }
+        ]
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    },
+    "updateStrategy": {
+     "rollingUpdate": {
+      "maxUnavailable": 1,
+      "partition": 0
+     },
+     "type": "RollingUpdate"
+    },
+    "volumeClaimTemplates": [
+     {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+       "name": "data"
+      },
+      "spec": {
+       "accessModes": [
+        "ReadWriteOnce"
+       ],
+       "resources": {
+        "requests": {
+         "storage": "1Gi"
+        }
+       },
+       "storageClassName": "fast-ssd",
+       "volumeMode": "Filesystem"
+      },
+      "status": {
+       "phase": "Pending"
+      }
+     }
+    ]
+   },
+   "status": {
+    "availableReplicas": 0,
+    "collisionCount": 0,
+    "currentReplicas": 1,
+    "currentRevision": "inventory-db-6cc64f8c6",
+    "observedGeneration": 1,
+    "replicas": 1,
+    "updateRevision": "inventory-db-6cc64f8c6",
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "version": 1
+}

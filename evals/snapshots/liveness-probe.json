@@ -1,0 +1,769 @@
+{
+ "captured_at": "2026-10-14T11:37:50.965113+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"search-api\",\"namespace\":\"search\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"search-api\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"search-api\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"livenessProbe\":{\"failureThreshold\":2,\"httpGet\":{\"path\":\"/\",\"port\":8080},\"initialDelaySeconds\":3,\"periodSeconds\":3},\"name\":\"api\",\"ports\":[{\"containerPort\":80}]}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "name": "search-api",
+    "namespace": "search",
+    "resourceVersion": "72174",
+    "uid": "8632a54e-b57a-4b32-a1b4-f5fed87ec0bd"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "search-api"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "search-api"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+         "failureThreshold": 2,
+         "httpGet": {
+          "path": "/",
+          "port": 8080,
+          "scheme": "HTTP"
+         },
+         "initialDelaySeconds": 3,
+         "periodSeconds": 3,
+         "successThreshold": 1,
+         "timeoutSeconds": 1
+        },
+        "name": "api",
+        "ports": [
+         {
+          "containerPort": 80,
+          "protocol": "TCP"
+         }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastUpdateTime": "2026-10-14T11:37:28+00:00",
+      "message": "ReplicaSet \"search-api-6c89bcf949\" has successfully progressed.",
+      "reason": "NewReplicaSetAvailable",
+      "status": "True",
+      "type": "Progressing"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:37:48+00:00",
+      "lastUpdateTime": "2026-10-14T11:37:48+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71421",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Successfully assigned search/search-api-6c89bcf949-898jk to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de624266072a51",
+    "namespace": "search",
+    "resourceVersion": "71426",
+    "uid": "ee99e766-7247-4948-ba9b-316c05391cd7"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Pulling image \"nginx:1.27-alpine\"",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de62427c41c7af",
+    "namespace": "search",
+    "resourceVersion": "71468",
+    "uid": "84ebe00e-9e6a-4603-ba42-d20eae104bd2"
+   },
+   "reason": "Pulling",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:28+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:28+00:00",
+   "message": "Successfully pulled image \"nginx:1.27-alpine\" in 1.633s (1m48.689s including waiting). Image size: 21832241 bytes.",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:28+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625bcaab382f",
+    "namespace": "search",
+    "resourceVersion": "71978",
+    "uid": "ce85323b-53cb-4a15-b9c7-9ac15088472f"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:28+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:42+00:00",
+   "message": "Container created",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:28+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625bcb45d225",
+    "namespace": "search",
+    "resourceVersion": "72124",
+    "uid": "59fb7223-0295-41eb-b72f-ade4a694463c"
+   },
+   "reason": "Created",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:28+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:42+00:00",
+   "message": "Container started",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:28+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625bce4960b3",
+    "namespace": "search",
+    "resourceVersion": "72125",
+    "uid": "aeb8b47a-db77-4c1b-a72e-3d18ece1cf1c"
+   },
+   "reason": "Started",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 6,
+   "firstTimestamp": "2026-10-14T11:37:33+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:48+00:00",
+   "message": "Liveness probe failed: Get \"http://10.244.0.12:8080/\": dial tcp 10.244.0.12:8080: connect: connection refused",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:33+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625d0372859c",
+    "namespace": "search",
+    "resourceVersion": "72167",
+    "uid": "3b9c7560-26f2-4039-a343-2f8919101d53"
+   },
+   "reason": "Unhealthy",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:37:36+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:48+00:00",
+   "message": "Container api failed liveness probe, will be restarted",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:36+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625db645a240",
+    "namespace": "search",
+    "resourceVersion": "72168",
+    "uid": "b391a69a-8a59-46df-8e8d-cd017ea01ca9"
+   },
+   "reason": "Killing",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:37:36+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:42+00:00",
+   "message": "Container image \"nginx:1.27-alpine\" already present on machine and can be accessed by the pod",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:36+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de625dbaa6063d",
+    "namespace": "search",
+    "resourceVersion": "72123",
+    "uid": "3a37927b-4310-41c8-8167-8fe99ed91e12"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:37:48+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "resourceVersion": "71425",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "lastTimestamp": "2026-10-14T11:37:48+00:00",
+   "message": "Back-off restarting failed container api in pod search-api-6c89bcf949-898jk_search(530688d6-6e2d-48ac-b2e9-bfcaabbe1273)",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:48+00:00",
+    "name": "search-api-6c89bcf949-898jk.18de626086103f88",
+    "namespace": "search",
+    "resourceVersion": "72171",
+    "uid": "8bea1a65-35aa-411d-aca0-a48210117033"
+   },
+   "reason": "BackOff",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "search-api-6c89bcf949",
+    "namespace": "search",
+    "resourceVersion": "71418",
+    "uid": "681b5f6e-98e4-4dbe-8e71-343c39c79301"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Created pod: search-api-6c89bcf949-898jk",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "search-api-6c89bcf949.18de624265d5959c",
+    "namespace": "search",
+    "resourceVersion": "71423",
+    "uid": "0d676fca-f489-4f40-869f-f93884fc43d5"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "search-api",
+    "namespace": "search",
+    "resourceVersion": "71417",
+    "uid": "8632a54e-b57a-4b32-a1b4-f5fed87ec0bd"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Scaled up replica set search-api-6c89bcf949 from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "search-api.18de624265967ba3",
+    "namespace": "search",
+    "resourceVersion": "71420",
+    "uid": "b34e125c-9b10-4c97-b088-9b16e8e6f5cb"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "search-api-6c89bcf949-898jk/api/current": {
+   "text": "2026-10-14T11:37:42.476966341Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-14T11:37:42.477005299Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-14T11:37:42.477161757Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-14T11:37:42.480927091Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:42.486022882Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:42.486133799Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-14T11:37:42.486185591Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-14T11:37:42.487321966Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-14T11:37:42.487989716Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-14T11:37:42.492599049Z 2026/10/14 11:37:42 [notice] 1#1: using the \"epoll\" event method\n2026-10-14T11:37:42.492607341Z 2026/10/14 11:37:42 [notice] 1#1: nginx/1.27.5\n2026-10-14T11:37:42.492608466Z 2026/10/14 11:37:42 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-14T11:37:42.492609091Z 2026/10/14 11:37:42 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-14T11:37:42.492609966Z 2026/10/14 11:37:42 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-14T11:37:42.492612757Z 2026/10/14 11:37:42 [notice] 1#1: start worker processes\n2026-10-14T11:37:42.492713091Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 34\n2026-10-14T11:37:42.492840882Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 35\n2026-10-14T11:37:42.492846674Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 36\n2026-10-14T11:37:42.492870924Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 37\n2026-10-14T11:37:42.492913882Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 38\n2026-10-14T11:37:42.493122341Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 39\n2026-10-14T11:37:42.493407341Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 40\n2026-10-14T11:37:42.493531091Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 41\n2026-10-14T11:37:48.377919469Z 2026/10/14 11:37:48 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down\n2026-10-14T11:37:48.377963677Z 2026/10/14 11:37:48 [notice] 34#34: gracefully shutting down\n2026-10-14T11:37:48.377968510Z 2026/10/14 11:37:48 [notice] 35#35: gracefully shutting down\n2026-10-14T11:37:48.377970510Z 2026/10/14 11:37:48 [notice] 34#34: exiting\n2026-10-14T11:37:48.377971760Z 2026/10/14 11:37:48 [notice] 36#36: gracefully shutting down\n2026-10-14T11:37:48.377972844Z 2026/10/14 11:37:48 [notice] 35#35: exiting\n2026-10-14T11:37:48.377980052Z 2026/10/14 11:37:48 [notice] 36#36: exiting\n2026-10-14T11:37:48.377981427Z 2026/10/14 11:37:48 [notice] 41#41: gracefully shutting down\n2026-10-14T11:37:48.377982719Z 2026/10/14 11:37:48 [notice] 41#41: exiting\n2026-10-14T11:37:48.377983760Z 2026/10/14 11:37:48 [notice] 38#38: gracefully shutting down\n2026-10-14T11:37:48.377984885Z 2026/10/14 11:37:48 [notice] 38#38: exiting\n2026-10-14T11:37:48.377985927Z 2026/10/14 11:37:48 [notice] 37#37: gracefully shutting down\n2026-10-14T11:37:48.377987219Z 2026/10/14 11:37:48 [notice] 37#37: exiting\n2026-10-14T11:37:48.377988427Z 2026/10/14 11:37:48 [notice] 39#39: gracefully shutting down\n2026-10-14T11:37:48.377989469Z 2026/10/14 11:37:48 [notice] 35#35: exit\n2026-10-14T11:37:48.379755427Z 2026/10/14 11:37:48 [notice] 40#40: gracefully shutting down\n2026-10-14T11:37:48.379816635Z 2026/10/14 11:37:48 [notice] 39#39: exiting\n2026-10-14T11:37:48.379933219Z 2026/10/14 11:37:48 [notice] 40#40: exiting\n2026-10-14T11:37:48.379937510Z 2026/10/14 11:37:48 [notice] 41#41: exit\n2026-10-14T11:37:48.379939594Z 2026/10/14 11:37:48 [notice] 37#37: exit\n2026-10-14T11:37:48.379940844Z 2026/10/14 11:37:48 [notice] 38#38: exit\n2026-10-14T11:37:48.379942052Z 2026/10/14 11:37:48 [notice] 39#39: exit\n2026-10-14T11:37:48.379943760Z 2026/10/14 11:37:48 [notice] 40#40: exit\n2026-10-14T11:37:48.379945427Z 2026/10/14 11:37:48 [notice] 36#36: exit\n2026-10-14T11:37:48.379984719Z 2026/10/14 11:37:48 [notice] 34#34: exit\n2026-10-14T11:37:48.406012427Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 37\n2026-10-14T11:37:48.406027844Z 2026/10/14 11:37:48 [notice] 1#1: worker process 37 exited with code 0\n2026-10-14T11:37:48.406029344Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414467177Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 40\n2026-10-14T11:37:48.414483219Z 2026/10/14 11:37:48 [notice] 1#1: worker process 36 exited with code 0\n2026-10-14T11:37:48.414484635Z 2026/10/14 11:37:48 [notice] 1#1: worker process 40 exited with code 0\n2026-10-14T11:37:48.414485677Z 2026/10/14 11:37:48 [notice] 1#1: worker process 41 exited with code 0\n2026-10-14T11:37:48.414487135Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414488094Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 36\n2026-10-14T11:37:48.414489094Z 2026/10/14 11:37:48 [notice] 1#1: worker process 34 exited with code 0\n2026-10-14T11:37:48.414490010Z 2026/10/14 11:37:48 [notice] 1#1: worker process 35 exited with code 0\n2026-10-14T11:37:48.414490969Z 2026/10/14 11:37:48 [notice] 1#1: worker process 39 exited with code 0\n2026-10-14T11:37:48.414491969Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414492927Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 39\n2026-10-14T11:37:48.423432635Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 38\n2026-10-14T11:37:48.423444385Z 2026/10/14 11:37:48 [notice] 1#1: worker process 38 exited with code 0\n2026-10-14T11:37:48.423523760Z 2026/10/14 11:37:48 [notice] 1#1: exit\n"
+  },
+  "search-api-6c89bcf949-898jk/api/previous": {
+   "text": "2026-10-14T11:37:42.476966341Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-14T11:37:42.477005299Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-14T11:37:42.477161757Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-14T11:37:42.480927091Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:42.486022882Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:42.486133799Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-14T11:37:42.486185591Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-14T11:37:42.487321966Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-14T11:37:42.487989716Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-14T11:37:42.492599049Z 2026/10/14 11:37:42 [notice] 1#1: using the \"epoll\" event method\n2026-10-14T11:37:42.492607341Z 2026/10/14 11:37:42 [notice] 1#1: nginx/1.27.5\n2026-10-14T11:37:42.492608466Z 2026/10/14 11:37:42 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-14T11:37:42.492609091Z 2026/10/14 11:37:42 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-14T11:37:42.492609966Z 2026/10/14 11:37:42 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-14T11:37:42.492612757Z 2026/10/14 11:37:42 [notice] 1#1: start worker processes\n2026-10-14T11:37:42.492713091Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 34\n2026-10-14T11:37:42.492840882Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 35\n2026-10-14T11:37:42.492846674Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 36\n2026-10-14T11:37:42.492870924Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 37\n2026-10-14T11:37:42.492913882Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 38\n2026-10-14T11:37:42.493122341Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 39\n2026-10-14T11:37:42.493407341Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 40\n2026-10-14T11:37:42.493531091Z 2026/10/14 11:37:42 [notice] 1#1: start worker process 41\n2026-10-14T11:37:48.377919469Z 2026/10/14 11:37:48 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down\n2026-10-14T11:37:48.377963677Z 2026/10/14 11:37:48 [notice] 34#34: gracefully shutting down\n2026-10-14T11:37:48.377968510Z 2026/10/14 11:37:48 [notice] 35#35: gracefully shutting down\n2026-10-14T11:37:48.377970510Z 2026/10/14 11:37:48 [notice] 34#34: exiting\n2026-10-14T11:37:48.377971760Z 2026/10/14 11:37:48 [notice] 36#36: gracefully shutting down\n2026-10-14T11:37:48.377972844Z 2026/10/14 11:37:48 [notice] 35#35: exiting\n2026-10-14T11:37:48.377980052Z 2026/10/14 11:37:48 [notice] 36#36: exiting\n2026-10-14T11:37:48.377981427Z 2026/10/14 11:37:48 [notice] 41#41: gracefully shutting down\n2026-10-14T11:37:48.377982719Z 2026/10/14 11:37:48 [notice] 41#41: exiting\n2026-10-14T11:37:48.377983760Z 2026/10/14 11:37:48 [notice] 38#38: gracefully shutting down\n2026-10-14T11:37:48.377984885Z 2026/10/14 11:37:48 [notice] 38#38: exiting\n2026-10-14T11:37:48.377985927Z 2026/10/14 11:37:48 [notice] 37#37: gracefully shutting down\n2026-10-14T11:37:48.377987219Z 2026/10/14 11:37:48 [notice] 37#37: exiting\n2026-10-14T11:37:48.377988427Z 2026/10/14 11:37:48 [notice] 39#39: gracefully shutting down\n2026-10-14T11:37:48.377989469Z 2026/10/14 11:37:48 [notice] 35#35: exit\n2026-10-14T11:37:48.379755427Z 2026/10/14 11:37:48 [notice] 40#40: gracefully shutting down\n2026-10-14T11:37:48.379816635Z 2026/10/14 11:37:48 [notice] 39#39: exiting\n2026-10-14T11:37:48.379933219Z 2026/10/14 11:37:48 [notice] 40#40: exiting\n2026-10-14T11:37:48.379937510Z 2026/10/14 11:37:48 [notice] 41#41: exit\n2026-10-14T11:37:48.379939594Z 2026/10/14 11:37:48 [notice] 37#37: exit\n2026-10-14T11:37:48.379940844Z 2026/10/14 11:37:48 [notice] 38#38: exit\n2026-10-14T11:37:48.379942052Z 2026/10/14 11:37:48 [notice] 39#39: exit\n2026-10-14T11:37:48.379943760Z 2026/10/14 11:37:48 [notice] 40#40: exit\n2026-10-14T11:37:48.379945427Z 2026/10/14 11:37:48 [notice] 36#36: exit\n2026-10-14T11:37:48.379984719Z 2026/10/14 11:37:48 [notice] 34#34: exit\n2026-10-14T11:37:48.406012427Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 37\n2026-10-14T11:37:48.406027844Z 2026/10/14 11:37:48 [notice] 1#1: worker process 37 exited with code 0\n2026-10-14T11:37:48.406029344Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414467177Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 40\n2026-10-14T11:37:48.414483219Z 2026/10/14 11:37:48 [notice] 1#1: worker process 36 exited with code 0\n2026-10-14T11:37:48.414484635Z 2026/10/14 11:37:48 [notice] 1#1: worker process 40 exited with code 0\n2026-10-14T11:37:48.414485677Z 2026/10/14 11:37:48 [notice] 1#1: worker process 41 exited with code 0\n2026-10-14T11:37:48.414487135Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414488094Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 36\n2026-10-14T11:37:48.414489094Z 2026/10/14 11:37:48 [notice] 1#1: worker process 34 exited with code 0\n2026-10-14T11:37:48.414490010Z 2026/10/14 11:37:48 [notice] 1#1: worker process 35 exited with code 0\n2026-10-14T11:37:48.414490969Z 2026/10/14 11:37:48 [notice] 1#1: worker process 39 exited with code 0\n2026-10-14T11:37:48.414491969Z 2026/10/14 11:37:48 [notice] 1#1: signal 29 (SIGIO) received\n2026-10-14T11:37:48.414492927Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 39\n2026-10-14T11:37:48.423432635Z 2026/10/14 11:37:48 [notice] 1#1: signal 17 (SIGCHLD) received from 38\n2026-10-14T11:37:48.423444385Z 2026/10/14 11:37:48 [notice] 1#1: worker process 38 exited with code 0\n2026-10-14T11:37:48.423523760Z 2026/10/14 11:37:48 [notice] 1#1: exit\n"
+  }
+ },
+ "namespace": "search",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generateName": "search-api-6c89bcf949-",
+    "generation": 1,
+    "labels": {
+     "app": "search-api",
+     "pod-template-hash": "6c89bcf949"
+    },
+    "name": "search-api-6c89bcf949-898jk",
+    "namespace": "search",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "search-api-6c89bcf949",
+      "uid": "681b5f6e-98e4-4dbe-8e71-343c39c79301"
+     }
+    ],
+    "resourceVersion": "72172",
+    "uid": "530688d6-6e2d-48ac-b2e9-bfcaabbe1273"
+   },
+   "spec": {
+    "containers": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imagePullPolicy": "IfNotPresent",
+      "livenessProbe": {
+       "failureThreshold": 2,
+       "httpGet": {
+        "path": "/",
+        "port": 8080,
+        "scheme": "HTTP"
+       },
+       "initialDelaySeconds": 3,
+       "periodSeconds": 3,
+       "successThreshold": 1,
+       "timeoutSeconds": 1
+      },
+      "name": "api",
+      "ports": [
+       {
+        "containerPort": 80,
+        "protocol": "TCP"
+       }
+      ],
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-7jhzq",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-7jhzq",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:37:48+00:00",
+      "message": "containers with unready status: [api]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:37:48+00:00",
+      "message": "containers with unready status: [api]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "containerID": "containerd://aa54d30a70dac715896a508f222ed0f74ecda46fa5a7e05526c60593b893b068",
+      "image": "docker.io/library/nginx:1.27-alpine",
+      "imageID": "docker.io/library/nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10",
+      "lastState": {
+       "terminated": {
+        "containerID": "containerd://aa54d30a70dac715896a508f222ed0f74ecda46fa5a7e05526c60593b893b068",
+        "exitCode": 0,
+        "finishedAt": "2026-10-14T11:37:48+00:00",
+        "reason": "Completed",
+        "startedAt": "2026-10-14T11:37:42+00:00"
+       }
+      },
+      "name": "api",
+      "ready": false,
+      "resources": {},
+      "restartCount": 2,
+      "started": false,
+      "state": {
+       "waiting": {
+        "message": "back-off 10s restarting failed container=api pod=search-api-6c89bcf949-898jk_search(530688d6-6e2d-48ac-b2e9-bfcaabbe1273)",
+        "reason": "CrashLoopBackOff"
+       }
+      },
+      "user": {
+       "linux": {
+        "gid": 0,
+        "supplementalGroups": [
+         0,
+         1,
+         2,
+         3,
+         4,
+         6,
+         10,
+         11,
+         20,
+         26,
+         27
+        ],
+        "uid": 0
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-7jhzq",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Running",
+    "podIP": "10.244.0.12",
+    "podIPs": [
+     {
+      "ip": "10.244.0.12"
+     }
+    ],
+    "qosClass": "BestEffort",
+    "resources": {},
+    "startTime": "2026-10-14T11:35:39+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "search-api",
+     "pod-template-hash": "6c89bcf949"
+    },
+    "name": "search-api-6c89bcf949",
+    "namespace": "search",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "search-api",
+      "uid": "8632a54e-b57a-4b32-a1b4-f5fed87ec0bd"
+     }
+    ],
+    "resourceVersion": "72173",
+    "uid": "681b5f6e-98e4-4dbe-8e71-343c39c79301"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "search-api",
+      "pod-template-hash": "6c89bcf949"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "search-api",
+       "pod-template-hash": "6c89bcf949"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+         "failureThreshold": 2,
+         "httpGet": {
+          "path": "/",
+          "port": 8080,
+          "scheme": "HTTP"
+         },
+         "initialDelaySeconds": 3,
+         "periodSeconds": 3,
+         "successThreshold": 1,
+         "timeoutSeconds": 1
+        },
+        "name": "api",
+        "ports": [
+         {
+          "containerPort": 80,
+          "protocol": "TCP"
+         }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

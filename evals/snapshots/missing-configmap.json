@@ -1,0 +1,595 @@
+{
+ "captured_at": "2026-10-14T11:37:38.380674+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"catalog-api\",\"namespace\":\"catalog\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"catalog-api\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"catalog-api\"}},\"spec\":{\"containers\":[{\"envFrom\":[{\"configMapRef\":{\"name\":\"catalog-config\"}}],\"image\":\"nginx:1.27-alpine\",\"name\":\"api\"}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "name": "catalog-api",
+    "namespace": "catalog",
+    "resourceVersion": "71446",
+    "uid": "a1093067-3d9c-4f28-845c-9c8bd8332a6f"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "catalog-api"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "catalog-api"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "envFrom": [
+         {
+          "configMapRef": {
+           "name": "catalog-config"
+          }
+         }
+        ],
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "api",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:39+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:39+00:00",
+      "message": "ReplicaSet \"catalog-api-85dbbbccff\" is progressing.",
+      "reason": "ReplicaSetUpdated",
+      "status": "True",
+      "type": "Progressing"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "resourceVersion": "71439",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Successfully assigned catalog/catalog-api-85dbbbccff-qmdhp to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "catalog-api-85dbbbccff-qmdhp.18de62426deaef5a",
+    "namespace": "catalog",
+    "resourceVersion": "71444",
+    "uid": "a1be335c-4798-4288-b6c0-7195edd6aefa"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "resourceVersion": "71440",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Pulling image \"nginx:1.27-alpine\"",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "catalog-api-85dbbbccff-qmdhp.18de62428471ae4d",
+    "namespace": "catalog",
+    "resourceVersion": "71483",
+    "uid": "df7879ea-a178-4cd8-89d9-92286b894c7d"
+   },
+   "reason": "Pulling",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:30+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "resourceVersion": "71440",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "lastTimestamp": "2026-10-14T11:37:30+00:00",
+   "message": "Successfully pulled image \"nginx:1.27-alpine\" in 1.908s (1m50.46s including waiting). Image size: 21832241 bytes.",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:30+00:00",
+    "name": "catalog-api-85dbbbccff-qmdhp.18de625c3c7560fc",
+    "namespace": "catalog",
+    "resourceVersion": "71990",
+    "uid": "cfb8f3fe-f4a3-450d-8bab-e4b54c68466d"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:37:30+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "resourceVersion": "71440",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "lastTimestamp": "2026-10-14T11:37:30+00:00",
+   "message": "Error: configmap \"catalog-config\" not found",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:30+00:00",
+    "name": "catalog-api-85dbbbccff-qmdhp.18de625c3d1d56b5",
+    "namespace": "catalog",
+    "resourceVersion": "71995",
+    "uid": "e588ed9f-a752-4d52-9018-7239e1149e3d"
+   },
+   "reason": "Failed",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:37:30+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{api}",
+    "kind": "Pod",
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "resourceVersion": "71440",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "lastTimestamp": "2026-10-14T11:37:30+00:00",
+   "message": "Container image \"nginx:1.27-alpine\" already present on machine and can be accessed by the pod",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:37:30+00:00",
+    "name": "catalog-api-85dbbbccff-qmdhp.18de625c50d91ad3",
+    "namespace": "catalog",
+    "resourceVersion": "71993",
+    "uid": "91c5173c-3df9-49a8-ad54-2107fedf1af3"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "catalog-api-85dbbbccff",
+    "namespace": "catalog",
+    "resourceVersion": "71436",
+    "uid": "7050163c-54fe-4c62-ac22-29fdfcfaee77"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Created pod: catalog-api-85dbbbccff-qmdhp",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "catalog-api-85dbbbccff.18de62426dbf99c4",
+    "namespace": "catalog",
+    "resourceVersion": "71441",
+    "uid": "7aab704e-187f-4d95-b4a8-f65c70ddbe3d"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "catalog-api",
+    "namespace": "catalog",
+    "resourceVersion": "71435",
+    "uid": "a1093067-3d9c-4f28-845c-9c8bd8332a6f"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Scaled up replica set catalog-api-85dbbbccff from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "catalog-api.18de62426d85b139",
+    "namespace": "catalog",
+    "resourceVersion": "71437",
+    "uid": "d32ce9d8-ee08-4495-b9c6-4ab058a8b4ff"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "catalog-api-85dbbbccff-qmdhp/api/current": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"api\\\" in pod \\\"catalog-api-85dbbbccff-qmdhp\\\" is waiting to start: CreateContainerConfigError\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  },
+  "catalog-api-85dbbbccff-qmdhp/api/previous": {
+   "error": {
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"api\\\" in pod \\\"catalog-api-85dbbbccff-qmdhp\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "reason": "Bad Request",
+    "status": 400
+   }
+  }
+ },
+ "namespace": "catalog",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generateName": "catalog-api-85dbbbccff-",
+    "generation": 1,
+    "labels": {
+     "app": "catalog-api",
+     "pod-template-hash": "85dbbbccff"
+    },
+    "name": "catalog-api-85dbbbccff-qmdhp",
+    "namespace": "catalog",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "catalog-api-85dbbbccff",
+      "uid": "7050163c-54fe-4c62-ac22-29fdfcfaee77"
+     }
+    ],
+    "resourceVersion": "71994",
+    "uid": "93458e2e-193e-4ee1-8696-e4985001a4d2"
+   },
+   "spec": {
+    "containers": [
+     {
+      "envFrom": [
+       {
+        "configMapRef": {
+         "name": "catalog-config"
+        }
+       }
+      ],
+      "image": "nginx:1.27-alpine",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "api",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-wg9lp",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-wg9lp",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "message": "containers with unready status: [api]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "message": "containers with unready status: [api]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imageID": "",
+      "lastState": {},
+      "name": "api",
+      "ready": false,
+      "restartCount": 0,
+      "started": false,
+      "state": {
+       "waiting": {
+        "message": "configmap \"catalog-config\" not found",
+        "reason": "CreateContainerConfigError"
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-wg9lp",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Pending",
+    "podIP": "10.244.0.13",
+    "podIPs": [
+     {
+      "ip": "10.244.0.13"
+     }
+    ],
+    "qosClass": "BestEffort",
+    "resources": {},
+    "startTime": "2026-10-14T11:35:39+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "catalog-api",
+     "pod-template-hash": "85dbbbccff"
+    },
+    "name": "catalog-api-85dbbbccff",
+    "namespace": "catalog",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "catalog-api",
+      "uid": "a1093067-3d9c-4f28-845c-9c8bd8332a6f"
+     }
+    ],
+    "resourceVersion": "71445",
+    "uid": "7050163c-54fe-4c62-ac22-29fdfcfaee77"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "catalog-api",
+      "pod-template-hash": "85dbbbccff"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "catalog-api",
+       "pod-template-hash": "85dbbbccff"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "envFrom": [
+         {
+          "configMapRef": {
+           "name": "catalog-config"
+          }
+         }
+        ],
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "api",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

@@ -1,0 +1,501 @@
+{
+ "captured_at": "2026-10-14T11:35:46.789609+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"pdf-renderer\",\"namespace\":\"reporting\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"pdf-renderer\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"pdf-renderer\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"renderer\",\"resources\":{\"limits\":{\"memory\":\"2Gi\"},\"requests\":{\"memory\":\"256Mi\"}}}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "name": "pdf-renderer",
+    "namespace": "reporting",
+    "resourceVersion": "71620",
+    "uid": "b8d3288b-c308-46e0-9156-c916f980fea5"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "pdf-renderer"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "pdf-renderer"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "renderer",
+        "resources": {
+         "limits": {
+          "memory": "2Gi"
+         },
+         "requests": {
+          "memory": "256Mi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:40+00:00",
+      "message": "Created new replica set \"pdf-renderer-6b8f75c545\"",
+      "reason": "NewReplicaSetCreated",
+      "status": "True",
+      "type": "Progressing"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:40+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:40+00:00",
+      "message": "pods \"pdf-renderer-6b8f75c545-jn2jv\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+      "reason": "FailedCreate",
+      "status": "True",
+      "type": "ReplicaFailure"
+     }
+    ],
+    "observedGeneration": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71565",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-jn2jv\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242ad38e15c",
+    "namespace": "reporting",
+    "resourceVersion": "71568",
+    "uid": "a8c7a87a-1cd1-40d4-8c18-4deca36bb7dc"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-8dzdz\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242ad83568f",
+    "namespace": "reporting",
+    "resourceVersion": "71570",
+    "uid": "4b7e1e9c-ba93-455b-bde7-f1d4a611e58c"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-s59tl\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242adcfb04b",
+    "namespace": "reporting",
+    "resourceVersion": "71571",
+    "uid": "b4658aa0-67d4-4039-ae6f-70586ae77ae4"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-4jz7c\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242af3c5517",
+    "namespace": "reporting",
+    "resourceVersion": "71573",
+    "uid": "74550e3a-d2ab-4a9d-ace4-32682ee6af63"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-85ms5\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242b1bca45c",
+    "namespace": "reporting",
+    "resourceVersion": "71578",
+    "uid": "5e5099f9-f2cd-4a96-9935-163604f3744f"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-qg2q8\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242b69af6a1",
+    "namespace": "reporting",
+    "resourceVersion": "71581",
+    "uid": "b6477bb7-c758-4e6d-ad2c-cd01212306f0"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-z98zl\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242c0419f3c",
+    "namespace": "reporting",
+    "resourceVersion": "71591",
+    "uid": "9c95aeba-becf-447c-b698-53dcc38a54f1"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-tzcb8\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242d37c636d",
+    "namespace": "reporting",
+    "resourceVersion": "71615",
+    "uid": "03060418-5169-46aa-ad21-2091b018fd48"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:41+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:41+00:00",
+   "message": "Error creating: pods \"pdf-renderer-6b8f75c545-wrmn9\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:41+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de6242fa2d71ed",
+    "namespace": "reporting",
+    "resourceVersion": "71623",
+    "uid": "ebf7a053-2927-48f8-87af-d0e0902dca83"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:35:42+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:45+00:00",
+   "message": "(combined from similar events): Error creating: pods \"pdf-renderer-6b8f75c545-n9d2d\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:42+00:00",
+    "name": "pdf-renderer-6b8f75c545.18de624347021210",
+    "namespace": "reporting",
+    "resourceVersion": "71641",
+    "uid": "1590fb1c-7b42-4c63-9ddc-f8886777d2bd"
+   },
+   "reason": "FailedCreate",
+   "reportingComponent": "",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "pdf-renderer",
+    "namespace": "reporting",
+    "resourceVersion": "71547",
+    "uid": "b8d3288b-c308-46e0-9156-c916f980fea5"
+   },
+   "lastTimestamp": "2026-10-14T11:35:40+00:00",
+   "message": "Scaled up replica set pdf-renderer-6b8f75c545 from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "pdf-renderer.18de6242ad16cb20",
+    "namespace": "reporting",
+    "resourceVersion": "71594",
+    "uid": "4a5d41f9-2f28-448f-b3fb-87f78b7ec162"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {},
+ "namespace": "reporting",
+ "pods": [],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "pdf-renderer",
+     "pod-template-hash": "6b8f75c545"
+    },
+    "name": "pdf-renderer-6b8f75c545",
+    "namespace": "reporting",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "pdf-renderer",
+      "uid": "b8d3288b-c308-46e0-9156-c916f980fea5"
+     }
+    ],
+    "resourceVersion": "71566",
+    "uid": "819bb734-5251-4536-a02b-c32797b594a6"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "pdf-renderer",
+      "pod-template-hash": "6b8f75c545"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "pdf-renderer",
+       "pod-template-hash": "6b8f75c545"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "renderer",
+        "resources": {
+         "limits": {
+          "memory": "2Gi"
+         },
+         "requests": {
+          "memory": "256Mi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "message": "pods \"pdf-renderer-6b8f75c545-jn2jv\" is forbidden: exceeded quota: compute, requested: limits.memory=2Gi, used: limits.memory=0, limited: limits.memory=1Gi",
+      "reason": "FailedCreate",
+      "status": "True",
+      "type": "ReplicaFailure"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 0,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

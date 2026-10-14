@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifier
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: notifier}
+  template:
+    metadata:
+      labels: {app: notifier}
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.36
+          command: ["sh", "-c", "echo 'waiting for database notifications-db'; nslookup notifications-db"]
+      containers:
+        - name: notifier
+          image: nginx:1.27-alpine

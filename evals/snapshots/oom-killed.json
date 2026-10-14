@@ -1,0 +1,644 @@
+{
+ "captured_at": "2026-10-14T11:36:02.470656+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"report-builder\",\"namespace\":\"analytics\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"report-builder\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"report-builder\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"print(\\\"report-builder: loading dataset into memory\\\", flush=True)\\ndata = \\\"A\\\" * 100 * 1024 * 1024\\nprint(\\\"dataset loaded\\\", flush=True)\\n\"],\"image\":\"python:3.11-slim\",\"name\":\"builder\",\"resources\":{\"limits\":{\"memory\":\"32Mi\"},\"requests\":{\"memory\":\"32Mi\"}}}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "name": "report-builder",
+    "namespace": "analytics",
+    "resourceVersion": "71740",
+    "uid": "0082c21a-c494-469c-a70b-286e9fa6e23a"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "report-builder"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "report-builder"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "print(\"report-builder: loading dataset into memory\", flush=True)\ndata = \"A\" * 100 * 1024 * 1024\nprint(\"dataset loaded\", flush=True)\n"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "builder",
+        "resources": {
+         "limits": {
+          "memory": "32Mi"
+         },
+         "requests": {
+          "memory": "32Mi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:40+00:00",
+      "message": "ReplicaSet \"report-builder-ddf6cff6b\" has successfully progressed.",
+      "reason": "NewReplicaSetAvailable",
+      "status": "True",
+      "type": "Progressing"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:53+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:53+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "resourceVersion": "71537",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Successfully assigned analytics/report-builder-ddf6cff6b-nmmpr to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "report-builder-ddf6cff6b-nmmpr.18de624296de67bf",
+    "namespace": "analytics",
+    "resourceVersion": "71541",
+    "uid": "f25b36b5-40ba-4f74-ad76-13fe99abb156"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{builder}",
+    "kind": "Pod",
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "resourceVersion": "71539",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:53+00:00",
+   "message": "Container image \"python:3.11-slim\" already present on machine and can be accessed by the pod",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "report-builder-ddf6cff6b-nmmpr.18de6242ad306df3",
+    "namespace": "analytics",
+    "resourceVersion": "71728",
+    "uid": "f00ad39f-13f9-4413-83d0-68f7a581b157"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{builder}",
+    "kind": "Pod",
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "resourceVersion": "71539",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:53+00:00",
+   "message": "Container created",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "report-builder-ddf6cff6b-nmmpr.18de6242add7651d",
+    "namespace": "analytics",
+    "resourceVersion": "71730",
+    "uid": "cef2b02c-63cc-439f-a8cc-9fc36549d1e3"
+   },
+   "reason": "Created",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{builder}",
+    "kind": "Pod",
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "resourceVersion": "71539",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:53+00:00",
+   "message": "Container started",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "report-builder-ddf6cff6b-nmmpr.18de6242b041ff18",
+    "namespace": "analytics",
+    "resourceVersion": "71731",
+    "uid": "f1b6f281-c04d-4ab8-9b2a-fb4dc816722e"
+   },
+   "reason": "Started",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:35:41+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{builder}",
+    "kind": "Pod",
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "resourceVersion": "71539",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "lastTimestamp": "2026-10-14T11:35:53+00:00",
+   "message": "Back-off restarting failed container builder in pod report-builder-ddf6cff6b-nmmpr_analytics(58cad121-4f70-43b2-9363-0b3f9db76ea1)",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:41+00:00",
+    "name": "report-builder-ddf6cff6b-nmmpr.18de6243072e108e",
+    "namespace": "analytics",
+    "resourceVersion": "71736",
+    "uid": "2bf3ea41-d175-49de-97e2-ae26533f9e87"
+   },
+   "reason": "BackOff",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "report-builder-ddf6cff6b",
+    "namespace": "analytics",
+    "resourceVersion": "71534",
+    "uid": "86149935-9e26-4086-bb47-558635f01998"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Created pod: report-builder-ddf6cff6b-nmmpr",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "name": "report-builder-ddf6cff6b.18de624296b61d21",
+    "namespace": "analytics",
+    "resourceVersion": "71538",
+    "uid": "79ed6d5b-7a29-49ec-b76e-842d65a43ff2"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "report-builder",
+    "namespace": "analytics",
+    "resourceVersion": "71496",
+    "uid": "0082c21a-c494-469c-a70b-286e9fa6e23a"
+   },
+   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "message": "Scaled up replica set report-builder-ddf6cff6b from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "report-builder.18de6242955a8ddf",
+    "namespace": "analytics",
+    "resourceVersion": "71580",
+    "uid": "87ca1e52-21c5-4858-9145-c7378dc4b2ba"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "report-builder-ddf6cff6b-nmmpr/builder/current": {
+   "text": "2026-10-14T11:35:53.730065346Z report-builder: loading dataset into memory\n"
+  },
+  "report-builder-ddf6cff6b-nmmpr/builder/previous": {
+   "text": "unable to retrieve container logs for containerd://3ef79cef79014f31afbc7427693f154fedae01d9fc22855bf1066bd384a49020"
+  }
+ },
+ "namespace": "analytics",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generateName": "report-builder-ddf6cff6b-",
+    "generation": 1,
+    "labels": {
+     "app": "report-builder",
+     "pod-template-hash": "ddf6cff6b"
+    },
+    "name": "report-builder-ddf6cff6b-nmmpr",
+    "namespace": "analytics",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "report-builder-ddf6cff6b",
+      "uid": "86149935-9e26-4086-bb47-558635f01998"
+     }
+    ],
+    "resourceVersion": "71737",
+    "uid": "58cad121-4f70-43b2-9363-0b3f9db76ea1"
+   },
+   "spec": {
+    "containers": [
+     {
+      "command": [
+       "python",
+       "-c",
+       "print(\"report-builder: loading dataset into memory\", flush=True)\ndata = \"A\" * 100 * 1024 * 1024\nprint(\"dataset loaded\", flush=True)\n"
+      ],
+      "image": "python:3.11-slim",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "builder",
+      "resources": {
+       "limits": {
+        "memory": "32Mi"
+       },
+       "requests": {
+        "memory": "32Mi"
+       }
+      },
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-lcxh4",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-lcxh4",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "allocatedResources": {
+     "memory": "32Mi"
+    },
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:53+00:00",
+      "message": "containers with unready status: [builder]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:53+00:00",
+      "message": "containers with unready status: [builder]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "allocatedResources": {
+       "memory": "32Mi"
+      },
+      "containerID": "containerd://de84387d46104c5159863a7b787175149ceeae5902b502eae3ea616dbd84b287",
+      "image": "docker.io/library/python:3.11-slim",
+      "imageID": "docker.io/library/python@sha256:da047cb8f9d1d98e5c070f5300ba9f7274e33b8fc0e5be5ed88740aed1b95ba9",
+      "lastState": {
+       "terminated": {
+        "containerID": "containerd://3ef79cef79014f31afbc7427693f154fedae01d9fc22855bf1066bd384a49020",
+        "exitCode": 137,
+        "finishedAt": "2026-10-14T11:35:40+00:00",
+        "reason": "OOMKilled",
+        "startedAt": "2026-10-14T11:35:40+00:00"
+       }
+      },
+      "name": "builder",
+      "ready": false,
+      "resources": {
+       "limits": {
+        "memory": "32Mi"
+       },
+       "requests": {
+        "memory": "32Mi"
+       }
+      },
+      "restartCount": 2,
+      "started": false,
+      "state": {
+       "terminated": {
+        "containerID": "containerd://de84387d46104c5159863a7b787175149ceeae5902b502eae3ea616dbd84b287",
+        "exitCode": 137,
+        "finishedAt": "2026-10-14T11:35:53+00:00",
+        "reason": "OOMKilled",
+        "startedAt": "2026-10-14T11:35:53+00:00"
+       }
+      },
+      "user": {
+       "linux": {
+        "gid": 0,
+        "supplementalGroups": [
+         0
+        ],
+        "uid": 0
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-lcxh4",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Running",
+    "podIP": "10.244.0.18",
+    "podIPs": [
+     {
+      "ip": "10.244.0.18"
+     }
+    ],
+    "qosClass": "Burstable",
+    "resources": {
+     "limits": {
+      "memory": "32Mi"
+     },
+     "requests": {
+      "memory": "32Mi"
+     }
+    },
+    "startTime": "2026-10-14T11:35:39+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "report-builder",
+     "pod-template-hash": "ddf6cff6b"
+    },
+    "name": "report-builder-ddf6cff6b",
+    "namespace": "analytics",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "report-builder",
+      "uid": "0082c21a-c494-469c-a70b-286e9fa6e23a"
+     }
+    ],
+    "resourceVersion": "71739",
+    "uid": "86149935-9e26-4086-bb47-558635f01998"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "report-builder",
+      "pod-template-hash": "ddf6cff6b"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "report-builder",
+       "pod-template-hash": "ddf6cff6b"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "print(\"report-builder: loading dataset into memory\", flush=True)\ndata = \"A\" * 100 * 1024 * 1024\nprint(\"dataset loaded\", flush=True)\n"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "builder",
+        "resources": {
+         "limits": {
+          "memory": "32Mi"
+         },
+         "requests": {
+          "memory": "32Mi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

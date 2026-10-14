@@ -1,0 +1,16 @@
+namespace: reporting
+summary: A ResourceQuota rejects the pods, so the Deployment has no pods at all.
+wait:
+  - event_reason: FailedCreate
+incidents:
+  - workload: pdf-renderer
+    kind: Deployment
+    categories: [other, config_error]
+    root_cause: >-
+      The namespace ResourceQuota "compute" caps limits.memory at 1Gi, and each pdf-renderer pod asks
+      for a 2Gi memory limit, so the ReplicaSet's pod creation is forbidden (FailedCreate) and no pods exist.
+    key_facts:
+      - pod creation is forbidden by the ResourceQuota compute (exceeded quota)
+      - the pod's 2Gi memory limit exceeds the quota's 1Gi limits.memory
+    fixes:
+      - lower the Deployment's memory limit to fit the quota, or raise the quota

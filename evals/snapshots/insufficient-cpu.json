@@ -1,0 +1,409 @@
+{
+ "captured_at": "2026-10-14T11:35:46.560865+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"model-trainer\",\"namespace\":\"ml\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"model-trainer\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"model-trainer\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"import time; time.sleep(86400)\"],\"image\":\"python:3.11-slim\",\"name\":\"trainer\",\"resources\":{\"requests\":{\"cpu\":\"64\",\"memory\":\"1Gi\"}}}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "name": "model-trainer",
+    "namespace": "ml",
+    "resourceVersion": "71409",
+    "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "model-trainer"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "model-trainer"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "import time; time.sleep(86400)"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "trainer",
+        "resources": {
+         "requests": {
+          "cpu": "64",
+          "memory": "1Gi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "ReplicaSet \"model-trainer-5965dff574\" is progressing.",
+      "reason": "ReplicaSetUpdated",
+      "status": "True",
+      "type": "Progressing"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "model-trainer-5965dff574-lpknt",
+    "namespace": "ml",
+    "resourceVersion": "71400",
+    "uid": "434bc444-d7da-458a-966c-95e2a4f524d6"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "model-trainer-5965dff574-lpknt.18de62425dc67092",
+    "namespace": "ml",
+    "resourceVersion": "71403",
+    "uid": "4fe8438d-17ab-49f9-8079-71d21270006a"
+   },
+   "reason": "FailedScheduling",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "model-trainer-5965dff574",
+    "namespace": "ml",
+    "resourceVersion": "71397",
+    "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Created pod: model-trainer-5965dff574-lpknt",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "model-trainer-5965dff574.18de62425dbf16e6",
+    "namespace": "ml",
+    "resourceVersion": "71401",
+    "uid": "0d06e0cb-7c9a-4212-869c-1f28f2499edb"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "model-trainer",
+    "namespace": "ml",
+    "resourceVersion": "71396",
+    "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Scaled up replica set model-trainer-5965dff574 from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "model-trainer.18de62425d3bd1c1",
+    "namespace": "ml",
+    "resourceVersion": "71398",
+    "uid": "3f5411f6-87cc-4724-981b-a8e95b852af7"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "model-trainer-5965dff574-lpknt/trainer/current": {
+   "text": ""
+  },
+  "model-trainer-5965dff574-lpknt/trainer/previous": {
+   "text": ""
+  }
+ },
+ "namespace": "ml",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generateName": "model-trainer-5965dff574-",
+    "generation": 1,
+    "labels": {
+     "app": "model-trainer",
+     "pod-template-hash": "5965dff574"
+    },
+    "name": "model-trainer-5965dff574-lpknt",
+    "namespace": "ml",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "model-trainer-5965dff574",
+      "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+     }
+    ],
+    "resourceVersion": "71405",
+    "uid": "434bc444-d7da-458a-966c-95e2a4f524d6"
+   },
+   "spec": {
+    "containers": [
+     {
+      "command": [
+       "python",
+       "-c",
+       "import time; time.sleep(86400)"
+      ],
+      "image": "python:3.11-slim",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "trainer",
+      "resources": {
+       "requests": {
+        "cpu": "64",
+        "memory": "1Gi"
+       }
+      },
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-bjrgn",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-bjrgn",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "message": "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
+      "observedGeneration": 1,
+      "reason": "Unschedulable",
+      "status": "False",
+      "type": "PodScheduled"
+     }
+    ],
+    "phase": "Pending",
+    "qosClass": "Burstable"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "model-trainer",
+     "pod-template-hash": "5965dff574"
+    },
+    "name": "model-trainer-5965dff574",
+    "namespace": "ml",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "model-trainer",
+      "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+     }
+    ],
+    "resourceVersion": "71406",
+    "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "model-trainer",
+      "pod-template-hash": "5965dff574"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "model-trainer",
+       "pod-template-hash": "5965dff574"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "import time; time.sleep(86400)"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "trainer",
+        "resources": {
+         "requests": {
+          "cpu": "64",
+          "memory": "1Gi"
+         }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

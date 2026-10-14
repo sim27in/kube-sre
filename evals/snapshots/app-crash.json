@@ -1,0 +1,603 @@
+{
+ "captured_at": "2026-10-14T11:35:59.233993+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"order-worker\",\"namespace\":\"orders\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"order-worker\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"order-worker\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"print(\\\"order-worker 2.4.1 starting\\\", flush=True)\\nprint(\\\"loading shard map\\\", flush=True)\\n\\ndef load_shards():\\n    return {}\\n\\ndef orders_per_shard(total, shards):\\n    return total // len(shards)\\n\\nshards = load_shards()\\nprint(\\\"shards loaded:\\\", len(shards), flush=True)\\nprint(\\\"batch size:\\\", orders_per_shard(1200, shards), flush=True)\\n\"],\"image\":\"python:3.11-slim\",\"name\":\"worker\"}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "name": "order-worker",
+    "namespace": "orders",
+    "resourceVersion": "71663",
+    "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "order-worker"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "order-worker"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "print(\"order-worker 2.4.1 starting\", flush=True)\nprint(\"loading shard map\", flush=True)\n\ndef load_shards():\n    return {}\n\ndef orders_per_shard(total, shards):\n    return total // len(shards)\n\nshards = load_shards()\nprint(\"shards loaded:\", len(shards), flush=True)\nprint(\"batch size:\", orders_per_shard(1200, shards), flush=True)\n"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "worker",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "message": "ReplicaSet \"order-worker-7dbdc597df\" has successfully progressed.",
+      "reason": "NewReplicaSetAvailable",
+      "status": "True",
+      "type": "Progressing"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
+      "lastUpdateTime": "2026-10-14T11:35:50+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "resourceVersion": "71324",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Successfully assigned orders/order-worker-7dbdc597df-9tx6b to kubesre-control-plane",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker-7dbdc597df-9tx6b.18de62423c86963a",
+    "namespace": "orders",
+    "resourceVersion": "71330",
+    "uid": "4ea6068f-bb01-45de-b64d-d5c80fdecfef"
+   },
+   "reason": "Scheduled",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{worker}",
+    "kind": "Pod",
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "resourceVersion": "71328",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "message": "Container image \"python:3.11-slim\" already present on machine and can be accessed by the pod",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker-7dbdc597df-9tx6b.18de6242536cf140",
+    "namespace": "orders",
+    "resourceVersion": "71653",
+    "uid": "efce3832-9da2-4874-be3d-9d7143160704"
+   },
+   "reason": "Pulled",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{worker}",
+    "kind": "Pod",
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "resourceVersion": "71328",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "message": "Container created",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker-7dbdc597df-9tx6b.18de6242546c719d",
+    "namespace": "orders",
+    "resourceVersion": "71655",
+    "uid": "0fe8762b-3bed-469f-9e54-4e66cfb9d414"
+   },
+   "reason": "Created",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 3,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{worker}",
+    "kind": "Pod",
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "resourceVersion": "71328",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "message": "Container started",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker-7dbdc597df-9tx6b.18de6242572e60da",
+    "namespace": "orders",
+    "resourceVersion": "71656",
+    "uid": "91c65b8b-ca78-476a-b20d-1aaa03b39d73"
+   },
+   "reason": "Started",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 2,
+   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "fieldPath": "spec.containers{worker}",
+    "kind": "Pod",
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "resourceVersion": "71328",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "message": "Back-off restarting failed container worker in pod order-worker-7dbdc597df-9tx6b_orders(5368292b-8b8c-461a-8520-00dde0312b96)",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:40+00:00",
+    "name": "order-worker-7dbdc597df-9tx6b.18de6242cafeae5a",
+    "namespace": "orders",
+    "resourceVersion": "71660",
+    "uid": "2f592d81-11d5-4fb6-a4f5-77a7a3bc10d5"
+   },
+   "reason": "BackOff",
+   "reportingComponent": "kubelet",
+   "reportingInstance": "kubesre-control-plane",
+   "source": {
+    "component": "kubelet",
+    "host": "kubesre-control-plane"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "order-worker-7dbdc597df",
+    "namespace": "orders",
+    "resourceVersion": "71321",
+    "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Created pod: order-worker-7dbdc597df-9tx6b",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker-7dbdc597df.18de62423c3b1d6d",
+    "namespace": "orders",
+    "resourceVersion": "71327",
+    "uid": "4a3025e6-18f8-4b74-8778-a6a640a6aa5e"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "order-worker",
+    "namespace": "orders",
+    "resourceVersion": "71320",
+    "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+   },
+   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "message": "Scaled up replica set order-worker-7dbdc597df from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "name": "order-worker.18de62423bcebb02",
+    "namespace": "orders",
+    "resourceVersion": "71323",
+    "uid": "85297eae-89a3-4b2b-a323-4408614096fa"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "order-worker-7dbdc597df-9tx6b/worker/current": {
+   "text": "2026-10-14T11:35:50.739513803Z Traceback (most recent call last):\n2026-10-14T11:35:50.739530136Z   File \"<string>\", line 12, in <module>\n2026-10-14T11:35:50.739531345Z   File \"<string>\", line 8, in orders_per_shard\n2026-10-14T11:35:50.739532053Z ZeroDivisionError: integer division or modulo by zero\n2026-10-14T11:35:50.739519678Z order-worker 2.4.1 starting\n2026-10-14T11:35:50.739534803Z loading shard map\n2026-10-14T11:35:50.739535511Z shards loaded: 0\n"
+  },
+  "order-worker-7dbdc597df-9tx6b/worker/previous": {
+   "text": "unable to retrieve container logs for containerd://6f16dd5f1dd7f541e3973bd3faf13fa03b744fa643dad0aeab8577853473f504"
+  }
+ },
+ "namespace": "orders",
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generateName": "order-worker-7dbdc597df-",
+    "generation": 1,
+    "labels": {
+     "app": "order-worker",
+     "pod-template-hash": "7dbdc597df"
+    },
+    "name": "order-worker-7dbdc597df-9tx6b",
+    "namespace": "orders",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "order-worker-7dbdc597df",
+      "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+     }
+    ],
+    "resourceVersion": "71661",
+    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+   },
+   "spec": {
+    "containers": [
+     {
+      "command": [
+       "python",
+       "-c",
+       "print(\"order-worker 2.4.1 starting\", flush=True)\nprint(\"loading shard map\", flush=True)\n\ndef load_shards():\n    return {}\n\ndef orders_per_shard(total, shards):\n    return total // len(shards)\n\nshards = load_shards()\nprint(\"shards loaded:\", len(shards), flush=True)\nprint(\"batch size:\", orders_per_shard(1200, shards), flush=True)\n"
+      ],
+      "image": "python:3.11-slim",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "worker",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-5hprs",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "kubesre-control-plane",
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-5hprs",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodReadyToStartContainers"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "Initialized"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
+      "message": "containers with unready status: [worker]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "Ready"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
+      "message": "containers with unready status: [worker]",
+      "observedGeneration": 1,
+      "reason": "ContainersNotReady",
+      "status": "False",
+      "type": "ContainersReady"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "observedGeneration": 1,
+      "status": "True",
+      "type": "PodScheduled"
+     }
+    ],
+    "containerStatuses": [
+     {
+      "containerID": "containerd://f6c370f50372f10d598dc9288b1123f33109f53ec8772d9695ba322f36844930",
+      "image": "docker.io/library/python:3.11-slim",
+      "imageID": "docker.io/library/python@sha256:da047cb8f9d1d98e5c070f5300ba9f7274e33b8fc0e5be5ed88740aed1b95ba9",
+      "lastState": {
+       "terminated": {
+        "containerID": "containerd://6f16dd5f1dd7f541e3973bd3faf13fa03b744fa643dad0aeab8577853473f504",
+        "exitCode": 1,
+        "finishedAt": "2026-10-14T11:35:39+00:00",
+        "reason": "Error",
+        "startedAt": "2026-10-14T11:35:39+00:00"
+       }
+      },
+      "name": "worker",
+      "ready": false,
+      "resources": {},
+      "restartCount": 2,
+      "started": false,
+      "state": {
+       "terminated": {
+        "containerID": "containerd://f6c370f50372f10d598dc9288b1123f33109f53ec8772d9695ba322f36844930",
+        "exitCode": 1,
+        "finishedAt": "2026-10-14T11:35:50+00:00",
+        "reason": "Error",
+        "startedAt": "2026-10-14T11:35:50+00:00"
+       }
+      },
+      "user": {
+       "linux": {
+        "gid": 0,
+        "supplementalGroups": [
+         0
+        ],
+        "uid": 0
+       }
+      },
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-5hprs",
+        "readOnly": true,
+        "recursiveReadOnly": "Disabled"
+       }
+      ]
+     }
+    ],
+    "hostIP": "172.19.0.2",
+    "hostIPs": [
+     {
+      "ip": "172.19.0.2"
+     }
+    ],
+    "observedGeneration": 1,
+    "phase": "Running",
+    "podIP": "10.244.0.7",
+    "podIPs": [
+     {
+      "ip": "10.244.0.7"
+     }
+    ],
+    "qosClass": "BestEffort",
+    "resources": {},
+    "startTime": "2026-10-14T11:35:38+00:00"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "order-worker",
+     "pod-template-hash": "7dbdc597df"
+    },
+    "name": "order-worker-7dbdc597df",
+    "namespace": "orders",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "order-worker",
+      "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+     }
+    ],
+    "resourceVersion": "71662",
+    "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "order-worker",
+      "pod-template-hash": "7dbdc597df"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "order-worker",
+       "pod-template-hash": "7dbdc597df"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "command": [
+         "python",
+         "-c",
+         "print(\"order-worker 2.4.1 starting\", flush=True)\nprint(\"loading shard map\", flush=True)\n\ndef load_shards():\n    return {}\n\ndef orders_per_shard(total, shards):\n    return total // len(shards)\n\nshards = load_shards()\nprint(\"shards loaded:\", len(shards), flush=True)\nprint(\"batch size:\", orders_per_shard(1200, shards), flush=True)\n"
+        ],
+        "image": "python:3.11-slim",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "worker",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

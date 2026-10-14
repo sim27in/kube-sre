@@ -187,6 +187,19 @@ def test_old_restart_is_not_unhealthy():
     assert [p.name for p in result.pods] == ["web-5"]
 
 
+def test_completed_job_pod_is_not_unhealthy():
+    done = V1ContainerStatus(
+        name="job",
+        image="img",
+        image_id="",
+        ready=False,
+        restart_count=0,
+        state=V1ContainerState(terminated=V1ContainerStateTerminated(reason="Completed", exit_code=0)),
+    )
+    pod = _pod("job-1", ["job"], [done], phase="Succeeded")
+    assert list_pods_impl(FakeCore([pod]), NS, only_unhealthy=True).pods == []
+
+
 def test_pending_pod_explains_scheduling_failure():
     pod = list_pods_impl(FakeCore([PENDING_POD]), NS).pods[0]
     assert pod.failing_conditions == ["PodScheduled: Unschedulable - 0/1 nodes: Insufficient cpu"]
@@ -264,6 +277,14 @@ def test_logs_capped_keeping_most_recent_lines(monkeypatch):
     assert logs.text.startswith("line ")  # cut at a line boundary
     assert len(logs.text.encode()) <= 40
     assert core.log_calls[0]["tail_lines"] == get_settings().max_log_lines
+
+
+def test_log_line_longer_than_cap_keeps_its_tail(monkeypatch):
+    # A single-line JSON stack trace: dropping the partial first line would leave nothing.
+    monkeypatch.setattr(get_settings(), "max_log_bytes", 40)
+    core = FakeCore([HEALTHY_POD], logs={("web-1", "web", False): "start\n" + "x" * 100 + "END\n"})
+    logs = get_pod_logs_impl(core, "web-1", NS)
+    assert logs.truncated and logs.text.endswith("END\n") and len(logs.text.encode()) == 40
 
 
 # --- get_events -------------------------------------------------------------
@@ -386,6 +407,26 @@ def test_describe_workload_shows_limits_probes_and_secret_refs_not_values():
         "password",
         None,
     )
+
+
+def test_describe_workload_hides_literal_secrets_in_env_and_args():
+    container = V1Container(
+        name="api",
+        image="api:1.2",
+        args=["--db-password", "hunter2", "--port", "8080"],
+        env=[V1EnvVar(name="DB_PASSWORD", value="hunter2"), V1EnvVar(name="LOG_LEVEL", value="debug")],
+    )
+    dep = V1Deployment(
+        metadata=V1ObjectMeta(name="api"),
+        spec=V1DeploymentSpec(
+            selector=V1LabelSelector(), template=V1PodTemplateSpec(spec=V1PodSpec(containers=[container]))
+        ),
+        status=V1DeploymentStatus(),
+    )
+    c = describe_workload_impl(FakeApps(deployments=[dep]), "Deployment", "api", NS).containers[0]
+    assert "hunter2" not in c.model_dump_json()
+    assert c.args == ["--db-password", "<redacted:secret>", "--port", "8080"]
+    assert {e.var: e.value for e in c.env} == {"DB_PASSWORD": "<redacted:secret>", "LOG_LEVEL": "debug"}
 
 
 # --- MCP boundary -----------------------------------------------------------

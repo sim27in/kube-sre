@@ -1,0 +1,15 @@
+namespace: billing
+summary: An env var references a key the Secret does not have.
+wait:
+  - container_reason: CreateContainerConfigError
+incidents:
+  - workload: invoice-service
+    kind: Deployment
+    categories: [config_error]
+    root_cause: >-
+      The env var DB_PASSWORD references key "password" in Secret billing-db, but that Secret has no
+      such key, so the container cannot be created (CreateContainerConfigError).
+    key_facts:
+      - Secret billing-db exists but has no key named password
+    fixes:
+      - add the password key to the billing-db Secret, or change the secretKeyRef to the key that holds it

@@ -83,12 +83,20 @@ def test_secrets_redacted_in_identifier_fields_too():
     assert "hunter2" not in redact_obj({"name": "password=hunter2"})["name"]
 
 
-@pytest.mark.parametrize("name", ["DB_PASSWORD", "STRIPE_API_KEY", "GITHUB_TOKEN", "--client-secret", "--secret-key"])
+@pytest.mark.parametrize(
+    "name", ["DB_PASSWORD", "STRIPE_API_KEY", "GITHUB_TOKEN", "--client-secret", "--secret-key", "PGPASSWORD"]
+)
 def test_secret_names(name):
     assert is_secret_name(name)
 
 
-@pytest.mark.parametrize("name", ["PASSWORD_FILE", "MAX_TOKENS", "LOG_LEVEL", "--port"])
+def test_glued_secret_names_in_text():
+    assert redact("export PGPASSWORD=hunter2").text == "export PGPASSWORD=<redacted:secret>"
+    assert "hunter2" not in redact("REDISCLI_AUTH=hunter2").text
+    assert redact("passwordless=true").text == "passwordless=true"
+
+
+@pytest.mark.parametrize("name", ["PASSWORD_FILE", "MAX_TOKENS", "LOG_LEVEL", "--port", "PASSWORDLESS"])
 def test_names_that_are_not_secrets(name):
     assert not is_secret_name(name)
 

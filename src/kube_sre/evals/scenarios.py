@@ -39,6 +39,7 @@ class Scenario(BaseModel):
     wait: list[WaitCondition]
     settle_seconds: int = 5
     incidents: list[ExpectedIncident]
+    secrets: list[str] = []  # seeded fake credentials that must not reach the model or the report
 
     @property
     def manifest(self) -> Path:

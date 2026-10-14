@@ -1,0 +1,60 @@
+# Reference grades for checking the LLM judge: python -m kube_sre.evals judge-check
+#
+# 20 incidents from the stored Phase 2 runs, sampled across the judge's grade combinations so the
+# disagreements show up. Graded with the judge's rubric (judge.py) against the scenario's ground truth,
+# without looking at the judge's grades or reasoning.
+#
+# First pass by Claude (Opus 5.5), 2026-10-14. These are a second grader, not yet human ground truth:
+# review each one, change the grade where you disagree, and set `reviewed: true`.
+labeler: claude-opus-5-5
+items:
+  - {run: 20261014-120700-o1-spec-rule-rescored, agent: v1, scenario: app-crash, repeat: 3, workload: order-worker,
+     root_cause: 2, remediation: 1,
+     note: "Code fix is right; the added startup probe always exits 1 (it tests an empty dict), so it would kill the pod."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: image-pull, repeat: 1, workload: checkout-web,
+     root_cause: 2, remediation: 2, note: "nginx:1.23.4 exists."}
+  - {run: 20261014-120700-o1-spec-rule-rescored, agent: v1, scenario: image-pull, repeat: 3, workload: checkout-web,
+     root_cause: 2, remediation: 1,
+     note: "Suggests nginx:1.23.8, which doesn't exist (1.23 ended at 1.23.4): right fix, wrong value."}
+  - {run: 20261014-115259-baseline-rescored, agent: v0, scenario: init-container, repeat: 3, workload: notifier,
+     root_cause: 1, remediation: 1,
+     note: "Hedges between DNS, auth, script error, config. Remediation is investigation plus unrelated resource/image changes."}
+  - {run: 20261014-120700-o1-spec-rule-rescored, agent: v1, scenario: init-container, repeat: 2, workload: notifier,
+     root_cause: 2, remediation: 1, note: "Create the Service is right; also proposes removing the init container (O4)."}
+  - {run: 20261014-121808-prompt-v2-rescored, agent: v1, scenario: init-container, repeat: 2, workload: notifier,
+     root_cause: 2, remediation: 1, note: "Same as above: restore the Service, plus remove all init containers (O4)."}
+  - {run: 20261014-115259-baseline-rescored, agent: v0, scenario: insufficient-cpu, repeat: 1, workload: model-trainer,
+     root_cause: 1, remediation: 2,
+     note: "Doesn't name the 64 CPU request. Lowering the request fixes it; scaling to 0 and back is useless but harmless."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: insufficient-cpu, repeat: 2, workload: model-trainer,
+     root_cause: 2, remediation: 2, note: ""}
+  - {run: 20261014-121808-prompt-v2-rescored, agent: v1, scenario: liveness-probe, repeat: 2, workload: search-api,
+     root_cause: 2, remediation: 2, note: "Port 80 fix is right; the restart after the patch is redundant, not harmful."}
+  - {run: 20261014-121808-prompt-v2-rescored, agent: v1, scenario: missing-configmap, repeat: 2, workload: catalog-api,
+     root_cause: 2, remediation: 1,
+     note: "Restoring the ConfigMap is right; an empty placeholder ConfigMap hides the error and starts the app without config (O4)."}
+  - {run: 20261014-115259-baseline-rescored, agent: v0, scenario: missing-secret-key, repeat: 2, workload: invoice-service,
+     root_cause: 2, remediation: 2,
+     note: "Borderline: regenerating the Secret with only the password key and applying it can drop its other keys."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: mixed, repeat: 2, workload: metrics-aggregator,
+     root_cause: 1, remediation: 2, note: "OOMKilled without the 48Mi limit (symptom, not cause). 512Mi limit fixes it."}
+  - {run: 20261014-120700-o1-spec-rule-rescored, agent: v1, scenario: oom-killed, repeat: 3, workload: report-builder,
+     root_cause: 2, remediation: 2, note: ""}
+  - {run: 20261014-115259-baseline-rescored, agent: v0, scenario: pvc-pending, repeat: 2, workload: inventory-db,
+     root_cause: 1, remediation: 1,
+     note: "Hedges (no PV, no provisioner, or missing class). The StorageClass fix edits volumeClaimTemplates in place, which the API rejects."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: pvc-pending, repeat: 3, workload: inventory-db,
+     root_cause: 2, remediation: 1,
+     note: "New fast-ssd class uses no-provisioner, so the PVC still won't bind; the patch to volumeClaimTemplates is rejected (immutable)."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: pvc-pending, repeat: 1, workload: inventory-db,
+     root_cause: 1, remediation: 1,
+     note: "Never says fast-ssd doesn't exist (\"missing PV or broken provisioner\"). Same immutable-template patch."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: quota-exceeded, repeat: 2, workload: pdf-renderer,
+     root_cause: 2, remediation: 2, note: ""}
+  - {run: 20261014-121808-prompt-v2-rescored, agent: v1, scenario: readiness-probe, repeat: 1, workload: profile-web,
+     root_cause: 2, remediation: 1,
+     note: "Both commands are --type=merge patches with a containers list, which replaces the whole list (drops the image)."}
+  - {run: 20261014-121808-prompt-v2-rescored, agent: v1, scenario: readiness-probe, repeat: 3, workload: profile-web,
+     root_cause: 2, remediation: 2, note: "Strategic merge patch keyed by container name: works."}
+  - {run: 20261014-115259-baseline-rescored, agent: v1, scenario: readiness-probe, repeat: 2, workload: profile-web,
+     root_cause: 2, remediation: 2, note: ""}

@@ -21,8 +21,11 @@ _SECRET_NAME = (
     r"(?:aws[_-])?(?:secret(?:[_-]access)?[_-]key|password|passwd|pwd|secret|token|api[_-]?key"
     r"|access[_-]?key|client[_-]?secret)"
 )
+# Well-known names with the secret word glued to a prefix. Matching any `...password` would also hit
+# words like `passwordless`, so these are listed one by one.
+_GLUED_SECRET_NAME = r"(?:pgpassword|rediscli_auth)"
 # A name that ends in one of them, so PASSWORD_FILE and MAX_TOKENS don't count.
-_SECRET_NAME_SUFFIX = re.compile(rf"(?i)(?:^|[^a-z0-9]){_SECRET_NAME}$")
+_SECRET_NAME_SUFFIX = re.compile(rf"(?i)(?:^|[^a-z0-9])(?:{_SECRET_NAME}|{_GLUED_SECRET_NAME})$")
 
 # (name, pattern, replacement). Order matters: specific patterns run before generic key=value.
 _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
@@ -63,7 +66,7 @@ _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
         "key_value",
         re.compile(
             # Lookbehind instead of \b so prefixed names (DB_PASSWORD, STRIPE_API_KEY) match.
-            rf"(?i)(?<![a-z0-9])({_SECRET_NAME})(\"?\s*[=:]\s*\"?)([^\s\"',;&]+)"
+            rf"(?i)(?<![a-z0-9])({_SECRET_NAME}|{_GLUED_SECRET_NAME})(\"?\s*[=:]\s*\"?)([^\s\"',;&]+)"
         ),
         r"\1\2<redacted:secret>",
     ),

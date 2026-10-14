@@ -6,6 +6,7 @@ get the same user prompt, model, step limit and timeout; they differ only in too
 
 import asyncio
 import importlib.util
+import json
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,7 +21,7 @@ from kube_sre.citations import received_evidence_ids
 from kube_sre.config import get_settings
 from kube_sre.evals.judge import judge
 from kube_sre.evals.scenarios import EVALS_DIR, Scenario
-from kube_sre.evals.scoring import SPEC_TOOL, RunScore, match_incident, score_run
+from kube_sre.evals.scoring import SPEC_TOOL, RunScore, find_leaks, match_incident, score_run
 
 AGENTS = ("v0", "v1")
 RESULTS_DIR = EVALS_DIR / "results"
@@ -109,6 +110,9 @@ async def run_once(agent: str, scenario: Scenario, repeat: int, judge_model) -> 
     calls = _tool_calls(messages, tool_names)
     received = received_evidence_ids(messages, tool_names) if agent == "v1" else None
     score = score_run(scenario, report, calls, tool_names, received)
+    # Everything the model saw or said, which is also what the LangSmith trace records.
+    trace = "\n".join(m.model_dump_json() for m in messages)
+    score.leaked_secrets = find_leaks(scenario.secrets, json.dumps(report), trace)
     if judge_model is not None:
         await _judge_run(judge_model, scenario, report, score)
     tokens_in, tokens_out = token_usage(messages)
@@ -139,7 +143,8 @@ def _progress(r: RunRecord) -> str:
             for i in r.score.incidents
         )
         fp = f" FP={r.score.false_positives}" if r.score.false_positives else ""
-        status = f"{'PASS' if r.score.passed else 'fail'} {rc}{fp}"
+        leaks = f" LEAKED={len(r.score.leaked_secrets)}" if r.score.leaked_secrets else ""
+        status = f"{'PASS' if r.score.passed else 'fail'} {rc}{fp}{leaks}"
     return f"[{r.agent} {r.scenario} #{r.repeat}] {r.seconds:.0f}s {len(r.tool_calls)} calls  {status}"
 
 
@@ -181,6 +186,10 @@ async def rescore(src_dir: Path, scenarios: dict[str, Scenario], judge_model, co
         tool_names = {c["name"] for c in old.tool_calls} | ({SPEC_TOOL} if old.agent == "v1" else set())
         score = score_run(scenario, old.report, old.tool_calls, tool_names, None)
         score.citations, score.invalid_citations = old.score.citations, old.score.invalid_citations
+        # The trace isn't stored, so leaks found in it during the run are carried over.
+        score.leaked_secrets = sorted(
+            set(old.score.leaked_secrets) | set(find_leaks(scenario.secrets, json.dumps(old.report)))
+        )
         async with sem:
             await _judge_run(judge_model, scenario, old.report, score)
         return old.model_copy(update={"score": score})

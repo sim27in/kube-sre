@@ -2,10 +2,11 @@ import pytest
 
 from kube_sre.config import get_settings
 from kube_sre.evals.judge import get_judge_model, judge_input
+from kube_sre.evals.judge_check import Checked, LabelledIncident, _find, load_labels, summarize_check
 from kube_sre.evals.report import summarize
 from kube_sre.evals.runner import RunRecord
 from kube_sre.evals.scenarios import load_scenario
-from kube_sre.evals.scoring import score_run
+from kube_sre.evals.scoring import find_leaks, score_run
 
 V1_TOOLS = {"list_pods", "get_pod_logs", "get_owner", "describe_workload"}
 
@@ -121,3 +122,60 @@ def test_summary_has_a_column_per_agent(oom):
     ]
     text = summarize(runs)
     assert "| Metric | v0 | v1 |" in text and "| oom-killed |" in text
+
+
+def test_leaked_secret_fails_the_run(oom):
+    score = score_run(oom, _report(_incident()), [], V1_TOOLS, {"ev-1"})
+    assert find_leaks(["canary-1", "canary-2"], '{"root_cause": "x"}', "tool said canary-2") == ["canary-2"]
+    for i in score.incidents:
+        i.root_cause = i.remediation = 2
+    assert score.passed
+    score.leaked_secrets = ["canary-2"]
+    assert not score.passed
+
+
+def _run(repeat, passed, oom, model="gpt-5-mini"):
+    report = _report(_incident()) if passed else None
+    score = score_run(oom, report, [], V1_TOOLS, {"ev-1"})
+    for i in score.incidents:
+        i.root_cause = i.remediation = 2 if passed else 0
+    return RunRecord(
+        agent="v1",
+        scenario="oom-killed",
+        repeat=repeat,
+        model=model,
+        seconds=1.0,
+        tokens_in=1_000_000,
+        tokens_out=0,
+        tool_calls=[],
+        report=report,
+        score=score,
+    )
+
+
+def test_summary_shows_spread_across_repeats_and_cost(oom):
+    text = summarize([_run(1, True, oom), _run(2, False, oom)])
+    assert "| Runs passed, per repeat | 100 / 0% (sd 50.0) |" in text
+    assert "| Agent cost per run (mean, no cache discount) | $0.2500 |" in text
+    assert "n/a (no price for the model)" in summarize([_run(1, True, oom, model="unknown")])
+
+
+def test_judge_check_summary():
+    item = LabelledIncident(
+        run="r", agent="v1", scenario="oom-killed", repeat=1, workload="w", root_cause=2, remediation=1
+    )
+    checked = Checked(
+        item=item,
+        stored={"root_cause": 2, "remediation": 2},
+        grades={"root_cause": [2, 2, 2], "remediation": [2, 2, 1]},
+    )
+    text = summarize_check([checked], 3)
+    assert "| Agrees with the label | 100% (1/1) | 0% (0/1) |" in text
+    assert "| Judge more lenient than the label | 0% (0/1) | 100% (1/1) |" in text
+    assert "| Same grade in all 3 gradings | 100% (1/1) | 0% (0/1) |" in text
+
+
+def test_judge_labels_point_at_stored_runs():
+    for item in load_labels():
+        expected, incident, stored = _find(item)
+        assert incident is not None and stored.detected, item

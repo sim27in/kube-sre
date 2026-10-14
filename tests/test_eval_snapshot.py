@@ -6,6 +6,7 @@ from kubernetes.client.rest import ApiException
 from kube_sre.evals.scenarios import load_scenarios
 from kube_sre.evals.snapshot import FakeAppsApi, FakeCoreApi, captured_at
 from kube_sre.tools import k8s_read
+from kube_sre.tools.boundary import finalize
 from kube_sre.tools.k8s_read import (
     describe_workload_impl,
     get_events_impl,
@@ -147,3 +148,26 @@ def test_recorded_snapshot_shows_each_expected_failure(scenario, monkeypatch):
         for c in pod.containers:
             if c.state != "waiting" or c.restart_count:
                 get_pod_logs_impl(core, pod.name, ns, container=c.name)
+
+
+@pytest.mark.parametrize(
+    "scenario", [s for s in load_scenarios() if s.secrets and s.snapshot.exists()], ids=lambda s: s.id
+)
+def test_seeded_secrets_never_leave_the_tool_boundary(scenario, monkeypatch):
+    """Every tool, on every pod and workload, with redaction applied as the server does: no seeded secret survives."""
+    snap = json.loads(scenario.snapshot.read_text())
+    core, apps, ns = FakeCoreApi(snap), FakeAppsApi(snap), scenario.namespace
+    monkeypatch.setattr(k8s_read, "_now", lambda: captured_at(snap))
+    assert any(s in scenario.snapshot.read_text() for s in scenario.secrets)  # the snapshot really has them
+
+    pods = list_pods_impl(core, ns, only_unhealthy=False)
+    results = [pods, list_warning_events_impl(core, ns)]
+    for pod in pods.pods:
+        results.append(get_events_impl(core, ns, pod.name, kind="Pod"))
+        for c in pod.containers:
+            for previous in (False, True):
+                results.append(get_pod_logs_impl(core, pod.name, ns, container=c.name, previous=previous))
+    results += [describe_workload_impl(apps, e.kind, e.workload, ns) for e in scenario.incidents]
+
+    text = "\n".join(finalize("tool", {}, r).model_dump_json() for r in results)
+    assert [s for s in scenario.secrets if s in text] == []

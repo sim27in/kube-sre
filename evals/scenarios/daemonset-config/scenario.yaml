@@ -1,0 +1,18 @@
+namespace: logging
+summary: A DaemonSet mounts a ConfigMap key that doesn't exist (agent.yaml vs agent.yml), so its pod never starts.
+wait:
+  - event_reason: FailedMount
+incidents:
+  - workload: log-agent
+    kind: DaemonSet
+    categories: [config_error]
+    # No tool reads ConfigMap keys, so that the ConfigMap has agent.yml instead is not a key fact.
+    root_cause: >-
+      The DaemonSet's config volume projects the key agent.yaml from the ConfigMap log-agent-config,
+      which has no such key (it has agent.yml), so the volume mount fails and the pod is stuck in
+      ContainerCreating.
+    key_facts:
+      - the config volume cannot be mounted (FailedMount)
+      - the ConfigMap log-agent-config has no key agent.yaml, which the volume requires
+    fixes:
+      - add or rename the ConfigMap key to agent.yaml, or change the volume's items key to the one that exists

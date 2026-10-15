@@ -1,6 +1,6 @@
 """Cluster snapshots: record a namespace's API state once, then serve it to the real tools offline.
 
-A snapshot holds the raw API objects the tools read (pods, events, PVCs, workloads) plus every container's
+A snapshot holds the raw API objects the tools read (pods, events, PVCs, workloads, nodes) plus every container's
 current and previous logs. `FakeCoreApi` and `FakeAppsApi` answer the same client calls from it, so the
 unchanged tool code (and the frozen v0 server) runs against it with any arguments the agent picks.
 """
@@ -22,6 +22,12 @@ _SERIALIZER = ApiClient()
 def _raw(obj) -> dict[str, Any]:
     data = _SERIALIZER.sanitize_for_serialization(obj)
     data.get("metadata", {}).pop("managedFields", None)  # large and never read
+    return data
+
+
+def _raw_node(node) -> dict[str, Any]:
+    data = _raw(node)
+    data.get("status", {}).pop("images", None)  # every cached image on the node; large and never read
     return data
 
 
@@ -56,6 +62,7 @@ def capture(core: CoreV1Api, apps: AppsV1Api, namespace: str) -> dict[str, Any]:
         "deployments": [_raw(d) for d in apps.list_namespaced_deployment(namespace).items],
         "statefulsets": [_raw(s) for s in apps.list_namespaced_stateful_set(namespace).items],
         "daemonsets": [_raw(d) for d in apps.list_namespaced_daemon_set(namespace).items],
+        "nodes": [_raw_node(n) for n in core.list_node().items],
         "logs": logs,
     }
 
@@ -154,6 +161,9 @@ class FakeCoreApi:
                 raise _api_error(400, "Bad Request", f'field label not supported: "{key}"')
         events = [e for e in self._s.items("events", namespace) if _matches(terms, lambda k, e=e: fields[k](e) or "")]
         return self._s.build("CoreV1EventList", {"items": events})
+
+    def list_node(self, **_):
+        return self._s.build("V1NodeList", {"items": self._s.data["nodes"]})
 
     def list_namespaced_persistent_volume_claim(self, namespace, **_):
         return self._s.build("V1PersistentVolumeClaimList", {"items": self._s.items("pvcs", namespace)})

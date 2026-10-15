@@ -12,6 +12,7 @@ from kube_sre.tools.k8s_read import (
     get_events_impl,
     get_owner_impl,
     get_pod_logs_impl,
+    list_nodes_impl,
     list_pods_impl,
     list_warning_events_impl,
 )
@@ -142,6 +143,11 @@ def test_recorded_snapshot_shows_each_expected_failure(scenario, monkeypatch):
         assert describe_workload_impl(apps, expected.kind, expected.workload, ns).name == expected.workload
     if not scenario.incidents:
         assert unhealthy == []
+
+    nodes = list_nodes_impl(core).nodes
+    assert nodes and all(n.ready for n in nodes)
+    if any(e.categories[0] == "scheduling" for e in scenario.incidents) and "untolerated taint" in str(snap):
+        assert any(n.taints for n in nodes)  # the scheduler message doesn't name the taint; list_nodes does
 
     for pod in unhealthy:  # logs and events replay without unexpected errors
         get_events_impl(core, ns, pod.name, kind="Pod")

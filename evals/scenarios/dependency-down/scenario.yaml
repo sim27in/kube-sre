@@ -1,0 +1,18 @@
+namespace: shop
+summary: checkout-api exits because its dependency has no pods (the payments Deployment is scaled to 0).
+wait:
+  - restarts: 2
+incidents:
+  - workload: checkout-api
+    kind: Deployment
+    categories: [crash_loop, other]
+    root_cause: >-
+      checkout-api refuses to start because it cannot reach the payments Service (connection refused),
+      and payments has no endpoints because its Deployment is scaled to 0 replicas.
+    key_facts:
+      - checkout-api exits on startup because it cannot connect to the payments service
+      - the payments Deployment has 0 replicas, so nothing serves the payments Service
+    fixes:
+      - scale the payments Deployment back up (kubectl scale deployment payments --replicas=1)
+# Reporting the scaled-down dependency as its own incident is reasonable, not a false positive.
+also_ok: [payments]

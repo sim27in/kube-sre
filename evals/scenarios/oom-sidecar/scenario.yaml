@@ -1,0 +1,18 @@
+namespace: ingest
+summary: A sidecar leaks memory (keeps every shipped batch) and is OOMKilled; the main container is fine.
+wait:
+  - container_reason: OOMKilled
+  - restarts: 2
+incidents:
+  - workload: event-collector
+    kind: Deployment
+    categories: [oom_killed]
+    needs_spec: true
+    root_cause: >-
+      The log-shipper sidecar keeps every shipped batch in memory, so its usage grows by about 4MB a
+      second until it passes its 48Mi limit and is OOMKilled; the collector container is healthy.
+    key_facts:
+      - the log-shipper sidecar (not the collector container) is the one OOMKilled
+      - its memory grows steadily (a leak in the buffer) until it exceeds its 48Mi limit
+    fixes:
+      - fix the log-shipper so it releases shipped batches; raising its limit only delays the next OOM kill

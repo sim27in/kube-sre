@@ -28,6 +28,7 @@ class EvidenceSource(StrEnum):
     SPEC = "spec"
     OWNERSHIP = "ownership"  # get_owner
     STORAGE = "storage"  # PVC status
+    NODES = "nodes"  # list_nodes
 
 
 class ActionType(StrEnum):
@@ -47,7 +48,9 @@ class Evidence(BaseModel):
 class RemediationAction(BaseModel):
     action_type: ActionType
     description: str = Field(description="What the action does and why it fixes the root cause.")
-    suggested_command: str = Field(description="Equivalent kubectl command for a human operator to review.")
+    suggested_command: str = Field(
+        description="Equivalent kubectl command for a human operator to review. It must work as written."
+    )
 
 
 class IncidentReport(BaseModel):
@@ -57,7 +60,18 @@ class IncidentReport(BaseModel):
     resource_name: str = Field(description="Name of the owning workload, e.g. payment-service.")
     pod_name: str = Field(description="Name of the failing pod that was investigated.")
     namespace: str
-    category: FailureCategory
+    category: FailureCategory = Field(
+        description=(
+            "image_pull: the image can't be pulled (bad tag, missing pull secret). "
+            "oom_killed: a container is killed for exceeding its memory limit. "
+            "crash_loop: the app exits on its own (error, bad command, failing init container), not OOM. "
+            "config_error: a missing or invalid ConfigMap, Secret, env value, StorageClass or quota-violating spec. "
+            "scheduling: a pod exists but stays Pending because no node fits (resources, taints, affinity). "
+            "If no pod was created at all (ResourceQuota, admission), it is not scheduling. "
+            "probe_failure: a liveness or readiness probe fails. "
+            "other: none of these."
+        )
+    )
     severity: Severity
     root_cause: str = Field(description="One or two sentences stating the underlying cause, not the symptom.")
     evidence: list[Evidence] = Field(min_length=1, description="Observations supporting the root cause.")

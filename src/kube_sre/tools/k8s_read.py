@@ -25,6 +25,8 @@ from kube_sre.tools.models import (
     EnvRef,
     EventInfo,
     EventList,
+    NodeInfo,
+    NodeList,
     ObjectRef,
     OwnerChain,
     PodList,
@@ -34,6 +36,7 @@ from kube_sre.tools.models import (
     PVCInfo,
     PVCList,
     TerminationInfo,
+    VolumeRef,
     WarningEventList,
     WorkloadKind,
     WorkloadSpec,
@@ -299,6 +302,31 @@ def list_pvcs_impl(core: CoreV1Api, namespace: str) -> PVCList:
     return PVCList(namespace=namespace, truncated=len(pvcs) > cap, pvcs=pvcs[:cap])
 
 
+# --- nodes ------------------------------------------------------------------
+
+
+def _taint(t) -> str:
+    return f"{t.key}={t.value}:{t.effect}" if t.value else f"{t.key}:{t.effect}"
+
+
+def list_nodes_impl(core: CoreV1Api) -> NodeList:
+    nodes = []
+    for n in core.list_node().items:
+        conditions = n.status.conditions or []
+        nodes.append(
+            NodeInfo(
+                name=n.metadata.name,
+                ready=any(c.type == "Ready" and c.status == "True" for c in conditions),
+                unschedulable=bool(n.spec.unschedulable),
+                taints=[_taint(t) for t in n.spec.taints or []],
+                pressure=[c.type for c in conditions if c.type != "Ready" and c.status == "True"],
+                allocatable={k: v for k, v in (n.status.allocatable or {}).items() if k in ("cpu", "memory", "pods")},
+            )
+        )
+    cap = get_settings().max_pods
+    return NodeList(total=len(nodes), truncated=len(nodes) > cap, nodes=nodes[:cap])
+
+
 # --- ownership --------------------------------------------------------------
 
 
@@ -392,6 +420,40 @@ def _container_spec(c) -> ContainerSpec:
     )
 
 
+def _toleration(t) -> str:
+    key = t.key or "*"
+    match = f"{key}={t.value or ''}" if t.operator != "Exists" else key
+    return f"{match}:{t.effect or '*'}"
+
+
+def _volume(v) -> VolumeRef:
+    if v.config_map:
+        src = v.config_map
+        return VolumeRef(
+            name=v.name,
+            source="configmap",
+            source_name=src.name,
+            keys=[i.key for i in src.items or []],
+            optional=src.optional,
+        )
+    if v.secret:
+        src = v.secret
+        return VolumeRef(
+            name=v.name,
+            source="secret",
+            source_name=src.secret_name,
+            keys=[i.key for i in src.items or []],
+            optional=src.optional,
+        )
+    if v.persistent_volume_claim:
+        return VolumeRef(name=v.name, source="pvc", source_name=v.persistent_volume_claim.claim_name)
+    if v.host_path:
+        return VolumeRef(name=v.name, source="host_path", source_name=v.host_path.path)
+    if v.empty_dir:
+        return VolumeRef(name=v.name, source="empty_dir")
+    return VolumeRef(name=v.name, source="other")
+
+
 def describe_workload_impl(apps: AppsV1Api, kind: WorkloadKind, name: str, namespace: str) -> WorkloadSpec:
     if kind == "Deployment":
         obj = apps.read_namespaced_deployment(name, namespace)
@@ -407,6 +469,7 @@ def describe_workload_impl(apps: AppsV1Api, kind: WorkloadKind, name: str, names
         counts = (s.desired_number_scheduled, s.number_ready, s.number_available, s.updated_number_scheduled)
 
     desired, ready, available, updated = counts
+    pod = obj.spec.template.spec
     return WorkloadSpec(
         kind=kind,
         name=name,
@@ -419,7 +482,13 @@ def describe_workload_impl(apps: AppsV1Api, kind: WorkloadKind, name: str, names
         conditions=[
             f"{c.type}={c.status}: {c.reason or ''} - {c.message or ''}".rstrip(" -") for c in s.conditions or []
         ],
-        containers=[_container_spec(c) for c in obj.spec.template.spec.containers],
+        service_account=pod.service_account_name,
+        image_pull_secrets=[r.name for r in pod.image_pull_secrets or []],
+        node_selector=dict(pod.node_selector or {}),
+        tolerations=[_toleration(t) for t in pod.tolerations or []],
+        volumes=[_volume(v) for v in pod.volumes or []],
+        init_containers=[_container_spec(c) for c in pod.init_containers or []],
+        containers=[_container_spec(c) for c in pod.containers],
     )
 
 
@@ -516,6 +585,15 @@ def list_pvcs(namespace: str = "default") -> PVCList:
 
 
 @mcp.tool()
+def list_nodes() -> NodeList:
+    """List the cluster's nodes with readiness, taints, cordoning, pressure conditions (memory, disk, PID) and
+    allocatable cpu/memory. Use it when a pod is Pending with "untolerated taint" or insufficient resources,
+    or pods are evicted; scheduler messages don't say which taint.
+    """
+    return _run("list_nodes", {}, list_nodes_impl, get_core_api)
+
+
+@mcp.tool()
 def get_owner(pod_name: str, namespace: str = "default") -> OwnerChain:
     """Resolve which workload owns a pod (Pod -> ReplicaSet -> Deployment). Reports and fixes target the
     workload, not the pod.
@@ -530,7 +608,8 @@ def get_owner(pod_name: str, namespace: str = "default") -> OwnerChain:
 @mcp.tool()
 def describe_workload(name: str, kind: WorkloadKind = "Deployment", namespace: str = "default") -> WorkloadSpec:
     """Get a workload's spec and rollout status: images, resource requests/limits, probes, env sources
-    (which Secret/ConfigMap keys are referenced; secret values are never read), replica counts and conditions.
+    (which Secret/ConfigMap keys are referenced; secret values are never read), init containers, volumes,
+    service account, image pull secrets, node selector and tolerations, replica counts and conditions.
 
     Args:
         name: Workload name.

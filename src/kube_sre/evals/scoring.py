@@ -109,7 +109,7 @@ def score_run(
     false_positives = [
         str(i.get("resource_name") or i.get("pod_name"))
         for i in reported
-        if not any(_refers_to(i, e.workload) for e in scenario.incidents)
+        if not any(_refers_to(i, w) for w in [*(e.workload for e in scenario.incidents), *scenario.also_ok])
     ]
 
     if received_ids is None:

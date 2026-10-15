@@ -56,12 +56,26 @@ def _describe(namespace: str) -> str:
 def record(scenarios: list[Scenario], keep: bool = False, timeout: int = 300, poll: float = 3.0) -> list[str]:
     """Record all scenarios in parallel. Returns the ids that failed to reach their wait conditions."""
     core, apps = get_core_api(), get_apps_api()
+    if len(scenarios) > 1 and any(s.setup for s in scenarios):
+        alone = [s.id for s in scenarios if s.setup]
+        raise SystemExit(f"{alone} change cluster-wide state; record each of them on its own.")
     for s in scenarios:
+        for args in s.setup:
+            _kubectl(*args)
         _kubectl("delete", "namespace", s.namespace, "--ignore-not-found", "--wait=true")
         _kubectl("create", "namespace", s.namespace)
         _kubectl("apply", "-n", s.namespace, "-f", str(s.manifest))
         print(f"[{s.id}] applied in namespace {s.namespace}")
 
+    try:
+        return _wait_and_capture(scenarios, core, apps, keep, timeout, poll)
+    finally:
+        for s in scenarios:
+            for args in s.teardown:
+                _kubectl(*args, check=False)
+
+
+def _wait_and_capture(scenarios: list[Scenario], core, apps, keep: bool, timeout: int, poll: float) -> list[str]:
     SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     pending = {s.id: s for s in scenarios}
     met_at: dict[str, float] = {}

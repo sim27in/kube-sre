@@ -122,6 +122,26 @@ class PVCList(ToolResult):
     pvcs: list[PVCInfo]
 
 
+# --- nodes ------------------------------------------------------------------
+
+
+class NodeInfo(BaseModel):
+    name: str
+    ready: bool
+    unschedulable: bool = False  # cordoned
+    taints: list[str] = Field(default_factory=list, description="key=value:effect; pods without a toleration avoid it.")
+    pressure: list[str] = Field(
+        default_factory=list, description="Conditions other than Ready that are True, e.g. MemoryPressure."
+    )
+    allocatable: dict[str, str] = Field(default_factory=dict, description="cpu, memory and pods the node offers.")
+
+
+class NodeList(ToolResult):
+    total: int
+    truncated: bool = False
+    nodes: list[NodeInfo]
+
+
 # --- ownership and specs ----------------------------------------------------
 
 
@@ -163,6 +183,14 @@ class ContainerSpec(BaseModel):
     env: list[EnvRef] = Field(default_factory=list)
 
 
+class VolumeRef(BaseModel):
+    name: str
+    source: Literal["configmap", "secret", "pvc", "host_path", "empty_dir", "other"]
+    source_name: str | None = None  # ConfigMap/Secret/PVC name, or the host path
+    keys: list[str] = Field(default_factory=list, description="Keys projected with `items`; empty means all keys.")
+    optional: bool | None = None
+
+
 class WorkloadSpec(ToolResult):
     kind: WorkloadKind
     name: str
@@ -173,4 +201,10 @@ class WorkloadSpec(ToolResult):
     available: int | None = None
     updated: int | None = None
     conditions: list[str] = Field(default_factory=list)
+    service_account: str | None = None
+    image_pull_secrets: list[str] = Field(default_factory=list)
+    node_selector: dict[str, str] = Field(default_factory=dict)
+    tolerations: list[str] = Field(default_factory=list, description="key=value:effect, or key:effect for Exists.")
+    volumes: list[VolumeRef] = Field(default_factory=list)
+    init_containers: list[ContainerSpec] = Field(default_factory=list)
     containers: list[ContainerSpec]

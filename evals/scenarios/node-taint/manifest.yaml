@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-transcoder
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: video-transcoder}
+  template:
+    metadata:
+      labels: {app: video-transcoder}
+    spec:
+      tolerations:
+        - {key: dedicated, operator: Equal, value: media, effect: NoSchedule}
+      containers:
+        - name: transcoder
+          image: nginx:1.27-alpine

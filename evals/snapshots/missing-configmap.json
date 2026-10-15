@@ -313,6 +313,154 @@
   }
  },
  "namespace": "catalog",
+ "nodes": [
+  {
+   "metadata": {
+    "annotations": {
+     "node.alpha.kubernetes.io/ttl": "0",
+     "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+    },
+    "creationTimestamp": "2026-09-24T17:05:08+00:00",
+    "labels": {
+     "beta.kubernetes.io/arch": "arm64",
+     "beta.kubernetes.io/os": "linux",
+     "kubernetes.io/arch": "arm64",
+     "kubernetes.io/hostname": "kubesre-control-plane",
+     "kubernetes.io/os": "linux",
+     "node-role.kubernetes.io/control-plane": ""
+    },
+    "name": "kubesre-control-plane",
+    "resourceVersion": "102727",
+    "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
+   },
+   "spec": {
+    "podCIDR": "10.244.0.0/24",
+    "podCIDRs": [
+     "10.244.0.0/24"
+    ],
+    "providerID": "kind://docker/kubesre/kubesre-control-plane"
+   },
+   "status": {
+    "addresses": [
+     {
+      "address": "172.19.0.2",
+      "type": "InternalIP"
+     },
+     {
+      "address": "kubesre-control-plane",
+      "type": "Hostname"
+     }
+    ],
+    "allocatable": {
+     "cpu": "8",
+     "ephemeral-storage": "1081100128256",
+     "hugepages-1Gi": "0",
+     "hugepages-2Mi": "0",
+     "hugepages-32Mi": "0",
+     "hugepages-64Ki": "0",
+     "memory": "8025636Ki",
+     "pods": "110"
+    },
+    "capacity": {
+     "cpu": "8",
+     "ephemeral-storage": "1081100128256",
+     "hugepages-1Gi": "0",
+     "hugepages-2Mi": "0",
+     "hugepages-32Mi": "0",
+     "hugepages-64Ki": "0",
+     "memory": "8025636Ki",
+     "pods": "110"
+    },
+    "conditions": [
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has sufficient memory available",
+      "reason": "KubeletHasSufficientMemory",
+      "status": "False",
+      "type": "MemoryPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has no disk pressure",
+      "reason": "KubeletHasNoDiskPressure",
+      "status": "False",
+      "type": "DiskPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has sufficient PID available",
+      "reason": "KubeletHasSufficientPID",
+      "status": "False",
+      "type": "PIDPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:29+00:00",
+      "message": "kubelet is posting ready status",
+      "reason": "KubeletReady",
+      "status": "True",
+      "type": "Ready"
+     }
+    ],
+    "daemonEndpoints": {
+     "kubeletEndpoint": {
+      "Port": 10250
+     }
+    },
+    "declaredFeatures": [
+     "ExtendWebSocketsToKubelet",
+     "InPlacePodLevelResourcesVerticalScaling",
+     "InPlacePodVerticalScalingInitContainers",
+     "RestartAllContainersOnContainerExits"
+    ],
+    "features": {
+     "supplementalGroupsPolicy": true
+    },
+    "nodeInfo": {
+     "architecture": "arm64",
+     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "containerRuntimeVersion": "containerd://2.3.4",
+     "kernelVersion": "6.10.14-linuxkit",
+     "kubeProxyVersion": "",
+     "kubeletVersion": "v1.37.0",
+     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "operatingSystem": "linux",
+     "osImage": "Debian GNU/Linux 13 (trixie)",
+     "runningInUserNamespace": false,
+     "swap": {
+      "capacity": 1073737728
+     },
+     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+    },
+    "runtimeHandlers": [
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": ""
+     },
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": "runc"
+     },
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": "test-handler"
+     }
+    ]
+   }
+  }
+ ],
  "pods": [
   {
    "metadata": {

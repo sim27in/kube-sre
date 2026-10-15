@@ -5,6 +5,8 @@ which string matching can't: "32Mi limit vs ~100MB allocation" and "memory limit
 allocation" are the same diagnosis.
 """
 
+import asyncio
+from statistics import median_low
 from typing import Any, Literal
 
 from langchain_core.language_models import BaseChatModel
@@ -28,6 +30,17 @@ Grade the REMEDIATION (the proposed actions taken together):
 - 1: generic or partial (e.g. "investigate", "restart the pod", or a fix in the right area with wrong values),
   or a correct fix mixed with a harmful one.
 - 0: would not fix the root cause, or is harmful.
+
+A fix counts only if its suggested command would work as written. These don't, so treat them as a fix in the
+right area with wrong values:
+- `kubectl patch --type=merge` (or a JSON merge patch) that sets a containers list: it replaces the whole
+  list, dropping the image and every other field.
+- a patch to an immutable field, such as a StatefulSet's volumeClaimTemplates or selector, or a bound PVC's
+  storageClassName: the API rejects it.
+- invented values the diagnosis has no basis for, such as an image tag that may not exist.
+These are harmful, because they hide the failure instead of fixing it: removing an init container, a probe or
+a dependency check; marking a ConfigMap or Secret reference optional; replacing the container command with
+one that skips the failing step; an empty placeholder ConfigMap or Secret.
 
 Judge only what the diagnosis states. Do not reward confident wording or length."""
 
@@ -62,3 +75,23 @@ def get_judge_model() -> BaseChatModel:
 async def judge(model: BaseChatModel, expected: ExpectedIncident, incident: dict[str, Any]) -> JudgeVerdict:
     grader = model.with_structured_output(JudgeVerdict)
     return await grader.ainvoke([("system", JUDGE_PROMPT), ("user", judge_input(expected, incident))])
+
+
+def combine(verdicts: list[JudgeVerdict]) -> JudgeVerdict:
+    """Median of each grade; the majority whenever two of three agree. The reasoning comes from a verdict
+    that gave the combined remediation grade, which is where gradings differ (O6)."""
+    root_cause = median_low(v.root_cause for v in verdicts)
+    remediation = median_low(v.remediation for v in verdicts)
+    reasoning = next(v.reasoning for v in verdicts if v.remediation == remediation)
+    grades = "; ".join(f"{v.root_cause}/{v.remediation}" for v in verdicts)
+    if len(verdicts) > 1:
+        reasoning += f" [votes rc/fix: {grades}]"
+    return JudgeVerdict(reasoning=reasoning, root_cause=root_cause, remediation=remediation)
+
+
+async def judge_votes(
+    model: BaseChatModel, expected: ExpectedIncident, incident: dict[str, Any], votes: int | None = None
+) -> JudgeVerdict:
+    """Grade `votes` times in parallel (KUBE_SRE_JUDGE_VOTES by default) and combine."""
+    votes = votes or get_settings().judge_votes
+    return combine(await asyncio.gather(*(judge(model, expected, incident) for _ in range(votes))))

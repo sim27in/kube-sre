@@ -4,7 +4,8 @@ python -m kube_sre.evals record [SCENARIO ...]            # needs the kind clust
 python -m kube_sre.evals run [--agents v0 v1] [--repeats 3] [--scenarios ...]
 python -m kube_sre.evals rescore evals/results/<run>  # re-judge after changing a scenario or the judge
 python -m kube_sre.evals report evals/results/<run>
-python -m kube_sre.evals judge-check [--times 3]          # judge vs evals/judge_labels.yaml
+python -m kube_sre.evals judge-check [--times 3] [--votes 3]  # judge vs evals/judge_labels.yaml
+python -m kube_sre.evals langsmith evals/results/<run>  # upload as a LangSmith dataset + experiments
 """
 
 import argparse
@@ -45,15 +46,29 @@ def main() -> None:
     jc.add_argument("--labels", type=Path, help="Labels file (default: evals/judge_labels.yaml).")
     jc.add_argument("--times", type=int, default=3)
     jc.add_argument("--concurrency", type=int, default=6)
+    jc.add_argument("--votes", type=int, default=1, help="Judge calls per grading, combined as in eval runs.")
+
+    ls = sub.add_parser("langsmith", help="Upload a results dir to LangSmith (dataset + one experiment per agent).")
+    ls.add_argument("results", type=Path)
+    ls.add_argument("--agents", nargs="+", choices=["v0", "v1"])
 
     args = parser.parse_args()
+    if args.command == "langsmith":
+        from langsmith import Client
+
+        from kube_sre.evals.langsmith_export import export
+
+        scenarios = {s.id: s for s in load_scenarios()}
+        for name in export(Client(), args.results, scenarios, args.agents):
+            print(f"LangSmith experiment: {name}")
+        return
     if args.command == "judge-check":
         from kube_sre.evals.judge import get_judge_model
         from kube_sre.evals.judge_check import LABELS_FILE, check, load_labels, summarize_check
 
         items = load_labels(args.labels or LABELS_FILE)
-        results = asyncio.run(check(get_judge_model(), items, args.times, args.concurrency))
-        print(summarize_check(results, args.times))
+        results = asyncio.run(check(get_judge_model(), items, args.times, args.concurrency, args.votes))
+        print(summarize_check(results, args.times, args.votes))
         return
     if args.command == "record":
         from kube_sre.evals.record import record

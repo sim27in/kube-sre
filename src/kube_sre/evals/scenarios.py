@@ -40,6 +40,11 @@ class Scenario(BaseModel):
     settle_seconds: int = 5
     incidents: list[ExpectedIncident]
     secrets: list[str] = []  # seeded fake credentials that must not reach the model or the report
+    also_ok: list[str] = []  # workloads that may be reported too (a broken dependency), not false positives
+    # kubectl args run before applying and after recording, for state outside the namespace (a node taint).
+    # A scenario with setup is recorded on its own.
+    setup: list[list[str]] = []
+    teardown: list[list[str]] = []
 
     @property
     def manifest(self) -> Path:

@@ -1,8 +1,9 @@
 import pytest
 
 from kube_sre.config import get_settings
-from kube_sre.evals.judge import get_judge_model, judge_input
+from kube_sre.evals.judge import JudgeVerdict, combine, get_judge_model, judge_input
 from kube_sre.evals.judge_check import Checked, LabelledIncident, _find, load_labels, summarize_check
+from kube_sre.evals.langsmith_export import example, stored_output, stored_scores
 from kube_sre.evals.report import summarize
 from kube_sre.evals.runner import RunRecord
 from kube_sre.evals.scenarios import load_scenario
@@ -179,3 +180,38 @@ def test_judge_labels_point_at_stored_runs():
     for item in load_labels():
         expected, incident, stored = _find(item)
         assert incident is not None and stored.detected, item
+
+
+def test_also_ok_workload_is_not_a_false_positive():
+    dep = load_scenario("dependency-down")
+    report = _report(_incident("checkout-api", "checkout-api-1"), _incident("payments", "payments"))
+    assert score_run(dep, report, [], V1_TOOLS, {"ev-1"}).false_positives == []
+    report = _report(_incident("checkout-api", "checkout-api-1"), _incident("payments-db", "payments-db"))
+    assert score_run(dep, report, [], V1_TOOLS, {"ev-1"}).false_positives == ["payments-db"]
+
+
+def test_judge_votes_combine_to_the_median():
+    votes = [
+        JudgeVerdict(reasoning="a", root_cause=2, remediation=2),
+        JudgeVerdict(reasoning="b", root_cause=2, remediation=1),
+        JudgeVerdict(reasoning="c", root_cause=1, remediation=1),
+    ]
+    verdict = combine(votes)
+    assert (verdict.root_cause, verdict.remediation) == (2, 1)
+    assert verdict.reasoning.startswith("b") and "2/2; 2/1; 1/1" in verdict.reasoning
+    assert combine(votes[:1]).reasoning == "a"
+
+
+def test_langsmith_evaluator_reports_the_stored_scores(oom):
+    run = _run(1, True, oom)
+    results = {r["key"]: r["score"] for r in stored_scores(stored_output(run))["results"]}
+    assert results == {
+        "passed": 1.0,
+        "detected": 1.0,
+        "category_ok": 1.0,
+        "root_cause": 1.0,
+        "remediation": 1.0,
+        "false_positives": 0.0,
+        "leaked_secrets": 0.0,
+    }
+    assert example(oom)["inputs"]["namespace"] == "analytics"

@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: ledger-api}
+  template:
+    metadata:
+      labels: {app: ledger-api}
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull
+      containers:
+        - name: api
+          image: ghcr.io/kube-sre-eval/ledger-api:1.4.2
+          ports: [{containerPort: 8080}]

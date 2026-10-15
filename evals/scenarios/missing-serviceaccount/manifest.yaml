@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-writer
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: audit-writer}
+  template:
+    metadata:
+      labels: {app: audit-writer}
+    spec:
+      serviceAccountName: audit-writer
+      containers:
+        - name: writer
+          image: nginx:1.27-alpine

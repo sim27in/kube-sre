@@ -19,7 +19,7 @@ from pydantic import BaseModel
 from kube_sre.agent import AgentLimitError, build_agent, invoke, mcp_client, token_usage, user_prompt
 from kube_sre.citations import received_evidence_ids
 from kube_sre.config import get_settings
-from kube_sre.evals.judge import judge
+from kube_sre.evals.judge import judge_votes
 from kube_sre.evals.scenarios import EVALS_DIR, Scenario
 from kube_sre.evals.scoring import SPEC_TOOL, RunScore, find_leaks, match_incident, score_run
 
@@ -82,7 +82,7 @@ async def _judge_run(judge_model, scenario: Scenario, report: dict[str, Any] | N
             continue
         incident = match_incident(expected, report.get("incidents", []))
         try:
-            verdict = await judge(judge_model, expected, incident)
+            verdict = await judge_votes(judge_model, expected, incident)
         except Exception as e:  # a judge failure must not lose the run; it shows up as an ungraded incident
             inc_score.judge_reasoning = f"JUDGE ERROR: {type(e).__name__}: {e}"
             continue

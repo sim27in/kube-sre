@@ -7,6 +7,7 @@ from fastmcp.exceptions import ToolError
 from kubernetes.client import (
     CoreV1Event,
     CoreV1EventList,
+    V1ConfigMapVolumeSource,
     V1Container,
     V1ContainerState,
     V1ContainerStateRunning,
@@ -20,7 +21,14 @@ from kubernetes.client import (
     V1EnvVarSource,
     V1EventSource,
     V1HTTPGetAction,
+    V1KeyToPath,
     V1LabelSelector,
+    V1LocalObjectReference,
+    V1Node,
+    V1NodeCondition,
+    V1NodeList,
+    V1NodeSpec,
+    V1NodeStatus,
     V1ObjectMeta,
     V1ObjectReference,
     V1OwnerReference,
@@ -28,6 +36,7 @@ from kubernetes.client import (
     V1PersistentVolumeClaimList,
     V1PersistentVolumeClaimSpec,
     V1PersistentVolumeClaimStatus,
+    V1PersistentVolumeClaimVolumeSource,
     V1Pod,
     V1PodCondition,
     V1PodList,
@@ -39,6 +48,9 @@ from kubernetes.client import (
     V1ReplicaSetSpec,
     V1ResourceRequirements,
     V1SecretKeySelector,
+    V1Taint,
+    V1Toleration,
+    V1Volume,
     V1VolumeResourceRequirements,
 )
 from kubernetes.client.rest import ApiException
@@ -50,6 +62,7 @@ from kube_sre.tools.k8s_read import (
     get_events_impl,
     get_owner_impl,
     get_pod_logs_impl,
+    list_nodes_impl,
     list_pods_impl,
     list_pvcs_impl,
     list_warning_events_impl,
@@ -429,6 +442,44 @@ def test_describe_workload_hides_literal_secrets_in_env_and_args():
     assert {e.var: e.value for e in c.env} == {"DB_PASSWORD": "<redacted:secret>", "LOG_LEVEL": "debug"}
 
 
+def test_describe_workload_shows_pod_level_spec():
+    pod_spec = V1PodSpec(
+        service_account_name="audit-writer",
+        image_pull_secrets=[V1LocalObjectReference(name="ghcr-pull")],
+        node_selector={"disktype": "ssd"},
+        tolerations=[
+            V1Toleration(key="dedicated", operator="Equal", value="media", effect="NoSchedule"),
+            V1Toleration(key="node.kubernetes.io/not-ready", operator="Exists"),
+        ],
+        volumes=[
+            V1Volume(
+                name="conf",
+                config_map=V1ConfigMapVolumeSource(name="agent", items=[V1KeyToPath(key="agent.yaml", path="a")]),
+            ),
+            V1Volume(name="data", persistent_volume_claim=V1PersistentVolumeClaimVolumeSource(claim_name="data-0")),
+        ],
+        init_containers=[V1Container(name="wait-for-db", image="busybox", command=["nslookup", "db"])],
+        containers=[V1Container(name="api", image="api:1.2")],
+    )
+    dep = V1Deployment(
+        metadata=V1ObjectMeta(name="api"),
+        spec=V1DeploymentSpec(selector=V1LabelSelector(), template=V1PodTemplateSpec(spec=pod_spec)),
+        status=V1DeploymentStatus(),
+    )
+    spec = describe_workload_impl(FakeApps(deployments=[dep]), "Deployment", "api", NS)
+    assert (spec.service_account, spec.image_pull_secrets, spec.node_selector) == (
+        "audit-writer",
+        ["ghcr-pull"],
+        {"disktype": "ssd"},
+    )
+    assert spec.tolerations == ["dedicated=media:NoSchedule", "node.kubernetes.io/not-ready:*"]
+    assert [(v.source, v.source_name, v.keys) for v in spec.volumes] == [
+        ("configmap", "agent", ["agent.yaml"]),
+        ("pvc", "data-0", []),
+    ]
+    assert spec.init_containers[0].command == ["nslookup", "db"]
+
+
 # --- MCP boundary -----------------------------------------------------------
 
 
@@ -485,3 +536,39 @@ def test_previous_falls_back_when_container_just_terminated():
     core = FakeCore([pod], logs={(name, "memory-hog", True): GONE, (name, "memory-hog", False): "allocating\n"})
     logs = get_pod_logs_impl(core, name, NS, previous=True)
     assert logs.text == "allocating\n" and logs.note
+
+
+# --- list_nodes -------------------------------------------------------------
+
+
+def test_list_nodes_shows_taints_pressure_and_allocatable():
+    class FakeNodes:
+        def list_node(self):
+            return V1NodeList(
+                items=[
+                    V1Node(
+                        metadata=V1ObjectMeta(name="worker-1"),
+                        spec=V1NodeSpec(
+                            unschedulable=True,
+                            taints=[
+                                V1Taint(key="dedicated", value="batch", effect="NoSchedule"),
+                                V1Taint(key="node.kubernetes.io/disk-pressure", effect="NoSchedule"),
+                            ],
+                        ),
+                        status=V1NodeStatus(
+                            allocatable={"cpu": "8", "memory": "8Gi", "pods": "110", "hugepages-2Mi": "0"},
+                            conditions=[
+                                V1NodeCondition(type="Ready", status="True"),
+                                V1NodeCondition(type="DiskPressure", status="True"),
+                                V1NodeCondition(type="MemoryPressure", status="False"),
+                            ],
+                        ),
+                    )
+                ]
+            )
+
+    node = list_nodes_impl(FakeNodes()).nodes[0]
+    assert node.ready and node.unschedulable
+    assert node.taints == ["dedicated=batch:NoSchedule", "node.kubernetes.io/disk-pressure:NoSchedule"]
+    assert node.pressure == ["DiskPressure"]
+    assert node.allocatable == {"cpu": "8", "memory": "8Gi", "pods": "110"}

@@ -79,6 +79,23 @@ def test_redact_obj_keeps_identifiers_and_redacts_names_in_free_text():
     assert "John Smith" not in out["text"]
 
 
+def test_object_names_from_the_same_result_kept_in_free_text():
+    # O3: "Deployment: grafana" became "Deployment: <person:...>" inside an event message.
+    assert redact("Deployment: grafana").text != "Deployment: grafana"  # Presidio tags it on its own
+    out = redact_obj(
+        {"involved": {"kind": "Deployment", "name": "grafana-7d9f8c6b5"}, "message": "Deployment: grafana"}
+    )
+    assert out["message"] == "Deployment: grafana"
+    out = redact_obj({"pod": "kafka-0", "message": "Deployment: kafka, owner Michael Johnson"})
+    assert "Deployment: kafka" in out["message"]
+    assert "Michael Johnson" not in out["message"]
+
+
+def test_object_names_are_only_known_within_one_result():
+    out = redact_obj({"name": "web", "message": "Deployment: grafana, owner Michael Johnson"})
+    assert "Michael Johnson" not in out["message"]
+
+
 def test_secrets_redacted_in_identifier_fields_too():
     assert "hunter2" not in redact_obj({"name": "password=hunter2"})["name"]
 

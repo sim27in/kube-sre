@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-from kube_sre.evals.judge import judge
+from kube_sre.evals.judge import judge_votes
 from kube_sre.evals.runner import RESULTS_DIR, load_runs
 from kube_sre.evals.scenarios import EVALS_DIR, load_scenario
 from kube_sre.evals.scoring import match_incident
@@ -52,12 +52,15 @@ def _find(item: LabelledIncident):
     return expected, match_incident(expected, run.report["incidents"]), stored
 
 
-async def check(judge_model, items: list[LabelledIncident], times: int, concurrency: int) -> list[Checked]:
+async def check(
+    judge_model, items: list[LabelledIncident], times: int, concurrency: int, votes: int = 1
+) -> list[Checked]:
+    """Grade each item `times` times. With votes > 1, each grading is the combined vote the eval runner uses."""
     sem = asyncio.Semaphore(concurrency)
 
     async def grade(expected, incident):
         async with sem:
-            return await judge(judge_model, expected, incident)
+            return await judge_votes(judge_model, expected, incident, votes)
 
     async def one(item: LabelledIncident) -> Checked:
         expected, incident, stored = _find(item)
@@ -75,12 +78,14 @@ def _pct(num: int, den: int) -> str:
     return f"{100 * num / den:.0f}% ({num}/{den})"
 
 
-def summarize_check(results: list[Checked], times: int) -> str:
+def summarize_check(results: list[Checked], times: int, votes: int = 1) -> str:
     n = len(results)
     lines = [
         "# Judge check",
         "",
-        f"{n} labelled incidents, each graded {times} times. Agreement uses the majority of the {times} grades.",
+        f"{n} labelled incidents, each graded {times} times"
+        + (f" (each grading the median of {votes} judge calls)" if votes > 1 else "")
+        + f". Agreement uses the majority of the {times} grades.",
         "",
         "| | Root cause | Remediation |",
         "|---|---|---|",

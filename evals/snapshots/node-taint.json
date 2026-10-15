@@ -1,0 +1,556 @@
+{
+ "captured_at": "2026-10-14T19:15:20.748472+00:00",
+ "daemonsets": [],
+ "deployments": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/revision": "1",
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"video-transcoder\",\"namespace\":\"media\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"video-transcoder\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"video-transcoder\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"transcoder\"}],\"tolerations\":[{\"effect\":\"NoSchedule\",\"key\":\"dedicated\",\"operator\":\"Equal\",\"value\":\"media\"}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "generation": 1,
+    "name": "video-transcoder",
+    "namespace": "media",
+    "resourceVersion": "102710",
+    "uid": "b7792e6c-9439-400d-8dd9-645956589713"
+   },
+   "spec": {
+    "progressDeadlineSeconds": 600,
+    "replicas": 1,
+    "revisionHistoryLimit": 10,
+    "selector": {
+     "matchLabels": {
+      "app": "video-transcoder"
+     }
+    },
+    "strategy": {
+     "rollingUpdate": {
+      "maxSurge": "25%",
+      "maxUnavailable": "25%"
+     },
+     "type": "RollingUpdate"
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "video-transcoder"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "transcoder",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30,
+      "tolerations": [
+       {
+        "effect": "NoSchedule",
+        "key": "dedicated",
+        "operator": "Equal",
+        "value": "media"
+       }
+      ]
+     }
+    }
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T19:15:14+00:00",
+      "lastUpdateTime": "2026-10-14T19:15:14+00:00",
+      "message": "Deployment does not have minimum availability.",
+      "reason": "MinimumReplicasUnavailable",
+      "status": "False",
+      "type": "Available"
+     },
+     {
+      "lastTransitionTime": "2026-10-14T19:15:14+00:00",
+      "lastUpdateTime": "2026-10-14T19:15:14+00:00",
+      "message": "ReplicaSet \"video-transcoder-5f45474584\" is progressing.",
+      "reason": "ReplicaSetUpdated",
+      "status": "True",
+      "type": "Progressing"
+     }
+    ],
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0,
+    "unavailableReplicas": 1,
+    "updatedReplicas": 1
+   }
+  }
+ ],
+ "events": [
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T19:15:14+00:00",
+   "involvedObject": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "name": "video-transcoder-5f45474584-smtln",
+    "namespace": "media",
+    "resourceVersion": "102703",
+    "uid": "da60702f-230d-4b32-ad1f-d9b1bf94e0e1"
+   },
+   "lastTimestamp": "2026-10-14T19:15:14+00:00",
+   "message": "0/1 nodes are available: 1 node(s) had untolerated taint(s). preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "name": "video-transcoder-5f45474584-smtln.18de7b56da6976b0",
+    "namespace": "media",
+    "resourceVersion": "102706",
+    "uid": "148f4b62-5d2f-45d8-8adb-e462895e04c8"
+   },
+   "reason": "FailedScheduling",
+   "reportingComponent": "default-scheduler",
+   "reportingInstance": "",
+   "source": {
+    "component": "default-scheduler"
+   },
+   "type": "Warning"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T19:15:14+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSet",
+    "name": "video-transcoder-5f45474584",
+    "namespace": "media",
+    "resourceVersion": "102700",
+    "uid": "b4a53659-f508-4501-935e-561e64920af4"
+   },
+   "lastTimestamp": "2026-10-14T19:15:14+00:00",
+   "message": "Created pod: video-transcoder-5f45474584-smtln",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "name": "video-transcoder-5f45474584.18de7b56da635436",
+    "namespace": "media",
+    "resourceVersion": "102705",
+    "uid": "8c75f0fd-75c1-4570-9301-ffaffbe9777e"
+   },
+   "reason": "SuccessfulCreate",
+   "reportingComponent": "replicaset-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "replicaset-controller"
+   },
+   "type": "Normal"
+  },
+  {
+   "count": 1,
+   "firstTimestamp": "2026-10-14T19:15:14+00:00",
+   "involvedObject": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "name": "video-transcoder",
+    "namespace": "media",
+    "resourceVersion": "102699",
+    "uid": "b7792e6c-9439-400d-8dd9-645956589713"
+   },
+   "lastTimestamp": "2026-10-14T19:15:14+00:00",
+   "message": "Scaled up replica set video-transcoder-5f45474584 from 0 to 1",
+   "metadata": {
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "name": "video-transcoder.18de7b56da36c64a",
+    "namespace": "media",
+    "resourceVersion": "102701",
+    "uid": "17c30a7e-cc03-485a-9567-ab47ac694268"
+   },
+   "reason": "ScalingReplicaSet",
+   "reportingComponent": "deployment-controller",
+   "reportingInstance": "",
+   "source": {
+    "component": "deployment-controller"
+   },
+   "type": "Normal"
+  }
+ ],
+ "logs": {
+  "video-transcoder-5f45474584-smtln/transcoder/current": {
+   "text": ""
+  },
+  "video-transcoder-5f45474584-smtln/transcoder/previous": {
+   "text": ""
+  }
+ },
+ "namespace": "media",
+ "nodes": [
+  {
+   "metadata": {
+    "annotations": {
+     "node.alpha.kubernetes.io/ttl": "0",
+     "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+    },
+    "creationTimestamp": "2026-09-24T17:05:08+00:00",
+    "labels": {
+     "beta.kubernetes.io/arch": "arm64",
+     "beta.kubernetes.io/os": "linux",
+     "kubernetes.io/arch": "arm64",
+     "kubernetes.io/hostname": "kubesre-control-plane",
+     "kubernetes.io/os": "linux",
+     "node-role.kubernetes.io/control-plane": ""
+    },
+    "name": "kubesre-control-plane",
+    "resourceVersion": "102695",
+    "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
+   },
+   "spec": {
+    "podCIDR": "10.244.0.0/24",
+    "podCIDRs": [
+     "10.244.0.0/24"
+    ],
+    "providerID": "kind://docker/kubesre/kubesre-control-plane",
+    "taints": [
+     {
+      "effect": "NoSchedule",
+      "key": "dedicated",
+      "value": "batch"
+     }
+    ]
+   },
+   "status": {
+    "addresses": [
+     {
+      "address": "172.19.0.2",
+      "type": "InternalIP"
+     },
+     {
+      "address": "kubesre-control-plane",
+      "type": "Hostname"
+     }
+    ],
+    "allocatable": {
+     "cpu": "8",
+     "ephemeral-storage": "1081100128256",
+     "hugepages-1Gi": "0",
+     "hugepages-2Mi": "0",
+     "hugepages-32Mi": "0",
+     "hugepages-64Ki": "0",
+     "memory": "8025636Ki",
+     "pods": "110"
+    },
+    "capacity": {
+     "cpu": "8",
+     "ephemeral-storage": "1081100128256",
+     "hugepages-1Gi": "0",
+     "hugepages-2Mi": "0",
+     "hugepages-32Mi": "0",
+     "hugepages-64Ki": "0",
+     "memory": "8025636Ki",
+     "pods": "110"
+    },
+    "conditions": [
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has sufficient memory available",
+      "reason": "KubeletHasSufficientMemory",
+      "status": "False",
+      "type": "MemoryPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has no disk pressure",
+      "reason": "KubeletHasNoDiskPressure",
+      "status": "False",
+      "type": "DiskPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:07+00:00",
+      "message": "kubelet has sufficient PID available",
+      "reason": "KubeletHasSufficientPID",
+      "status": "False",
+      "type": "PIDPressure"
+     },
+     {
+      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastTransitionTime": "2026-09-24T17:05:29+00:00",
+      "message": "kubelet is posting ready status",
+      "reason": "KubeletReady",
+      "status": "True",
+      "type": "Ready"
+     }
+    ],
+    "daemonEndpoints": {
+     "kubeletEndpoint": {
+      "Port": 10250
+     }
+    },
+    "declaredFeatures": [
+     "ExtendWebSocketsToKubelet",
+     "InPlacePodLevelResourcesVerticalScaling",
+     "InPlacePodVerticalScalingInitContainers",
+     "RestartAllContainersOnContainerExits"
+    ],
+    "features": {
+     "supplementalGroupsPolicy": true
+    },
+    "nodeInfo": {
+     "architecture": "arm64",
+     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "containerRuntimeVersion": "containerd://2.3.4",
+     "kernelVersion": "6.10.14-linuxkit",
+     "kubeProxyVersion": "",
+     "kubeletVersion": "v1.37.0",
+     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "operatingSystem": "linux",
+     "osImage": "Debian GNU/Linux 13 (trixie)",
+     "runningInUserNamespace": false,
+     "swap": {
+      "capacity": 1073737728
+     },
+     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+    },
+    "runtimeHandlers": [
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": ""
+     },
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": "runc"
+     },
+     {
+      "features": {
+       "recursiveReadOnlyMounts": true,
+       "userNamespaces": true
+      },
+      "name": "test-handler"
+     }
+    ]
+   }
+  }
+ ],
+ "pods": [
+  {
+   "metadata": {
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "generateName": "video-transcoder-5f45474584-",
+    "generation": 1,
+    "labels": {
+     "app": "video-transcoder",
+     "pod-template-hash": "5f45474584"
+    },
+    "name": "video-transcoder-5f45474584-smtln",
+    "namespace": "media",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "ReplicaSet",
+      "name": "video-transcoder-5f45474584",
+      "uid": "b4a53659-f508-4501-935e-561e64920af4"
+     }
+    ],
+    "resourceVersion": "102707",
+    "uid": "da60702f-230d-4b32-ad1f-d9b1bf94e0e1"
+   },
+   "spec": {
+    "containers": [
+     {
+      "image": "nginx:1.27-alpine",
+      "imagePullPolicy": "IfNotPresent",
+      "name": "transcoder",
+      "resources": {},
+      "terminationMessagePath": "/dev/termination-log",
+      "terminationMessagePolicy": "File",
+      "volumeMounts": [
+       {
+        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "name": "kube-api-access-7p42v",
+        "readOnly": true
+       }
+      ]
+     }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "preemptionPolicy": "PreemptLowerPriority",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+     {
+      "effect": "NoSchedule",
+      "key": "dedicated",
+      "operator": "Equal",
+      "value": "media"
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/not-ready",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     },
+     {
+      "effect": "NoExecute",
+      "key": "node.kubernetes.io/unreachable",
+      "operator": "Exists",
+      "tolerationSeconds": 300
+     }
+    ],
+    "volumes": [
+     {
+      "name": "kube-api-access-7p42v",
+      "projected": {
+       "defaultMode": 420,
+       "sources": [
+        {
+         "serviceAccountToken": {
+          "expirationSeconds": 3607,
+          "path": "token"
+         }
+        },
+        {
+         "configMap": {
+          "items": [
+           {
+            "key": "ca.crt",
+            "path": "ca.crt"
+           }
+          ],
+          "name": "kube-root-ca.crt"
+         }
+        },
+        {
+         "downwardAPI": {
+          "items": [
+           {
+            "fieldRef": {
+             "apiVersion": "v1",
+             "fieldPath": "metadata.namespace"
+            },
+            "path": "namespace"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "status": {
+    "conditions": [
+     {
+      "lastTransitionTime": "2026-10-14T19:15:14+00:00",
+      "message": "0/1 nodes are available: 1 node(s) had untolerated taint(s). preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
+      "observedGeneration": 1,
+      "reason": "Unschedulable",
+      "status": "False",
+      "type": "PodScheduled"
+     }
+    ],
+    "phase": "Pending",
+    "qosClass": "BestEffort"
+   }
+  }
+ ],
+ "pvcs": [],
+ "replicasets": [
+  {
+   "metadata": {
+    "annotations": {
+     "deployment.kubernetes.io/desired-replicas": "1",
+     "deployment.kubernetes.io/max-replicas": "2",
+     "deployment.kubernetes.io/revision": "1"
+    },
+    "creationTimestamp": "2026-10-14T19:15:14+00:00",
+    "generation": 1,
+    "labels": {
+     "app": "video-transcoder",
+     "pod-template-hash": "5f45474584"
+    },
+    "name": "video-transcoder-5f45474584",
+    "namespace": "media",
+    "ownerReferences": [
+     {
+      "apiVersion": "apps/v1",
+      "blockOwnerDeletion": true,
+      "controller": true,
+      "kind": "Deployment",
+      "name": "video-transcoder",
+      "uid": "b7792e6c-9439-400d-8dd9-645956589713"
+     }
+    ],
+    "resourceVersion": "102708",
+    "uid": "b4a53659-f508-4501-935e-561e64920af4"
+   },
+   "spec": {
+    "replicas": 1,
+    "selector": {
+     "matchLabels": {
+      "app": "video-transcoder",
+      "pod-template-hash": "5f45474584"
+     }
+    },
+    "template": {
+     "metadata": {
+      "labels": {
+       "app": "video-transcoder",
+       "pod-template-hash": "5f45474584"
+      }
+     },
+     "spec": {
+      "containers": [
+       {
+        "image": "nginx:1.27-alpine",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "transcoder",
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File"
+       }
+      ],
+      "dnsPolicy": "ClusterFirst",
+      "restartPolicy": "Always",
+      "schedulerName": "default-scheduler",
+      "securityContext": {},
+      "terminationGracePeriodSeconds": 30,
+      "tolerations": [
+       {
+        "effect": "NoSchedule",
+        "key": "dedicated",
+        "operator": "Equal",
+        "value": "media"
+       }
+      ]
+     }
+    }
+   },
+   "status": {
+    "fullyLabeledReplicas": 1,
+    "observedGeneration": 1,
+    "replicas": 1,
+    "terminatingReplicas": 0
+   }
+  }
+ ],
+ "statefulsets": [],
+ "version": 1
+}

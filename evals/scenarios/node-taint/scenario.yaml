@@ -1,0 +1,22 @@
+namespace: media
+summary: The only node is tainted dedicated=batch; the pod tolerates only dedicated=media, so it stays Pending.
+# The taint is cluster-wide while recording, so record this scenario on its own.
+setup:
+  - [taint, nodes, --all, "dedicated=batch:NoSchedule", --overwrite]
+teardown:
+  - [taint, nodes, --all, "dedicated:NoSchedule-"]
+wait:
+  - pod_phase: Pending
+  - event_reason: FailedScheduling
+incidents:
+  - workload: video-transcoder
+    kind: Deployment
+    categories: [scheduling]
+    root_cause: >-
+      The cluster's only node has the taint dedicated=batch:NoSchedule, and the pod tolerates only
+      dedicated=media, so the scheduler finds no node for it and the pod stays Pending.
+    key_facts:
+      - the pod is unschedulable because the node has an untolerated taint dedicated=batch
+      - the pod's toleration is for dedicated=media, which doesn't match
+    fixes:
+      - add a node for the media workloads (or change the node's taint), or add a toleration for dedicated=batch:NoSchedule if it may run there

@@ -1,0 +1,16 @@
+namespace: compliance
+summary: The Deployment runs as a ServiceAccount that does not exist, so no pod is ever created.
+wait:
+  - event_reason: FailedCreate
+incidents:
+  - workload: audit-writer
+    kind: Deployment
+    categories: [config_error, other]
+    root_cause: >-
+      The pod template uses serviceAccountName audit-writer, which does not exist in the namespace, so
+      the ReplicaSet's pod creation is forbidden (FailedCreate) and no pods exist.
+    key_facts:
+      - pod creation fails (FailedCreate) and there are no pods
+      - the ServiceAccount audit-writer does not exist
+    fixes:
+      - create the audit-writer ServiceAccount (with the RBAC it needs), or point the Deployment at an existing one

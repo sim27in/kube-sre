@@ -76,6 +76,10 @@ _SECRET_RULES: list[tuple[str, re.Pattern[str], str]] = [
 # on identifiers it mistakes workload names like "grafana" or "kafka" for people, and the agent can no
 # longer call tools with the pseudonym it gets back. Secret, email and IP rules run on every string.
 FREE_TEXT_KEYS = frozenset({"text", "message", "note", "failing_conditions", "conditions", "value", "detail"})
+# Keys that name Kubernetes objects. Their values, and the parts between dashes, are never pseudonymized
+# inside the free text of the same result: "Deployment: grafana" keeps grafana if a `name` field says grafana.
+IDENTIFIER_KEYS = frozenset({"name", "pod", "container", "namespace", "source_name", "node"})
+_NAME_PART = re.compile(r"[-._/\s]+")
 
 _EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 _IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
@@ -120,19 +124,25 @@ def _person_analyzer():
     return AnalyzerEngine(nlp_engine=nlp, supported_languages=["en"])
 
 
-def _redact_names(text: str, counts: Counter[str]) -> str:
+def _name_parts(value: str) -> set[str]:
+    return {p for p in _NAME_PART.split(value.lower()) if p}
+
+
+def _redact_names(text: str, counts: Counter[str], known: frozenset[str] = frozenset()) -> str:
     results = _person_analyzer().analyze(text=text, entities=["PERSON"], language="en", score_threshold=0.85)
     # Replace right to left so earlier offsets stay valid.
     for r in sorted(results, key=lambda r: r.start, reverse=True):
         value = text[r.start : r.end]
         if value.startswith("<"):  # already a placeholder
             continue
+        if _name_parts(value) <= known:  # an object name the same result already shows
+            continue
         counts["person"] += 1
         text = text[: r.start] + _pseudonym("person", value) + text[r.end :]
     return text
 
 
-def redact(text: str, names: bool = True) -> RedactionResult:
+def redact(text: str, names: bool = True, known: frozenset[str] = frozenset()) -> RedactionResult:
     counts: Counter[str] = Counter()
     for name, pattern, replacement in _SECRET_RULES:
         text, n = pattern.subn(replacement, text)
@@ -146,7 +156,7 @@ def redact(text: str, names: bool = True) -> RedactionResult:
     text = _EMAIL.sub(_email, text)
     text = _IPV4.sub(lambda m: _redact_ip(m, counts), text)
     if names and get_settings().redact_names and any(c.isalpha() for c in text):
-        text = _redact_names(text, counts)
+        text = _redact_names(text, counts, known)
     return RedactionResult(text=text, counts=counts)
 
 
@@ -175,18 +185,33 @@ def redact_argv(argv: list[str] | None) -> list[str] | None:
     ]
 
 
-def redact_obj(obj: Any, counts: Counter[str] | None = None, names: bool = True) -> Any:
+def _identifier_parts(obj: Any, key: str | None = None) -> set[str]:
+    if isinstance(obj, str):
+        return _name_parts(obj) if key in IDENTIFIER_KEYS else set()
+    if isinstance(obj, dict):
+        return set().union(*(_identifier_parts(v, k) for k, v in obj.items()))
+    if isinstance(obj, list):
+        return set().union(*(_identifier_parts(v, key) for v in obj))
+    return set()
+
+
+def redact_obj(
+    obj: Any, counts: Counter[str] | None = None, names: bool = True, known: frozenset[str] | None = None
+) -> Any:
     """Redact every string inside a JSON-like structure (dicts, lists, scalars).
 
-    Inside a dict, person-name detection applies only to values under FREE_TEXT_KEYS."""
+    Inside a dict, person-name detection applies only to values under FREE_TEXT_KEYS, and skips object names
+    found under IDENTIFIER_KEYS anywhere in the same structure."""
     if counts is None:
         counts = Counter()
+    if known is None:
+        known = frozenset(_identifier_parts(obj))
     if isinstance(obj, str):
-        result = redact(obj, names=names)
+        result = redact(obj, names=names, known=known)
         counts.update(result.counts)
         return result.text
     if isinstance(obj, dict):
-        return {k: redact_obj(v, counts, names=k in FREE_TEXT_KEYS) for k, v in obj.items()}
+        return {k: redact_obj(v, counts, names=k in FREE_TEXT_KEYS, known=known) for k, v in obj.items()}
     if isinstance(obj, list):
-        return [redact_obj(v, counts, names) for v in obj]
+        return [redact_obj(v, counts, names, known) for v in obj]
     return obj

@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     # LLM (OpenAI). The key comes from OPENAI_API_KEY.
     agent_model: str = "gpt-5-mini"
     judge_model: str = "gpt-6.1-sol"  # used by evals (Phase 2); must differ from the model under test
+    judge_votes: int = 3  # gradings per incident; each score is their median (O6)
 
     # Agent run bounds. LangGraph counts each model call and each tool round as a step.
     agent_recursion_limit: int = 40

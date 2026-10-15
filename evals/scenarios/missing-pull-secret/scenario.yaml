@@ -1,0 +1,17 @@
+namespace: accounts
+summary: A private registry image whose imagePullSecret does not exist, so the pull is unauthorized.
+wait:
+  - container_reason: [ErrImagePull, ImagePullBackOff]
+incidents:
+  - workload: ledger-api
+    kind: Deployment
+    categories: [image_pull, config_error]
+    root_cause: >-
+      The Deployment pulls the private image ghcr.io/kube-sre-eval/ledger-api:1.4.2 with the
+      imagePullSecret ghcr-pull, which does not exist in the namespace, so the pull is anonymous and
+      the registry rejects it; the pod never starts.
+    key_facts:
+      - the image pull from ghcr.io is rejected (denied or unauthorized), not a missing tag
+      - the referenced image pull secret ghcr-pull does not exist
+    fixes:
+      - create the ghcr-pull docker-registry Secret with valid registry credentials (or reference an existing pull secret)

@@ -1,0 +1,16 @@
+namespace: docs
+summary: The container command has a typo (pyhton), so the runtime cannot start it.
+wait:
+  - restarts: 2
+incidents:
+  - workload: index-builder
+    kind: Deployment
+    categories: [crash_loop, config_error]
+    root_cause: >-
+      The container command is "pyhton", a typo for python; the executable does not exist in the image,
+      so the runtime fails to start the container and it crash-loops.
+    key_facts:
+      - the container fails to start because the executable pyhton is not found
+      - pyhton is a typo in the container command (should be python)
+    fixes:
+      - correct the command to python (kubectl set or patch the container command, or roll back)

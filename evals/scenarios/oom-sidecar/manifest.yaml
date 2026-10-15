@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: event-collector}
+  template:
+    metadata:
+      labels: {app: event-collector}
+    spec:
+      containers:
+        - name: collector
+          image: python:3.11-slim
+          command: [python, -u, -m, http.server, "8080"]
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 128Mi}
+        - name: log-shipper
+          image: python:3.11-slim
+          command:
+            - python
+            - -u
+            - -c
+            - |
+              import time
+              print("log-shipper 0.9.3: shipping /var/log/collector to the archive", flush=True)
+              pending = []
+              while True:
+                  pending.append("x" * 4 * 1024 * 1024)  # batches are kept after shipping
+                  print(f"shipped batch {len(pending)}, buffer {4 * len(pending)} MB", flush=True)
+                  time.sleep(1)
+          resources:
+            requests: {memory: 48Mi}
+            limits: {memory: 48Mi}

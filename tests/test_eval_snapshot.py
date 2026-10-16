@@ -4,10 +4,12 @@ import pytest
 from kubernetes.client.rest import ApiException
 
 from kube_sre.evals.scenarios import load_scenarios
-from kube_sre.evals.snapshot import FakeAppsApi, FakeCoreApi, captured_at
+from kube_sre.evals.snapshot import SNAPSHOT_VERSION, FakeAppsApi, FakeCoreApi, _raw_secret, captured_at
 from kube_sre.tools import k8s_read
 from kube_sre.tools.boundary import finalize
 from kube_sre.tools.k8s_read import (
+    describe_config_impl,
+    describe_service_impl,
     describe_workload_impl,
     get_events_impl,
     get_owner_impl,
@@ -41,7 +43,7 @@ def _event(name, kind, reason, type_="Warning"):
 
 def _snapshot(**overrides):
     snap = {
-        "version": 1,
+        "version": SNAPSHOT_VERSION,
         "namespace": NS,
         "captured_at": "2026-10-14T12:00:00+00:00",
         "pods": [_pod("web-1", labels={"app": "web"}), _pod("multi", containers=("a", "b"))],
@@ -51,6 +53,9 @@ def _snapshot(**overrides):
         "deployments": [],
         "statefulsets": [],
         "daemonsets": [],
+        "services": [],
+        "configmaps": [],
+        "secrets": [],
         "logs": {
             "web-1/app/current": {
                 "text": "2026-10-14T11:50:00.123456789Z old line\n"
@@ -120,6 +125,24 @@ def test_missing_workload_is_404_with_api_message():
     assert e.value.status == 404 and json.loads(e.value.body)["message"] == 'deployments.apps "nope" not found'
 
 
+def test_recorded_secrets_keep_key_names_only():
+    from kubernetes.client import V1ObjectMeta, V1Secret
+
+    secret = V1Secret(
+        metadata=V1ObjectMeta(
+            name="db",
+            namespace=NS,
+            annotations={"kubectl.kubernetes.io/last-applied-configuration": '{"stringData":{"pw":"hunter2"}}'},
+        ),
+        type="Opaque",
+        data={"pw": "aHVudGVyMg=="},
+        string_data={"pw": "hunter2"},
+    )
+    raw = _raw_secret(secret)
+    assert raw["data"] == {"pw": ""} and raw["type"] == "Opaque"
+    assert "hunter2" not in json.dumps(raw) and "aHVudGVyMg" not in json.dumps(raw)
+
+
 def test_unknown_snapshot_version_rejected():
     with pytest.raises(ValueError):
         FakeCoreApi(_snapshot(version=99))
@@ -143,6 +166,8 @@ def test_recorded_snapshot_shows_each_expected_failure(scenario, monkeypatch):
         assert describe_workload_impl(apps, expected.kind, expected.workload, ns).name == expected.workload
     if not scenario.incidents:
         assert unhealthy == []
+    for svc in snap["services"]:
+        assert describe_service_impl(core, apps, svc["metadata"]["name"], ns).exists
 
     nodes = list_nodes_impl(core).nodes
     assert nodes and all(n.ready for n in nodes)
@@ -165,6 +190,7 @@ def test_seeded_secrets_never_leave_the_tool_boundary(scenario, monkeypatch):
     core, apps, ns = FakeCoreApi(snap), FakeAppsApi(snap), scenario.namespace
     monkeypatch.setattr(k8s_read, "_now", lambda: captured_at(snap))
     assert any(s in scenario.snapshot.read_text() for s in scenario.secrets)  # the snapshot really has them
+    assert not any(s in json.dumps(snap["secrets"]) for s in scenario.secrets)  # but not in a Secret
 
     pods = list_pods_impl(core, ns, only_unhealthy=False)
     results = [pods, list_warning_events_impl(core, ns)]
@@ -174,6 +200,8 @@ def test_seeded_secrets_never_leave_the_tool_boundary(scenario, monkeypatch):
             for previous in (False, True):
                 results.append(get_pod_logs_impl(core, pod.name, ns, container=c.name, previous=previous))
     results += [describe_workload_impl(apps, e.kind, e.workload, ns) for e in scenario.incidents]
+    results += [describe_config_impl(core, "ConfigMap", c["metadata"]["name"], ns) for c in snap["configmaps"]]
+    results += [describe_config_impl(core, "Secret", c["metadata"]["name"], ns) for c in snap["secrets"]]
 
     text = "\n".join(finalize("tool", {}, r).model_dump_json() for r in results)
     assert [s for s in scenario.secrets if s in text] == []

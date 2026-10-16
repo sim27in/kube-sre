@@ -4,6 +4,7 @@ failure shows, snapshot the namespace, delete it. Needs kubectl and a reachable 
 import json
 import subprocess
 import time
+from collections import Counter
 
 from kube_sre.config import get_apps_api, get_core_api, get_settings
 from kube_sre.evals.scenarios import SNAPSHOTS_DIR, Scenario, WaitCondition
@@ -59,6 +60,11 @@ def record(scenarios: list[Scenario], keep: bool = False, timeout: int = 300, po
     if len(scenarios) > 1 and any(s.setup for s in scenarios):
         alone = [s.id for s in scenarios if s.setup]
         raise SystemExit(f"{alone} change cluster-wide state; record each of them on its own.")
+    namespaces = Counter(s.namespace for s in scenarios)
+    shared = sorted(s.id for s in scenarios if namespaces[s.namespace] > 1)
+    if shared:
+        # Both would be applied into one namespace, and the first to finish deletes it under the other.
+        raise SystemExit(f"{shared} share a namespace; record them in separate batches.")
     for s in scenarios:
         for args in s.setup:
             _kubectl(*args)

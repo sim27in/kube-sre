@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:37:32.198753+00:00",
+ "captured_at": "2026-10-16T12:01:17.194454+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "website",
+    "resourceVersion": "106699",
+    "uid": "40b7c8a2-e168-4235-b5dc-577a99acb13c"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"docs-site\",\"namespace\":\"website\"},\"spec\":{\"replicas\":2,\"selector\":{\"matchLabels\":{\"app\":\"docs-site\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"docs-site\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"web\",\"ports\":[{\"containerPort\":80}],\"readinessProbe\":{\"httpGet\":{\"path\":\"/\",\"port\":80}},\"resources\":{\"limits\":{\"memory\":\"64Mi\"},\"requests\":{\"cpu\":\"10m\",\"memory\":\"32Mi\"}}}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "docs-site",
     "namespace": "website",
-    "resourceVersion": "71947",
-    "uid": "30deef2d-4f64-4f6e-9d08-d4d746410aec"
+    "resourceVersion": "106871",
+    "uid": "841db154-a290-4644-a613-9d408ecb10a0"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -85,16 +102,16 @@
     "availableReplicas": 2,
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:37:17+00:00",
-      "lastUpdateTime": "2026-10-14T11:37:17+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:55+00:00",
       "message": "Deployment has minimum availability.",
       "reason": "MinimumReplicasAvailable",
       "status": "True",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:37:17+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:55+00:00",
       "message": "ReplicaSet \"docs-site-584dbd4fcd\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
@@ -112,23 +129,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
-    "resourceVersion": "71340",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106707",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Successfully assigned website/docs-site-584dbd4fcd-448xm to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned website/docs-site-584dbd4fcd-rd4m2 to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de6242443ebe39",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "docs-site-584dbd4fcd-rd4m2.18df00cc69987824",
     "namespace": "website",
-    "resourceVersion": "71348",
-    "uid": "52ac6de6-f338-4d80-a718-c51af50ea4ad"
+    "resourceVersion": "106716",
+    "uid": "9d481d14-cb95-4497-bd6f-b671566e85e8"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -140,54 +157,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
-    "resourceVersion": "71344",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106711",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Pulling image \"nginx:1.27-alpine\"",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
+   "message": "Container image \"nginx:1.27-alpine\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de62425e27a16e",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rd4m2.18df00cc820eef63",
     "namespace": "website",
-    "resourceVersion": "71411",
-    "uid": "6292fa76-4fa0-45d2-91ef-63ec2e4bcf92"
-   },
-   "reason": "Pulling",
-   "reportingComponent": "kubelet",
-   "reportingInstance": "kubesre-control-plane",
-   "source": {
-    "component": "kubelet",
-    "host": "kubesre-control-plane"
-   },
-   "type": "Normal"
-  },
-  {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:16+00:00",
-   "involvedObject": {
-    "apiVersion": "v1",
-    "fieldPath": "spec.containers{web}",
-    "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
-    "namespace": "website",
-    "resourceVersion": "71344",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
-   },
-   "lastTimestamp": "2026-10-14T11:37:16+00:00",
-   "message": "Successfully pulled image \"nginx:1.27-alpine\" in 2.33s (1m37.754s including waiting). Image size: 21832241 bytes.",
-   "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:16+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de625920cb39a8",
-    "namespace": "website",
-    "resourceVersion": "71939",
-    "uid": "eb04279a-2273-4bba-a8b4-903fe6925129"
+    "resourceVersion": "106777",
+    "uid": "07cf932c-9e45-4ec1-8e2a-823f12be8df5"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -200,24 +187,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:16+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
-    "resourceVersion": "71344",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106711",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
-   "lastTimestamp": "2026-10-14T11:37:16+00:00",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:16+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de62592167460f",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rd4m2.18df00cc82cdef38",
     "namespace": "website",
-    "resourceVersion": "71940",
-    "uid": "0c0d7e54-5b50-4891-8293-a244f19ea48e"
+    "resourceVersion": "106780",
+    "uid": "82dfab21-8ca6-4ea5-bdd1-4a73c2dbc630"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -230,24 +217,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:16+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
-    "resourceVersion": "71344",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106711",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
-   "lastTimestamp": "2026-10-14T11:37:16+00:00",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:16+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de625923d81371",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rd4m2.18df00cc85f56310",
     "namespace": "website",
-    "resourceVersion": "71941",
-    "uid": "8dbbbad4-42ab-4bb0-a477-1398dd20dbe7"
+    "resourceVersion": "106784",
+    "uid": "19fa0085-49f0-400e-8826-f23b0152ef90"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -260,24 +247,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:16+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
-    "resourceVersion": "71344",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106711",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
-   "lastTimestamp": "2026-10-14T11:37:16+00:00",
-   "message": "Readiness probe failed: Get \"http://10.244.0.8:80/\": dial tcp 10.244.0.8:80: connect: connection refused",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
+   "message": "Readiness probe failed: Get \"http://10.244.0.11:80/\": dial tcp 10.244.0.11:80: connect: connection refused",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:16+00:00",
-    "name": "docs-site-584dbd4fcd-448xm.18de625923f574c3",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rd4m2.18df00cc862bc6bb",
     "namespace": "website",
-    "resourceVersion": "71942",
-    "uid": "f865c882-e226-4732-85da-9412cd8d21c5"
+    "resourceVersion": "106789",
+    "uid": "4aef82c0-126a-424b-9d8d-3396c7f3db91"
    },
    "reason": "Unhealthy",
    "reportingComponent": "kubelet",
@@ -290,23 +277,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
-    "resourceVersion": "71342",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106706",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Successfully assigned website/docs-site-584dbd4fcd-r4fpb to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned website/docs-site-584dbd4fcd-rw4ns to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de62424473af1f",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "docs-site-584dbd4fcd-rw4ns.18df00cc697f44a5",
     "namespace": "website",
-    "resourceVersion": "71349",
-    "uid": "49cb2f84-394b-49e7-b8e0-05f4ea3f4e88"
+    "resourceVersion": "106714",
+    "uid": "1e44087c-2dd7-4deb-bcae-5c6bf940210e"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -318,54 +305,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
-    "resourceVersion": "71346",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106708",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Pulling image \"nginx:1.27-alpine\"",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
+   "message": "Container image \"nginx:1.27-alpine\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de62425e001fa9",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rw4ns.18df00cc819996dc",
     "namespace": "website",
-    "resourceVersion": "71407",
-    "uid": "0bac1ef5-2d28-4f6e-8653-84c2b8a89c97"
-   },
-   "reason": "Pulling",
-   "reportingComponent": "kubelet",
-   "reportingInstance": "kubesre-control-plane",
-   "source": {
-    "component": "kubelet",
-    "host": "kubesre-control-plane"
-   },
-   "type": "Normal"
-  },
-  {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:14+00:00",
-   "involvedObject": {
-    "apiVersion": "v1",
-    "fieldPath": "spec.containers{web}",
-    "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
-    "namespace": "website",
-    "resourceVersion": "71346",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
-   },
-   "lastTimestamp": "2026-10-14T11:37:14+00:00",
-   "message": "Successfully pulled image \"nginx:1.27-alpine\" in 1m35.425s (1m35.425s including waiting). Image size: 21832241 bytes.",
-   "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:14+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de625895dd6f34",
-    "namespace": "website",
-    "resourceVersion": "71924",
-    "uid": "e8d7d293-bd35-4f88-95d7-4e9f8b745769"
+    "resourceVersion": "106772",
+    "uid": "f7a7c832-4001-4b42-99c9-0b755dbb2ce0"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -378,24 +335,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:14+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
-    "resourceVersion": "71346",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106708",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
-   "lastTimestamp": "2026-10-14T11:37:14+00:00",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:14+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de625896484647",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rw4ns.18df00cc82a9af1c",
     "namespace": "website",
-    "resourceVersion": "71925",
-    "uid": "935d80ec-56e9-47b5-953a-3e427d337774"
+    "resourceVersion": "106779",
+    "uid": "28e16999-fadb-42e1-82ed-24ddaa193ee1"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -408,24 +365,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:14+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
-    "resourceVersion": "71346",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106708",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
-   "lastTimestamp": "2026-10-14T11:37:14+00:00",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:14+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de62589930c2d2",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rw4ns.18df00cc85eb4f79",
     "namespace": "website",
-    "resourceVersion": "71926",
-    "uid": "2ce41cba-0158-4e8d-ac1e-1ae1aea9cfbb"
+    "resourceVersion": "106783",
+    "uid": "5341424f-a9e8-4700-b50b-58dcb7efb41a"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -438,24 +395,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:14+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
-    "resourceVersion": "71346",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106708",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
-   "lastTimestamp": "2026-10-14T11:37:14+00:00",
-   "message": "Readiness probe failed: Get \"http://10.244.0.9:80/\": dial tcp 10.244.0.9:80: connect: connection refused",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
+   "message": "Readiness probe failed: Get \"http://10.244.0.10:80/\": dial tcp 10.244.0.10:80: connect: connection refused",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:14+00:00",
-    "name": "docs-site-584dbd4fcd-r4fpb.18de6258994c16c0",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "docs-site-584dbd4fcd-rw4ns.18df00cc860d2f59",
     "namespace": "website",
-    "resourceVersion": "71927",
-    "uid": "01f6fa2f-4e1a-4f4c-9689-41cd93ae17bf"
+    "resourceVersion": "106787",
+    "uid": "291b9701-cb92-420f-9225-8473ab071aad"
    },
    "reason": "Unhealthy",
    "reportingComponent": "kubelet",
@@ -468,23 +425,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "docs-site-584dbd4fcd",
     "namespace": "website",
-    "resourceVersion": "71337",
-    "uid": "37acc04d-4a7d-484d-bdcc-7c172431d0aa"
+    "resourceVersion": "106703",
+    "uid": "e25c7902-31bd-4db1-b6d2-fe31f6c5ca46"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: docs-site-584dbd4fcd-448xm",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: docs-site-584dbd4fcd-rw4ns",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd.18de624243d61f05",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "docs-site-584dbd4fcd.18df00cc692d0401",
     "namespace": "website",
-    "resourceVersion": "71341",
-    "uid": "139e261a-1552-4318-9dd9-dc9c223b611f"
+    "resourceVersion": "106709",
+    "uid": "f36101c9-c43e-4182-b735-1fb448ff99ed"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -496,23 +453,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "docs-site-584dbd4fcd",
     "namespace": "website",
-    "resourceVersion": "71337",
-    "uid": "37acc04d-4a7d-484d-bdcc-7c172431d0aa"
+    "resourceVersion": "106703",
+    "uid": "e25c7902-31bd-4db1-b6d2-fe31f6c5ca46"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: docs-site-584dbd4fcd-r4fpb",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: docs-site-584dbd4fcd-rd4m2",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site-584dbd4fcd.18de624244275221",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "docs-site-584dbd4fcd.18df00cc6966bb11",
     "namespace": "website",
-    "resourceVersion": "71345",
-    "uid": "1399dd7a-b07c-4f9b-9eff-b575f43d9698"
+    "resourceVersion": "106713",
+    "uid": "92461e97-c398-448a-ba02-06bfa5404072"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -524,23 +481,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "docs-site",
     "namespace": "website",
-    "resourceVersion": "71336",
-    "uid": "30deef2d-4f64-4f6e-9d08-d4d746410aec"
+    "resourceVersion": "106702",
+    "uid": "841db154-a290-4644-a613-9d408ecb10a0"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
    "message": "Scaled up replica set docs-site-584dbd4fcd from 0 to 2",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "docs-site.18de624243a09715",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "docs-site.18df00cc68e921e9",
     "namespace": "website",
-    "resourceVersion": "71338",
-    "uid": "160bedf6-d14f-4b64-a259-e3d7c86ded1b"
+    "resourceVersion": "106704",
+    "uid": "a7ea3d64-fbee-402f-92be-1180b55753bf"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -552,22 +509,22 @@
   }
  ],
  "logs": {
-  "docs-site-584dbd4fcd-448xm/web/current": {
-   "text": "2026-10-14T11:37:16.731629884Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-14T11:37:16.731651384Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-14T11:37:16.732234593Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-14T11:37:16.736539134Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:16.741144426Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:16.741263426Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-14T11:37:16.741329218Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-14T11:37:16.742425843Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-14T11:37:16.743056051Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-14T11:37:16.747160259Z 2026/10/14 11:37:16 [notice] 1#1: using the \"epoll\" event method\n2026-10-14T11:37:16.747165884Z 2026/10/14 11:37:16 [notice] 1#1: nginx/1.27.5\n2026-10-14T11:37:16.747166843Z 2026/10/14 11:37:16 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-14T11:37:16.747167509Z 2026/10/14 11:37:16 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-14T11:37:16.747168426Z 2026/10/14 11:37:16 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-14T11:37:16.747170801Z 2026/10/14 11:37:16 [notice] 1#1: start worker processes\n2026-10-14T11:37:16.747260259Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 34\n2026-10-14T11:37:16.747264801Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 35\n2026-10-14T11:37:16.747369551Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 36\n2026-10-14T11:37:16.747557759Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 37\n2026-10-14T11:37:16.747854343Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 38\n2026-10-14T11:37:16.747859926Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 39\n2026-10-14T11:37:16.747860843Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 40\n2026-10-14T11:37:16.747861593Z 2026/10/14 11:37:16 [notice] 1#1: start worker process 41\n2026-10-14T11:37:17.303525510Z 10.244.0.1 - - [14/Oct/2026:11:37:17 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-14T11:37:27.304695333Z 10.244.0.1 - - [14/Oct/2026:11:37:27 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n"
+  "docs-site-584dbd4fcd-rd4m2/web/current": {
+   "text": "2026-10-16T12:00:55.142305128Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-16T12:00:55.142334169Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-16T12:00:55.144258503Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-16T12:00:55.153521003Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:55.179794294Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:55.180060086Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-16T12:00:55.180127211Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-16T12:00:55.181594586Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-16T12:00:55.182398086Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-16T12:00:55.198356711Z 2026/10/16 12:00:55 [notice] 1#1: using the \"epoll\" event method\n2026-10-16T12:00:55.198362711Z 2026/10/16 12:00:55 [notice] 1#1: nginx/1.27.5\n2026-10-16T12:00:55.198363544Z 2026/10/16 12:00:55 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-16T12:00:55.198364128Z 2026/10/16 12:00:55 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-16T12:00:55.198364878Z 2026/10/16 12:00:55 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-16T12:00:55.198365419Z 2026/10/16 12:00:55 [notice] 1#1: start worker processes\n2026-10-16T12:00:55.198677336Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 34\n2026-10-16T12:00:55.198683794Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 35\n2026-10-16T12:00:55.198684919Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 36\n2026-10-16T12:00:55.198685794Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 37\n2026-10-16T12:00:55.199215961Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 38\n2026-10-16T12:00:55.199221836Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 39\n2026-10-16T12:00:55.199222878Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 40\n2026-10-16T12:00:55.199223753Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 41\n2026-10-16T12:00:55.381727170Z 10.244.0.1 - - [16/Oct/2026:12:00:55 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-16T12:01:05.384390049Z 10.244.0.1 - - [16/Oct/2026:12:01:05 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-16T12:01:15.387365554Z 10.244.0.1 - - [16/Oct/2026:12:01:15 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n"
   },
-  "docs-site-584dbd4fcd-448xm/web/previous": {
+  "docs-site-584dbd4fcd-rd4m2/web/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"docs-site-584dbd4fcd-448xm\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"docs-site-584dbd4fcd-rd4m2\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "docs-site-584dbd4fcd-r4fpb/web/current": {
-   "text": "2026-10-14T11:37:14.405966425Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-14T11:37:14.405981925Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-14T11:37:14.406391050Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-14T11:37:14.410801258Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:14.416869217Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:14.416974383Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-14T11:37:14.416988092Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-14T11:37:14.418090175Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-14T11:37:14.418731592Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-14T11:37:14.423970092Z 2026/10/14 11:37:14 [notice] 1#1: using the \"epoll\" event method\n2026-10-14T11:37:14.423977467Z 2026/10/14 11:37:14 [notice] 1#1: nginx/1.27.5\n2026-10-14T11:37:14.423978383Z 2026/10/14 11:37:14 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-14T11:37:14.423978925Z 2026/10/14 11:37:14 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-14T11:37:14.423979842Z 2026/10/14 11:37:14 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-14T11:37:14.424010758Z 2026/10/14 11:37:14 [notice] 1#1: start worker processes\n2026-10-14T11:37:14.424064675Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 34\n2026-10-14T11:37:14.424125342Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 35\n2026-10-14T11:37:14.424223758Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 36\n2026-10-14T11:37:14.424329800Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 37\n2026-10-14T11:37:14.424429425Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 38\n2026-10-14T11:37:14.424432133Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 39\n2026-10-14T11:37:14.424676508Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 40\n2026-10-14T11:37:14.424679800Z 2026/10/14 11:37:14 [notice] 1#1: start worker process 41\n2026-10-14T11:37:15.294896592Z 10.244.0.1 - - [14/Oct/2026:11:37:15 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-14T11:37:25.296365097Z 10.244.0.1 - - [14/Oct/2026:11:37:25 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n"
+  "docs-site-584dbd4fcd-rw4ns/web/current": {
+   "text": "2026-10-16T12:00:55.143507169Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-16T12:00:55.143532669Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-16T12:00:55.144575211Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-16T12:00:55.153370253Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:55.179864336Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:55.179941836Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-16T12:00:55.180074836Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-16T12:00:55.181664628Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-16T12:00:55.182453003Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-16T12:00:55.196428503Z 2026/10/16 12:00:55 [notice] 1#1: using the \"epoll\" event method\n2026-10-16T12:00:55.196443336Z 2026/10/16 12:00:55 [notice] 1#1: nginx/1.27.5\n2026-10-16T12:00:55.196445003Z 2026/10/16 12:00:55 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-16T12:00:55.196445628Z 2026/10/16 12:00:55 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-16T12:00:55.196446669Z 2026/10/16 12:00:55 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-16T12:00:55.196484044Z 2026/10/16 12:00:55 [notice] 1#1: start worker processes\n2026-10-16T12:00:55.196492419Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 34\n2026-10-16T12:00:55.196763711Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 35\n2026-10-16T12:00:55.196767794Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 36\n2026-10-16T12:00:55.196964003Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 37\n2026-10-16T12:00:55.196970753Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 38\n2026-10-16T12:00:55.196971503Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 39\n2026-10-16T12:00:55.196974544Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 40\n2026-10-16T12:00:55.197665211Z 2026/10/16 12:00:55 [notice] 1#1: start worker process 41\n2026-10-16T12:00:55.381778295Z 10.244.0.1 - - [16/Oct/2026:12:00:55 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-16T12:01:05.384534258Z 10.244.0.1 - - [16/Oct/2026:12:01:05 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n2026-10-16T12:01:15.387370096Z 10.244.0.1 - - [16/Oct/2026:12:01:15 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"kube-probe/1.37\" \"-\"\n"
   },
-  "docs-site-584dbd4fcd-r4fpb/web/previous": {
+  "docs-site-584dbd4fcd-rw4ns/web/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"docs-site-584dbd4fcd-r4fpb\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"docs-site-584dbd4fcd-rw4ns\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
@@ -591,7 +548,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "107335",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -634,7 +591,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -642,7 +599,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -650,7 +607,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -658,7 +615,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -682,19 +639,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -725,14 +682,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "docs-site-584dbd4fcd-",
     "generation": 1,
     "labels": {
      "app": "docs-site",
      "pod-template-hash": "584dbd4fcd"
     },
-    "name": "docs-site-584dbd4fcd-448xm",
+    "name": "docs-site-584dbd4fcd-rd4m2",
     "namespace": "website",
     "ownerReferences": [
      {
@@ -741,11 +698,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "docs-site-584dbd4fcd",
-      "uid": "37acc04d-4a7d-484d-bdcc-7c172431d0aa"
+      "uid": "e25c7902-31bd-4db1-b6d2-fe31f6c5ca46"
      }
     ],
-    "resourceVersion": "71955",
-    "uid": "aaa3e162-58ef-4bf1-a194-73aaa5df1079"
+    "resourceVersion": "106965",
+    "uid": "099347a2-3320-476b-b2f6-a1dca4438572"
    },
    "spec": {
     "containers": [
@@ -784,7 +741,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-hcfch",
+        "name": "kube-api-access-s2xw4",
         "readOnly": true
        }
       ]
@@ -817,7 +774,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-hcfch",
+      "name": "kube-api-access-s2xw4",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -863,31 +820,31 @@
     },
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:17+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:17+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -899,7 +856,7 @@
        "cpu": "10m",
        "memory": "32Mi"
       },
-      "containerID": "containerd://b24fa41fb3b71eb14957c296c48a03da3e6042fd896fdde74fe8408a805eaaf0",
+      "containerID": "containerd://bd4bde9b940c5e4562475b24270d96da7e7dd0f9da1f199eba9e0d78200de1e0",
       "image": "docker.io/library/nginx:1.27-alpine",
       "imageID": "docker.io/library/nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10",
       "lastState": {},
@@ -918,7 +875,7 @@
       "started": true,
       "state": {
        "running": {
-        "startedAt": "2026-10-14T11:37:16+00:00"
+        "startedAt": "2026-10-16T12:00:55+00:00"
        }
       },
       "user": {
@@ -943,7 +900,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-hcfch",
+        "name": "kube-api-access-s2xw4",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -958,10 +915,10 @@
     ],
     "observedGeneration": 1,
     "phase": "Running",
-    "podIP": "10.244.0.8",
+    "podIP": "10.244.0.11",
     "podIPs": [
      {
-      "ip": "10.244.0.8"
+      "ip": "10.244.0.11"
      }
     ],
     "qosClass": "Burstable",
@@ -973,19 +930,19 @@
       "memory": "32Mi"
      }
     },
-    "startTime": "2026-10-14T11:35:38+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   },
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "docs-site-584dbd4fcd-",
     "generation": 1,
     "labels": {
      "app": "docs-site",
      "pod-template-hash": "584dbd4fcd"
     },
-    "name": "docs-site-584dbd4fcd-r4fpb",
+    "name": "docs-site-584dbd4fcd-rw4ns",
     "namespace": "website",
     "ownerReferences": [
      {
@@ -994,11 +951,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "docs-site-584dbd4fcd",
-      "uid": "37acc04d-4a7d-484d-bdcc-7c172431d0aa"
+      "uid": "e25c7902-31bd-4db1-b6d2-fe31f6c5ca46"
      }
     ],
-    "resourceVersion": "71944",
-    "uid": "22c9c755-df02-4a5a-b488-66d4be7220bf"
+    "resourceVersion": "106964",
+    "uid": "677e63d2-1bcc-444b-b919-cc9b4c65d12e"
    },
    "spec": {
     "containers": [
@@ -1037,7 +994,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-zfks5",
+        "name": "kube-api-access-btz84",
         "readOnly": true
        }
       ]
@@ -1070,7 +1027,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-zfks5",
+      "name": "kube-api-access-btz84",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -1116,31 +1073,31 @@
     },
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:15+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:15+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -1152,7 +1109,7 @@
        "cpu": "10m",
        "memory": "32Mi"
       },
-      "containerID": "containerd://ea8c0d0e0467ca1f3b0bf31f7a2f313ceb7c14ff667d8be4d96b9d209a16721d",
+      "containerID": "containerd://ee179ffd96b0de5d6578eb739c1741357704550faf2b04d61d82b328fd262e4a",
       "image": "docker.io/library/nginx:1.27-alpine",
       "imageID": "docker.io/library/nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10",
       "lastState": {},
@@ -1171,7 +1128,7 @@
       "started": true,
       "state": {
        "running": {
-        "startedAt": "2026-10-14T11:37:14+00:00"
+        "startedAt": "2026-10-16T12:00:55+00:00"
        }
       },
       "user": {
@@ -1196,7 +1153,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-zfks5",
+        "name": "kube-api-access-btz84",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -1211,10 +1168,10 @@
     ],
     "observedGeneration": 1,
     "phase": "Running",
-    "podIP": "10.244.0.9",
+    "podIP": "10.244.0.10",
     "podIPs": [
      {
-      "ip": "10.244.0.9"
+      "ip": "10.244.0.10"
      }
     ],
     "qosClass": "Burstable",
@@ -1226,7 +1183,7 @@
       "memory": "32Mi"
      }
     },
-    "startTime": "2026-10-14T11:35:38+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
@@ -1239,7 +1196,7 @@
      "deployment.kubernetes.io/max-replicas": "3",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "docs-site",
@@ -1254,11 +1211,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "docs-site",
-      "uid": "30deef2d-4f64-4f6e-9d08-d4d746410aec"
+      "uid": "841db154-a290-4644-a613-9d408ecb10a0"
      }
     ],
-    "resourceVersion": "71946",
-    "uid": "37acc04d-4a7d-484d-bdcc-7c172431d0aa"
+    "resourceVersion": "106834",
+    "uid": "e25c7902-31bd-4db1-b6d2-fe31f6c5ca46"
    },
    "spec": {
     "replicas": 2,
@@ -1329,6 +1286,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

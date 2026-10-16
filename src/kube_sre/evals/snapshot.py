@@ -1,8 +1,9 @@
 """Cluster snapshots: record a namespace's API state once, then serve it to the real tools offline.
 
-A snapshot holds the raw API objects the tools read (pods, events, PVCs, workloads, nodes) plus every container's
-current and previous logs. `FakeCoreApi` and `FakeAppsApi` answer the same client calls from it, so the
-unchanged tool code (and the frozen v0 server) runs against it with any arguments the agent picks.
+A snapshot holds the raw API objects the tools read (pods, events, PVCs, workloads, nodes, Services, ConfigMaps,
+and Secrets without their values) plus every container's current and previous logs. `FakeCoreApi` and
+`FakeAppsApi` answer the same client calls from it, so the unchanged tool code (and the frozen v0 server) runs
+against it with any arguments the agent picks.
 """
 
 import json
@@ -13,7 +14,7 @@ from typing import Any
 from kubernetes.client import ApiClient, AppsV1Api, CoreV1Api
 from kubernetes.client.rest import ApiException
 
-SNAPSHOT_VERSION = 1
+SNAPSHOT_VERSION = 2  # 2: Services, ConfigMaps and Secret keys
 _MAX_LOG_LINES = 2000
 _TIMESTAMP = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(\.\d+)?(Z|[+-]\d\d:\d\d)$")
 _SERIALIZER = ApiClient()
@@ -28,6 +29,16 @@ def _raw(obj) -> dict[str, Any]:
 def _raw_node(node) -> dict[str, Any]:
     data = _raw(node)
     data.get("status", {}).pop("images", None)  # every cached image on the node; large and never read
+    return data
+
+
+def _raw_secret(secret) -> dict[str, Any]:
+    """Name, type and key names only. Values never reach a snapshot (they're committed), and neither do the
+    annotations, where kubectl's last-applied-configuration keeps a copy of them."""
+    data = _raw(secret)
+    data["metadata"].pop("annotations", None)
+    data.pop("stringData", None)
+    data["data"] = dict.fromkeys(data.get("data") or {}, "")
     return data
 
 
@@ -63,6 +74,9 @@ def capture(core: CoreV1Api, apps: AppsV1Api, namespace: str) -> dict[str, Any]:
         "statefulsets": [_raw(s) for s in apps.list_namespaced_stateful_set(namespace).items],
         "daemonsets": [_raw(d) for d in apps.list_namespaced_daemon_set(namespace).items],
         "nodes": [_raw_node(n) for n in core.list_node().items],
+        "services": [_raw(s) for s in core.list_namespaced_service(namespace).items],
+        "configmaps": [_raw(c) for c in core.list_namespaced_config_map(namespace).items],
+        "secrets": [_raw_secret(s) for s in core.list_namespaced_secret(namespace).items],
         "logs": logs,
     }
 
@@ -165,6 +179,15 @@ class FakeCoreApi:
     def list_node(self, **_):
         return self._s.build("V1NodeList", {"items": self._s.data["nodes"]})
 
+    def read_namespaced_service(self, name, namespace, **_):
+        return self._s.build("V1Service", self._s.get("services", "services", name, namespace))
+
+    def read_namespaced_config_map(self, name, namespace, **_):
+        return self._s.build("V1ConfigMap", self._s.get("configmaps", "configmaps", name, namespace))
+
+    def read_namespaced_secret(self, name, namespace, **_):
+        return self._s.build("V1Secret", self._s.get("secrets", "secrets", name, namespace))
+
     def list_namespaced_persistent_volume_claim(self, namespace, **_):
         return self._s.build("V1PersistentVolumeClaimList", {"items": self._s.items("pvcs", namespace)})
 
@@ -225,6 +248,15 @@ class FakeAppsApi:
 
     def read_namespaced_daemon_set(self, name, namespace, **_):
         return self._s.build("V1DaemonSet", self._s.get("daemonsets", "daemonsets.apps", name, namespace))
+
+    def list_namespaced_deployment(self, namespace, **_):
+        return self._s.build("V1DeploymentList", {"items": self._s.items("deployments", namespace)})
+
+    def list_namespaced_stateful_set(self, namespace, **_):
+        return self._s.build("V1StatefulSetList", {"items": self._s.items("statefulsets", namespace)})
+
+    def list_namespaced_daemon_set(self, namespace, **_):
+        return self._s.build("V1DaemonSetList", {"items": self._s.items("daemonsets", namespace)})
 
 
 def captured_at(snapshot: dict[str, Any]) -> datetime:

@@ -8,4 +8,9 @@ from kube_sre.config import get_settings
 
 def get_chat_model(model: str | None = None) -> BaseChatModel:
     """Return an OpenAI chat model. `model` defaults to the agent model."""
-    return ChatOpenAI(model=model or get_settings().agent_model)
+    settings = get_settings()
+    return ChatOpenAI(
+        model=model or settings.agent_model,
+        timeout=settings.llm_request_timeout_seconds,
+        max_retries=settings.llm_max_retries,
+    )

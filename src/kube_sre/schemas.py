@@ -29,6 +29,8 @@ class EvidenceSource(StrEnum):
     OWNERSHIP = "ownership"  # get_owner
     STORAGE = "storage"  # PVC status
     NODES = "nodes"  # list_nodes
+    SERVICE = "service"  # describe_service
+    CONFIG = "config"  # describe_config
 
 
 class ActionType(StrEnum):

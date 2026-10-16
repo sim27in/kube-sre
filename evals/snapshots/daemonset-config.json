@@ -1,5 +1,37 @@
 {
- "captured_at": "2026-10-14T19:14:32.062276+00:00",
+ "captured_at": "2026-10-16T12:01:13.182679+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "logging",
+    "resourceVersion": "106650",
+    "uid": "3e411dbd-a953-45e0-8a4d-7004826866f9"
+   }
+  },
+  {
+   "data": {
+    "agent.yml": "inputs: [/var/log/containers]\noutput: stdout\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"agent.yml\":\"inputs: [/var/log/containers]\\noutput: stdout\\n\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"name\":\"log-agent-config\",\"namespace\":\"logging\"}}\n"
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "log-agent-config",
+    "namespace": "logging",
+    "resourceVersion": "106652",
+    "uid": "b074dfcc-ae3f-4eb2-b2a5-7dc02261435e"
+   }
+  }
+ ],
  "daemonsets": [
   {
    "metadata": {
@@ -7,12 +39,12 @@
      "deprecated.daemonset.template.generation": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"name\":\"log-agent\",\"namespace\":\"logging\"},\"spec\":{\"selector\":{\"matchLabels\":{\"app\":\"log-agent\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"log-agent\"}},\"spec\":{\"containers\":[{\"command\":[\"sh\",\"-c\",\"cat /etc/agent/agent.yaml \\u0026\\u0026 sleep 3600\"],\"image\":\"busybox:1.36\",\"name\":\"agent\",\"volumeMounts\":[{\"mountPath\":\"/etc/agent\",\"name\":\"config\"}]}],\"volumes\":[{\"configMap\":{\"items\":[{\"key\":\"agent.yaml\",\"path\":\"agent.yaml\"}],\"name\":\"log-agent-config\"},\"name\":\"config\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "log-agent",
     "namespace": "logging",
-    "resourceVersion": "102385",
-    "uid": "15d88a43-8c08-41d0-a8e8-f0a7386136c7"
+    "resourceVersion": "106658",
+    "uid": "2079ab08-e2c9-4d95-a890-55284313944c"
    },
    "spec": {
     "revisionHistoryLimit": 10,
@@ -94,23 +126,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "log-agent-mfwkx",
+    "name": "log-agent-mxkqq",
     "namespace": "logging",
-    "resourceVersion": "102383",
-    "uid": "7a5d0d0c-80c3-4293-b2ee-b7cf4a25d1cd"
+    "resourceVersion": "106655",
+    "uid": "6fb279c2-69b7-4632-b9e3-46939e8aa0c2"
    },
-   "lastTimestamp": "2026-10-14T19:14:25+00:00",
-   "message": "Successfully assigned logging/log-agent-mfwkx to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned logging/log-agent-mxkqq to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "log-agent-mfwkx.18de7b4b697cdb61",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "log-agent-mxkqq.18df00cc560ac816",
     "namespace": "logging",
-    "resourceVersion": "102389",
-    "uid": "d4951fb3-2ad5-46b1-9e1f-30025c4938c1"
+    "resourceVersion": "106659",
+    "uid": "76a678b4-687a-4c33-92bf-8d6f3fa9b81f"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -121,24 +153,24 @@
    "type": "Normal"
   },
   {
-   "count": 4,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "count": 6,
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "log-agent-mfwkx",
+    "name": "log-agent-mxkqq",
     "namespace": "logging",
-    "resourceVersion": "102387",
-    "uid": "7a5d0d0c-80c3-4293-b2ee-b7cf4a25d1cd"
+    "resourceVersion": "106657",
+    "uid": "6fb279c2-69b7-4632-b9e3-46939e8aa0c2"
    },
-   "lastTimestamp": "2026-10-14T19:14:29+00:00",
+   "lastTimestamp": "2026-10-16T12:01:10+00:00",
    "message": "MountVolume.SetUp failed for volume \"config\" : configmap references non-existent config key: agent.yaml",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "log-agent-mfwkx.18de7b4b71d8d727",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "log-agent-mxkqq.18df00cc65d8d9de",
     "namespace": "logging",
-    "resourceVersion": "102458",
-    "uid": "04bf8eb2-57ed-477c-96c0-d5cd5ffbaaae"
+    "resourceVersion": "107289",
+    "uid": "da17302e-21d5-4265-a814-78decb6b790d"
    },
    "reason": "FailedMount",
    "reportingComponent": "kubelet",
@@ -151,23 +183,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "DaemonSet",
     "name": "log-agent",
     "namespace": "logging",
-    "resourceVersion": "102380",
-    "uid": "15d88a43-8c08-41d0-a8e8-f0a7386136c7"
+    "resourceVersion": "106653",
+    "uid": "2079ab08-e2c9-4d95-a890-55284313944c"
    },
-   "lastTimestamp": "2026-10-14T19:14:25+00:00",
-   "message": "Created pod: log-agent-mfwkx",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: log-agent-mxkqq",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "log-agent.18de7b4b6921ca8e",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "log-agent.18df00cc55dc92a9",
     "namespace": "logging",
-    "resourceVersion": "102386",
-    "uid": "67d72066-e9a3-4bd2-a146-7d9f6afa32b5"
+    "resourceVersion": "106656",
+    "uid": "f771bdbe-700c-4828-be15-cb45d7ab8df3"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "daemonset-controller",
@@ -179,16 +211,16 @@
   }
  ],
  "logs": {
-  "log-agent-mfwkx/agent/current": {
+  "log-agent-mxkqq/agent/current": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"agent\\\" in pod \\\"log-agent-mfwkx\\\" is waiting to start: ContainerCreating\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"agent\\\" in pod \\\"log-agent-mxkqq\\\" is waiting to start: ContainerCreating\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "log-agent-mfwkx/agent/previous": {
+  "log-agent-mxkqq/agent/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"agent\\\" in pod \\\"log-agent-mfwkx\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"agent\\\" in pod \\\"log-agent-mxkqq\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
@@ -212,7 +244,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102058",
+    "resourceVersion": "106163",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -255,7 +287,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -263,7 +295,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -271,7 +303,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -279,7 +311,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -303,19 +335,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -346,7 +378,7 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "log-agent-",
     "generation": 1,
     "labels": {
@@ -354,7 +386,7 @@
      "controller-revision-hash": "fd4cb5c8c",
      "pod-template-generation": "1"
     },
-    "name": "log-agent-mfwkx",
+    "name": "log-agent-mxkqq",
     "namespace": "logging",
     "ownerReferences": [
      {
@@ -363,11 +395,11 @@
       "controller": true,
       "kind": "DaemonSet",
       "name": "log-agent",
-      "uid": "15d88a43-8c08-41d0-a8e8-f0a7386136c7"
+      "uid": "2079ab08-e2c9-4d95-a890-55284313944c"
      }
     ],
-    "resourceVersion": "102391",
-    "uid": "7a5d0d0c-80c3-4293-b2ee-b7cf4a25d1cd"
+    "resourceVersion": "106660",
+    "uid": "6fb279c2-69b7-4632-b9e3-46939e8aa0c2"
    },
    "spec": {
     "affinity": {
@@ -409,7 +441,7 @@
        },
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-4b4qw",
+        "name": "kube-api-access-pz4l5",
         "readOnly": true
        }
       ]
@@ -473,7 +505,7 @@
       "name": "config"
      },
      {
-      "name": "kube-api-access-4b4qw",
+      "name": "kube-api-access-pz4l5",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -515,7 +547,7 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "no pod sandbox exists",
       "observedGeneration": 1,
       "reason": "PodSandboxNotReady",
@@ -523,13 +555,13 @@
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [agent]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -537,7 +569,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [agent]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -545,7 +577,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -572,7 +604,7 @@
        },
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-4b4qw",
+        "name": "kube-api-access-pz4l5",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -589,12 +621,14 @@
     "phase": "Pending",
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T19:14:25+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
  "pvcs": [],
  "replicasets": [],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

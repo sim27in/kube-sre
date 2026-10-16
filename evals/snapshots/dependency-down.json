@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T19:14:53.635232+00:00",
+ "captured_at": "2026-10-16T12:01:23.919995+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "shop",
+    "resourceVersion": "106664",
+    "uid": "6f1ae200-876b-4561-bba1-18b30f71e6d9"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"checkout-api\",\"namespace\":\"shop\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"checkout-api\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"checkout-api\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-u\",\"-c\",\"import sys, time, urllib.request\\nprint(\\\"checkout-api 3.2.0 starting\\\", flush=True)\\nfor attempt in range(1, 4):\\n    try:\\n        urllib.request.urlopen(\\\"http://payments:8080/\\\", timeout=3)\\n        break\\n    except Exception as e:\\n        print(f\\\"payments check {attempt}/3 failed: {e}\\\", flush=True)\\n        time.sleep(1)\\nelse:\\n    print(\\\"payments service unreachable, refusing to start\\\", flush=True)\\n    sys.exit(1)\\n\"],\"image\":\"python:3.11-slim\",\"name\":\"api\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "checkout-api",
     "namespace": "shop",
-    "resourceVersion": "102590",
-    "uid": "9c726746-a67b-4ebf-b4fc-d13bf128b531"
+    "resourceVersion": "107383",
+    "uid": "ae1f0120-03c6-4f41-b17b-cb36a312188d"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -65,16 +82,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
-      "lastUpdateTime": "2026-10-14T19:14:26+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "ReplicaSet \"checkout-api-5569d745d7\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
       "type": "Progressing"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:49+00:00",
-      "lastUpdateTime": "2026-10-14T19:14:49+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:18+00:00",
+      "lastUpdateTime": "2026-10-16T12:01:18+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
@@ -94,12 +111,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"payments\",\"namespace\":\"shop\"},\"spec\":{\"replicas\":0,\"selector\":{\"matchLabels\":{\"app\":\"payments\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"payments\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"payments\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "payments",
     "namespace": "shop",
-    "resourceVersion": "102414",
-    "uid": "8232095b-2f57-4711-b630-ab315c4632bd"
+    "resourceVersion": "106678",
+    "uid": "b509d05d-9d9f-4a33-89da-ab51fe33b1fe"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -145,16 +162,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
-      "lastUpdateTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "Deployment has minimum availability.",
       "reason": "MinimumReplicasAvailable",
       "status": "True",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
-      "lastUpdateTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "ReplicaSet \"payments-6585bbc9fb\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
@@ -169,23 +186,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
-    "resourceVersion": "102418",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "106681",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
-   "lastTimestamp": "2026-10-14T19:14:25+00:00",
-   "message": "Successfully assigned shop/checkout-api-5569d745d7-5qhh5 to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned shop/checkout-api-5569d745d7-2blx8 to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "checkout-api-5569d745d7-5qhh5.18de7b4b7712d7a3",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api-5569d745d7-2blx8.18df00cc614c60ba",
     "namespace": "shop",
-    "resourceVersion": "102424",
-    "uid": "8ad38e9c-5051-4e37-8c49-ef1d8cbd27ae"
+    "resourceVersion": "106687",
+    "uid": "2e1577ca-e628-43e7-ae6a-5fb16f20db92"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -197,24 +214,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T19:14:26+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{api}",
     "kind": "Pod",
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
-    "resourceVersion": "102420",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "106684",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
-   "lastTimestamp": "2026-10-14T19:14:45+00:00",
+   "lastTimestamp": "2026-10-16T12:01:14+00:00",
    "message": "Container image \"python:3.11-slim\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:26+00:00",
-    "name": "checkout-api-5569d745d7-5qhh5.18de7b4b8de7950e",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api-5569d745d7-2blx8.18df00cc77cbab25",
     "namespace": "shop",
-    "resourceVersion": "102571",
-    "uid": "8dd8df19-bab1-4a57-bc8d-19953a1c3900"
+    "resourceVersion": "107333",
+    "uid": "584e1864-d77c-4843-829c-eb8455e7d94a"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -227,24 +244,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T19:14:26+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{api}",
     "kind": "Pod",
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
-    "resourceVersion": "102420",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "106684",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
-   "lastTimestamp": "2026-10-14T19:14:45+00:00",
+   "lastTimestamp": "2026-10-16T12:01:14+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:26+00:00",
-    "name": "checkout-api-5569d745d7-5qhh5.18de7b4b8e6fa27c",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api-5569d745d7-2blx8.18df00cc787e3603",
     "namespace": "shop",
-    "resourceVersion": "102573",
-    "uid": "eea567f7-5ee3-4a84-8aff-c8e884f5f0a4"
+    "resourceVersion": "107336",
+    "uid": "17160545-43d2-44d5-97c7-bda791c7cc5d"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -257,24 +274,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T19:14:26+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{api}",
     "kind": "Pod",
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
-    "resourceVersion": "102420",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "106684",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
-   "lastTimestamp": "2026-10-14T19:14:45+00:00",
+   "lastTimestamp": "2026-10-16T12:01:14+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:26+00:00",
-    "name": "checkout-api-5569d745d7-5qhh5.18de7b4b913ba3af",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api-5569d745d7-2blx8.18df00cc7b0f7be5",
     "namespace": "shop",
-    "resourceVersion": "102574",
-    "uid": "d1cb067e-c432-4a3b-bcb6-1e56d556fe5a"
+    "resourceVersion": "107337",
+    "uid": "19c6c7c5-d41a-4a7e-a781-a220e154d8b6"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -287,24 +304,24 @@
   },
   {
    "count": 2,
-   "firstTimestamp": "2026-10-14T19:14:33+00:00",
+   "firstTimestamp": "2026-10-16T12:01:02+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{api}",
     "kind": "Pod",
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
-    "resourceVersion": "102420",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "106684",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
-   "lastTimestamp": "2026-10-14T19:14:48+00:00",
-   "message": "Back-off restarting failed container api in pod checkout-api-5569d745d7-5qhh5_shop(74ee5856-359a-493f-a31a-9f579ae770e1)",
+   "lastTimestamp": "2026-10-16T12:01:18+00:00",
+   "message": "Back-off restarting failed container api in pod checkout-api-5569d745d7-2blx8_shop(a3bfc3a4-56e6-459f-a485-863735e62a99)",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:33+00:00",
-    "name": "checkout-api-5569d745d7-5qhh5.18de7b4d5a89c76d",
+    "creationTimestamp": "2026-10-16T12:01:02+00:00",
+    "name": "checkout-api-5569d745d7-2blx8.18df00ce397fc8c2",
     "namespace": "shop",
-    "resourceVersion": "102585",
-    "uid": "e19fb684-dda5-4154-8910-7b58c6a8444a"
+    "resourceVersion": "107380",
+    "uid": "f43089df-d331-4aca-a317-b5834b992803"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -317,23 +334,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "checkout-api-5569d745d7",
     "namespace": "shop",
-    "resourceVersion": "102415",
-    "uid": "d33858ed-99f2-4463-9445-d31abf70c5dd"
+    "resourceVersion": "106677",
+    "uid": "a240708b-0707-4259-8e9c-93ac3fcd639d"
    },
-   "lastTimestamp": "2026-10-14T19:14:25+00:00",
-   "message": "Created pod: checkout-api-5569d745d7-5qhh5",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: checkout-api-5569d745d7-2blx8",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "checkout-api-5569d745d7.18de7b4b76a1e804",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api-5569d745d7.18df00cc610ce63d",
     "namespace": "shop",
-    "resourceVersion": "102421",
-    "uid": "a214fa5a-7d5c-4048-a80f-7067664c8a95"
+    "resourceVersion": "106682",
+    "uid": "a2650a29-b8c9-46d4-b0be-03935deb84c8"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -345,23 +362,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T19:14:25+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "checkout-api",
     "namespace": "shop",
-    "resourceVersion": "102413",
-    "uid": "9c726746-a67b-4ebf-b4fc-d13bf128b531"
+    "resourceVersion": "106676",
+    "uid": "ae1f0120-03c6-4f41-b17b-cb36a312188d"
    },
-   "lastTimestamp": "2026-10-14T19:14:25+00:00",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
    "message": "Scaled up replica set checkout-api-5569d745d7 from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
-    "name": "checkout-api.18de7b4b765acb43",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-api.18df00cc60b89fb1",
     "namespace": "shop",
-    "resourceVersion": "102416",
-    "uid": "a7ee2f17-a167-4765-a7f7-165526aae591"
+    "resourceVersion": "106679",
+    "uid": "ebb1b8af-389d-4214-8b15-3ac49179d704"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -373,11 +390,11 @@
   }
  ],
  "logs": {
-  "checkout-api-5569d745d7-5qhh5/api/current": {
-   "text": "2026-10-14T19:14:45.872822878Z checkout-api 3.2.0 starting\n2026-10-14T19:14:45.876942461Z payments check 1/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-14T19:14:46.882146295Z payments check 2/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-14T19:14:47.886934045Z payments check 3/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-14T19:14:48.888715087Z payments service unreachable, refusing to start\n"
+  "checkout-api-5569d745d7-2blx8/api/current": {
+   "text": "2026-10-16T12:01:15.115761346Z checkout-api 3.2.0 starting\n2026-10-16T12:01:15.119655887Z payments check 1/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-16T12:01:16.127273763Z payments check 2/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-16T12:01:17.129796263Z payments check 3/3 failed: <urlopen error [Errno 111] Connection refused>\n2026-10-16T12:01:18.132313722Z payments service unreachable, refusing to start\n"
   },
-  "checkout-api-5569d745d7-5qhh5/api/previous": {
-   "text": "unable to retrieve container logs for containerd://e387a0ea3451fa614b7fe3f11f5fcd57b26cbdfc098004c2e2b0886557f15cf0"
+  "checkout-api-5569d745d7-2blx8/api/previous": {
+   "text": "unable to retrieve container logs for containerd://1b7162b4ebb3e4b4a8ff54b3b6f67054524bcd289737673a3fc586564f6dfaaa"
   }
  },
  "namespace": "shop",
@@ -398,7 +415,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102058",
+    "resourceVersion": "107335",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -441,7 +458,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -449,7 +466,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -457,7 +474,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -465,7 +482,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -489,19 +506,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -532,14 +549,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "checkout-api-5569d745d7-",
     "generation": 1,
     "labels": {
      "app": "checkout-api",
      "pod-template-hash": "5569d745d7"
     },
-    "name": "checkout-api-5569d745d7-5qhh5",
+    "name": "checkout-api-5569d745d7-2blx8",
     "namespace": "shop",
     "ownerReferences": [
      {
@@ -548,11 +565,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "checkout-api-5569d745d7",
-      "uid": "d33858ed-99f2-4463-9445-d31abf70c5dd"
+      "uid": "a240708b-0707-4259-8e9c-93ac3fcd639d"
      }
     ],
-    "resourceVersion": "102587",
-    "uid": "74ee5856-359a-493f-a31a-9f579ae770e1"
+    "resourceVersion": "107381",
+    "uid": "a3bfc3a4-56e6-459f-a485-863735e62a99"
    },
    "spec": {
     "containers": [
@@ -572,7 +589,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-tt6n2",
+        "name": "kube-api-access-65r4r",
         "readOnly": true
        }
       ]
@@ -605,7 +622,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-tt6n2",
+      "name": "kube-api-access-65r4r",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -647,19 +664,19 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T19:14:26+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:48+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:18+00:00",
       "message": "containers with unready status: [api]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -667,7 +684,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:48+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:18+00:00",
       "message": "containers with unready status: [api]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -675,7 +692,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T19:14:25+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -683,16 +700,16 @@
     ],
     "containerStatuses": [
      {
-      "containerID": "containerd://70f6403b33a97502eb2772937f7b501fb7524bf3f3d70d1b707a0d1eaa985bd4",
+      "containerID": "containerd://e499edd0a1bba309c6c7defddbfb988e7ff9310f2bb19f76c8a4858ece2df368",
       "image": "docker.io/library/python:3.11-slim",
       "imageID": "docker.io/library/python@sha256:da047cb8f9d1d98e5c070f5300ba9f7274e33b8fc0e5be5ed88740aed1b95ba9",
       "lastState": {
        "terminated": {
-        "containerID": "containerd://e387a0ea3451fa614b7fe3f11f5fcd57b26cbdfc098004c2e2b0886557f15cf0",
+        "containerID": "containerd://1b7162b4ebb3e4b4a8ff54b3b6f67054524bcd289737673a3fc586564f6dfaaa",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T19:14:33+00:00",
+        "finishedAt": "2026-10-16T12:01:01+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T19:14:29+00:00"
+        "startedAt": "2026-10-16T12:00:58+00:00"
        }
       },
       "name": "api",
@@ -702,11 +719,11 @@
       "started": false,
       "state": {
        "terminated": {
-        "containerID": "containerd://70f6403b33a97502eb2772937f7b501fb7524bf3f3d70d1b707a0d1eaa985bd4",
+        "containerID": "containerd://e499edd0a1bba309c6c7defddbfb988e7ff9310f2bb19f76c8a4858ece2df368",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T19:14:48+00:00",
+        "finishedAt": "2026-10-16T12:01:18+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T19:14:45+00:00"
+        "startedAt": "2026-10-16T12:01:14+00:00"
        }
       },
       "user": {
@@ -721,7 +738,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-tt6n2",
+        "name": "kube-api-access-65r4r",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -736,15 +753,15 @@
     ],
     "observedGeneration": 1,
     "phase": "Running",
-    "podIP": "10.244.0.30",
+    "podIP": "10.244.0.9",
     "podIPs": [
      {
-      "ip": "10.244.0.30"
+      "ip": "10.244.0.9"
      }
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T19:14:25+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
@@ -757,7 +774,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "checkout-api",
@@ -772,11 +789,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "checkout-api",
-      "uid": "9c726746-a67b-4ebf-b4fc-d13bf128b531"
+      "uid": "ae1f0120-03c6-4f41-b17b-cb36a312188d"
      }
     ],
-    "resourceVersion": "102589",
-    "uid": "d33858ed-99f2-4463-9445-d31abf70c5dd"
+    "resourceVersion": "107382",
+    "uid": "a240708b-0707-4259-8e9c-93ac3fcd639d"
    },
    "spec": {
     "replicas": 1,
@@ -832,7 +849,7 @@
      "deployment.kubernetes.io/max-replicas": "0",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T19:14:25+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "payments",
@@ -847,11 +864,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "payments",
-      "uid": "8232095b-2f57-4711-b630-ab315c4632bd"
+      "uid": "b509d05d-9d9f-4a33-89da-ab51fe33b1fe"
      }
     ],
-    "resourceVersion": "102412",
-    "uid": "c7e6e75c-6be7-457b-be23-a7abe9f77a0d"
+    "resourceVersion": "106674",
+    "uid": "dd3b35ed-3ad8-47f0-bdbf-ee0794844d2a"
    },
    "spec": {
     "replicas": 0,
@@ -894,6 +911,47 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [
+  {
+   "metadata": {
+    "annotations": {
+     "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"annotations\":{},\"name\":\"payments\",\"namespace\":\"shop\"},\"spec\":{\"ports\":[{\"port\":8080,\"targetPort\":80}],\"selector\":{\"app\":\"payments\"}}}\n"
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "payments",
+    "namespace": "shop",
+    "resourceVersion": "106669",
+    "uid": "5a820e69-e993-44bc-a69b-c23148af7219"
+   },
+   "spec": {
+    "clusterIP": "10.96.194.219",
+    "clusterIPs": [
+     "10.96.194.219"
+    ],
+    "internalTrafficPolicy": "Cluster",
+    "ipFamilies": [
+     "IPv4"
+    ],
+    "ipFamilyPolicy": "SingleStack",
+    "ports": [
+     {
+      "port": 8080,
+      "protocol": "TCP",
+      "targetPort": 80
+     }
+    ],
+    "selector": {
+     "app": "payments"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+   },
+   "status": {
+    "loadBalancer": {}
+   }
+  }
+ ],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

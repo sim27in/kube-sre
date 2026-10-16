@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:37:25.811236+00:00",
+ "captured_at": "2026-10-16T12:01:13.337550+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "storefront",
+    "resourceVersion": "106721",
+    "uid": "7278d171-e056-4c37-974b-3c7d823cfefa"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"checkout-web\",\"namespace\":\"storefront\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"checkout-web\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"checkout-web\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.299.0\",\"name\":\"web\",\"ports\":[{\"containerPort\":80}]}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "checkout-web",
     "namespace": "storefront",
-    "resourceVersion": "71369",
-    "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+    "resourceVersion": "106735",
+    "uid": "f180d37f-2d78-4459-9fe6-0ab4b6d50cd6"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -65,16 +82,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "ReplicaSet \"checkout-web-f4f7d86f9\" is progressing.",
       "reason": "ReplicaSetUpdated",
       "status": "True",
@@ -92,23 +109,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71361",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106727",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Successfully assigned storefront/checkout-web-f4f7d86f9-vsphz to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned storefront/checkout-web-f4f7d86f9-g4qvn to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de62424badeb9a",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00cc712e3a50",
     "namespace": "storefront",
-    "resourceVersion": "71366",
-    "uid": "41d9d4f0-1e68-4a06-a669-b1b867c7906a"
+    "resourceVersion": "106732",
+    "uid": "a2b6ecad-becb-4d84-931f-444a382d3f67"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -119,25 +136,25 @@
    "type": "Normal"
   },
   {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "count": 2,
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71363",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106730",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "lastTimestamp": "2026-10-16T12:01:12+00:00",
    "message": "Pulling image \"nginx:1.299.0\"",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de6242630a41c0",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00cc87d25395",
     "namespace": "storefront",
-    "resourceVersion": "71415",
-    "uid": "4a9f4ce3-fc7b-4f99-a5f3-9b1d21024002"
+    "resourceVersion": "107312",
+    "uid": "15e4ed81-bef6-49d0-aa34-59482c3d7214"
    },
    "reason": "Pulling",
    "reportingComponent": "kubelet",
@@ -150,24 +167,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "firstTimestamp": "2026-10-16T12:01:02+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71363",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106730",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "lastTimestamp": "2026-10-16T12:01:02+00:00",
    "message": "Failed to pull image \"nginx:1.299.0\": rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:1.299.0\": failed to resolve reference \"docker.io/library/nginx:1.299.0\": docker.io/library/nginx:1.299.0: not found",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:18+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de62597ea759da",
+    "creationTimestamp": "2026-10-16T12:01:02+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00ce271c739c",
     "namespace": "storefront",
-    "resourceVersion": "71949",
-    "uid": "035c7dc0-f017-4701-87db-aea93ad5ca5a"
+    "resourceVersion": "107151",
+    "uid": "5b15aa59-e54c-48d8-ba44-bcc1a4b70c40"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -180,24 +197,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "firstTimestamp": "2026-10-16T12:01:02+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71363",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106730",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "lastTimestamp": "2026-10-16T12:01:02+00:00",
    "message": "Error: ErrImagePull",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:18+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de62597eabf50d",
+    "creationTimestamp": "2026-10-16T12:01:02+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00ce2721409d",
     "namespace": "storefront",
-    "resourceVersion": "71950",
-    "uid": "203f4e04-4998-401c-a8e3-88220e4c0a3f"
+    "resourceVersion": "107152",
+    "uid": "e97336b6-43e5-4b11-beff-febd4cabc74a"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -210,24 +227,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "firstTimestamp": "2026-10-16T12:01:02+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71363",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106730",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "lastTimestamp": "2026-10-16T12:01:02+00:00",
    "message": "Back-off pulling image \"nginx:1.299.0\"",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:18+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de625981b07fb9",
+    "creationTimestamp": "2026-10-16T12:01:02+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00ce39ad4dc1",
     "namespace": "storefront",
-    "resourceVersion": "71951",
-    "uid": "6b039e41-e52d-46b3-bb8b-4d7bd14ad9db"
+    "resourceVersion": "107157",
+    "uid": "4b258501-a36b-48b5-8663-26d1f5e1e22b"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -240,24 +257,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:18+00:00",
+   "firstTimestamp": "2026-10-16T12:01:02+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
-    "resourceVersion": "71363",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "106730",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
-   "lastTimestamp": "2026-10-14T11:37:18+00:00",
+   "lastTimestamp": "2026-10-16T12:01:02+00:00",
    "message": "Error: ImagePullBackOff",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:18+00:00",
-    "name": "checkout-web-f4f7d86f9-vsphz.18de625981b1a022",
+    "creationTimestamp": "2026-10-16T12:01:02+00:00",
+    "name": "checkout-web-f4f7d86f9-g4qvn.18df00ce39b1aa21",
     "namespace": "storefront",
-    "resourceVersion": "71952",
-    "uid": "81978c86-26cd-4fb0-8ab8-f8ade6aec2f9"
+    "resourceVersion": "107158",
+    "uid": "62ed26a1-2026-4a8d-bb9a-f91536b3486f"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -270,23 +287,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "checkout-web-f4f7d86f9",
     "namespace": "storefront",
-    "resourceVersion": "71358",
-    "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+    "resourceVersion": "106724",
+    "uid": "8355d0f0-e035-4cb6-999f-bf6f30d0e5cf"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: checkout-web-f4f7d86f9-vsphz",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: checkout-web-f4f7d86f9-g4qvn",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "checkout-web-f4f7d86f9.18de62424b80c991",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-web-f4f7d86f9.18df00cc7101ae2d",
     "namespace": "storefront",
-    "resourceVersion": "71362",
-    "uid": "b115bb95-0d4e-4434-8868-c2262745b6e4"
+    "resourceVersion": "106728",
+    "uid": "202776a8-4168-49e7-bbae-f9735feaa716"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -298,23 +315,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "checkout-web",
     "namespace": "storefront",
-    "resourceVersion": "71357",
-    "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+    "resourceVersion": "106723",
+    "uid": "f180d37f-2d78-4459-9fe6-0ab4b6d50cd6"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
    "message": "Scaled up replica set checkout-web-f4f7d86f9 from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "checkout-web.18de62424b4a3cb9",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "checkout-web.18df00cc70c6426d",
     "namespace": "storefront",
-    "resourceVersion": "71359",
-    "uid": "017998c5-d772-49bc-ab98-047009aebfcd"
+    "resourceVersion": "106725",
+    "uid": "267857e4-252d-4be2-b70a-ac3c135df25b"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -326,16 +343,16 @@
   }
  ],
  "logs": {
-  "checkout-web-f4f7d86f9-vsphz/web/current": {
+  "checkout-web-f4f7d86f9-g4qvn/web/current": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-vsphz\\\" is waiting to start: image can't be pulled\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-g4qvn\\\" is waiting to start: trying and failing to pull image\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "checkout-web-f4f7d86f9-vsphz/web/previous": {
+  "checkout-web-f4f7d86f9-g4qvn/web/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-vsphz\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"checkout-web-f4f7d86f9-g4qvn\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
@@ -359,7 +376,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "106163",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -402,7 +419,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -410,7 +427,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -418,7 +435,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -426,7 +443,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -450,19 +467,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -493,14 +510,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "checkout-web-f4f7d86f9-",
     "generation": 1,
     "labels": {
      "app": "checkout-web",
      "pod-template-hash": "f4f7d86f9"
     },
-    "name": "checkout-web-f4f7d86f9-vsphz",
+    "name": "checkout-web-f4f7d86f9-g4qvn",
     "namespace": "storefront",
     "ownerReferences": [
      {
@@ -509,11 +526,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "checkout-web-f4f7d86f9",
-      "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+      "uid": "8355d0f0-e035-4cb6-999f-bf6f30d0e5cf"
      }
     ],
-    "resourceVersion": "71953",
-    "uid": "3ae46e04-75ef-486e-98a8-565868d418cd"
+    "resourceVersion": "107313",
+    "uid": "b3e20fe7-854c-40b1-b8e5-6672312058f7"
    },
    "spec": {
     "containers": [
@@ -533,7 +550,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-jrzfn",
+        "name": "kube-api-access-glcn7",
         "readOnly": true
        }
       ]
@@ -566,7 +583,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-jrzfn",
+      "name": "kube-api-access-glcn7",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -608,19 +625,19 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [web]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -628,7 +645,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [web]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -636,7 +653,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -653,14 +670,14 @@
       "started": false,
       "state": {
        "waiting": {
-        "message": "rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:1.299.0\": failed to resolve reference \"docker.io/library/nginx:1.299.0\": docker.io/library/nginx:1.299.0: not found",
-        "reason": "ErrImagePull"
+        "message": "Back-off pulling image \"nginx:1.299.0\": ErrImagePull: rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:1.299.0\": failed to resolve reference \"docker.io/library/nginx:1.299.0\": docker.io/library/nginx:1.299.0: not found",
+        "reason": "ImagePullBackOff"
        }
       },
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-jrzfn",
+        "name": "kube-api-access-glcn7",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -675,15 +692,15 @@
     ],
     "observedGeneration": 1,
     "phase": "Pending",
-    "podIP": "10.244.0.10",
+    "podIP": "10.244.0.12",
     "podIPs": [
      {
-      "ip": "10.244.0.10"
+      "ip": "10.244.0.12"
      }
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T11:35:38+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
@@ -696,7 +713,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "checkout-web",
@@ -711,11 +728,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "checkout-web",
-      "uid": "971c18be-3b33-4b9e-85ae-8283dea9c23f"
+      "uid": "f180d37f-2d78-4459-9fe6-0ab4b6d50cd6"
      }
     ],
-    "resourceVersion": "71367",
-    "uid": "88fae79c-89ab-4e12-8ec6-68c974d47506"
+    "resourceVersion": "106733",
+    "uid": "8355d0f0-e035-4cb6-999f-bf6f30d0e5cf"
    },
    "spec": {
     "replicas": 1,
@@ -765,6 +782,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

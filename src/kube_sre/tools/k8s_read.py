@@ -8,7 +8,7 @@ evidence id) before leaving the server.
 import json
 import re
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 
 from fastmcp import FastMCP
 from kubernetes.client import AppsV1Api, CoreV1Api
@@ -20,6 +20,8 @@ from kube_sre.config import get_apps_api, get_core_api, get_settings
 from kube_sre.guardrails.redaction import SECRET_MARKER, is_secret_name, redact_argv
 from kube_sre.tools.boundary import fail, finalize
 from kube_sre.tools.models import (
+    Backend,
+    ConfigInfo,
     ContainerSpec,
     ContainerStatus,
     EnvRef,
@@ -35,6 +37,7 @@ from kube_sre.tools.models import (
     ProbeSpec,
     PVCInfo,
     PVCList,
+    ServiceInfo,
     TerminationInfo,
     VolumeRef,
     WarningEventList,
@@ -45,6 +48,8 @@ from kube_sre.tools.models import (
 mcp = FastMCP("kube-sre-k8s-read")
 
 _MAX_ENV_VALUE = 200
+_MAX_CONFIG_VALUE = 500
+_MAX_CONFIG_KEYS = 50
 _LOGS_GONE = re.compile(r"^unable to retrieve container logs for \S+\s*$")
 
 
@@ -454,21 +459,23 @@ def _volume(v) -> VolumeRef:
     return VolumeRef(name=v.name, source="other")
 
 
+def _replica_counts(kind: WorkloadKind, obj) -> tuple[int | None, int | None, int | None, int | None]:
+    """(desired, ready, available, updated) for a Deployment, StatefulSet or DaemonSet."""
+    s = obj.status
+    if kind == "DaemonSet":
+        return s.desired_number_scheduled, s.number_ready, s.number_available, s.updated_number_scheduled
+    return obj.spec.replicas, s.ready_replicas, s.available_replicas, s.updated_replicas
+
+
 def describe_workload_impl(apps: AppsV1Api, kind: WorkloadKind, name: str, namespace: str) -> WorkloadSpec:
     if kind == "Deployment":
         obj = apps.read_namespaced_deployment(name, namespace)
-        s = obj.status
-        counts = (obj.spec.replicas, s.ready_replicas, s.available_replicas, s.updated_replicas)
     elif kind == "StatefulSet":
         obj = apps.read_namespaced_stateful_set(name, namespace)
-        s = obj.status
-        counts = (obj.spec.replicas, s.ready_replicas, s.available_replicas, s.updated_replicas)
     else:
         obj = apps.read_namespaced_daemon_set(name, namespace)
-        s = obj.status
-        counts = (s.desired_number_scheduled, s.number_ready, s.number_available, s.updated_number_scheduled)
-
-    desired, ready, available, updated = counts
+    s = obj.status
+    desired, ready, available, updated = _replica_counts(kind, obj)
     pod = obj.spec.template.spec
     return WorkloadSpec(
         kind=kind,
@@ -490,6 +497,79 @@ def describe_workload_impl(apps: AppsV1Api, kind: WorkloadKind, name: str, names
         init_containers=[_container_spec(c) for c in pod.init_containers or []],
         containers=[_container_spec(c) for c in pod.containers],
     )
+
+
+# --- services and config ----------------------------------------------------
+
+
+def _read_or_none(read, *args):
+    """The object, or None if it doesn't exist. A missing object is a finding, not a tool error."""
+    try:
+        return read(*args)
+    except ApiException as e:
+        if e.status == 404:
+            return None
+        raise
+
+
+def describe_service_impl(core: CoreV1Api, apps: AppsV1Api, name: str, namespace: str) -> ServiceInfo:
+    svc = _read_or_none(core.read_namespaced_service, name, namespace)
+    if svc is None:
+        return ServiceInfo(name=name, namespace=namespace, exists=False)
+    selector = dict(svc.spec.selector or {})
+    info = ServiceInfo(
+        name=name,
+        namespace=namespace,
+        exists=True,
+        type=svc.spec.type,
+        selector=selector,
+        ports=[f"{p.port}->{p.target_port or p.port}/{p.protocol or 'TCP'}" for p in svc.spec.ports or []],
+    )
+    if not selector:
+        return info
+
+    pods = core.list_namespaced_pod(namespace, label_selector=",".join(f"{k}={v}" for k, v in selector.items()))
+    for pod in pods.items:
+        if any(c.type == "Ready" and c.status == "True" for c in pod.status.conditions or []):
+            info.ready_pods += 1
+        else:
+            info.not_ready_pods += 1
+
+    listers = (
+        ("Deployment", apps.list_namespaced_deployment),
+        ("StatefulSet", apps.list_namespaced_stateful_set),
+        ("DaemonSet", apps.list_namespaced_daemon_set),
+    )
+    for kind, list_fn in listers:
+        for obj in list_fn(namespace).items:
+            labels = obj.spec.template.metadata.labels or {}
+            if selector.items() <= labels.items():
+                desired, ready, _, _ = _replica_counts(kind, obj)
+                info.backends.append(Backend(kind=kind, name=obj.metadata.name, desired=desired, ready=ready or 0))
+    return info
+
+
+def describe_config_impl(
+    core: CoreV1Api, kind: Literal["ConfigMap", "Secret"], name: str, namespace: str
+) -> ConfigInfo:
+    if kind == "Secret":
+        # The values reach this process but are never put in the result.
+        secret = _read_or_none(core.read_namespaced_secret, name, namespace)
+        if secret is None:
+            return ConfigInfo(kind=kind, name=name, namespace=namespace, exists=False)
+        keys = sorted({*(secret.data or {}), *(secret.string_data or {})})
+        return ConfigInfo(kind=kind, name=name, namespace=namespace, exists=True, type=secret.type, keys=keys)
+
+    cm = _read_or_none(core.read_namespaced_config_map, name, namespace)
+    if cm is None:
+        return ConfigInfo(kind=kind, name=name, namespace=namespace, exists=False)
+    data = cm.data or {}
+    values = {
+        k: SECRET_MARKER if v and is_secret_name(k) else v[:_MAX_CONFIG_VALUE]
+        for k, v in sorted(data.items())[:_MAX_CONFIG_KEYS]
+    }
+    keys = sorted({*data, *(cm.binary_data or {})})
+    return ConfigInfo(kind=kind, name=name, namespace=namespace, exists=True, keys=keys, values=values)
 
 
 # --- MCP tools --------------------------------------------------------------
@@ -617,6 +697,35 @@ def describe_workload(name: str, kind: WorkloadKind = "Deployment", namespace: s
         namespace: Kubernetes namespace.
     """
     return _run("describe_workload", locals(), describe_workload_impl, get_apps_api)
+
+
+@mcp.tool()
+def describe_service(name: str, namespace: str = "default") -> ServiceInfo:
+    """Check a Service an app depends on: whether it exists, its selector and ports, how many matching pods
+    are Ready (its endpoints), and which workloads back it with their replica counts. Use it when logs show
+    a dependency is unreachable (connection refused, DNS lookup failed, timeouts) to find out why.
+
+    Args:
+        name: Service name, as the app addresses it (e.g. "payments" for http://payments:8080).
+        namespace: Kubernetes namespace.
+    """
+    return _run("describe_service", locals(), describe_service_impl, get_core_api, get_apps_api)
+
+
+@mcp.tool()
+def describe_config(
+    name: str, kind: Literal["ConfigMap", "Secret"] = "ConfigMap", namespace: str = "default"
+) -> ConfigInfo:
+    """Check a ConfigMap or Secret a workload references: whether it exists and which keys it has.
+    ConfigMap values are included (truncated); Secret values are never returned, only key names and type.
+    Use it to confirm a missing object or key instead of guessing.
+
+    Args:
+        name: ConfigMap or Secret name (including image pull secrets).
+        kind: ConfigMap or Secret.
+        namespace: Kubernetes namespace.
+    """
+    return _run("describe_config", locals(), describe_config_impl, get_core_api)
 
 
 if __name__ == "__main__":

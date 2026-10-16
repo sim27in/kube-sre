@@ -191,6 +191,42 @@ class VolumeRef(BaseModel):
     optional: bool | None = None
 
 
+# --- services and config ----------------------------------------------------
+
+
+class Backend(BaseModel):
+    kind: WorkloadKind
+    name: str
+    desired: int | None = None
+    ready: int = 0
+
+
+class ServiceInfo(ToolResult):
+    name: str
+    namespace: str
+    exists: bool
+    type: str | None = None
+    selector: dict[str, str] = Field(default_factory=dict, description="Empty: endpoints are managed by hand.")
+    ports: list[str] = Field(default_factory=list, description="port->targetPort/protocol.")
+    ready_pods: int = Field(default=0, description="Pods matching the selector that are Ready (the endpoints).")
+    not_ready_pods: int = 0
+    backends: list[Backend] = Field(
+        default_factory=list, description="Workloads whose pod template matches the selector, with replica counts."
+    )
+
+
+class ConfigInfo(ToolResult):
+    kind: Literal["ConfigMap", "Secret"]
+    name: str
+    namespace: str
+    exists: bool
+    type: str | None = None  # Secret type, e.g. kubernetes.io/dockerconfigjson
+    keys: list[str] = Field(default_factory=list)
+    values: dict[str, str] = Field(
+        default_factory=dict, description="ConfigMap values, truncated; empty for Secrets (never read)."
+    )
+
+
 class WorkloadSpec(ToolResult):
     kind: WorkloadKind
     name: str

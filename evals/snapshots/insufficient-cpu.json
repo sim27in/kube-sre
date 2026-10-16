@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:35:46.560865+00:00",
+ "captured_at": "2026-10-16T12:01:13.435275+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "ml",
+    "resourceVersion": "106761",
+    "uid": "7f4171dc-582f-4b6e-ac9f-c7e4616daf73"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"model-trainer\",\"namespace\":\"ml\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"model-trainer\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"model-trainer\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"import time; time.sleep(86400)\"],\"image\":\"python:3.11-slim\",\"name\":\"trainer\",\"resources\":{\"requests\":{\"cpu\":\"64\",\"memory\":\"1Gi\"}}}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generation": 1,
     "name": "model-trainer",
     "namespace": "ml",
-    "resourceVersion": "71409",
-    "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+    "resourceVersion": "106776",
+    "uid": "945d8340-d81b-4b6a-8fda-24072111424f"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -69,16 +86,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:55+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:55+00:00",
       "message": "ReplicaSet \"model-trainer-5965dff574\" is progressing.",
       "reason": "ReplicaSetUpdated",
       "status": "True",
@@ -95,24 +112,24 @@
  ],
  "events": [
   {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "count": 2,
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "model-trainer-5965dff574-lpknt",
+    "name": "model-trainer-5965dff574-p87fr",
     "namespace": "ml",
-    "resourceVersion": "71400",
-    "uid": "434bc444-d7da-458a-966c-95e2a4f524d6"
+    "resourceVersion": "106767",
+    "uid": "9f1e7016-d41c-426b-bcda-559caec9828f"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:01:02+00:00",
    "message": "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "model-trainer-5965dff574-lpknt.18de62425dc67092",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "model-trainer-5965dff574-p87fr.18df00cc81650363",
     "namespace": "ml",
-    "resourceVersion": "71403",
-    "uid": "4fe8438d-17ab-49f9-8079-71d21270006a"
+    "resourceVersion": "107165",
+    "uid": "4230f29b-a56e-4a83-93c9-b5dbf28ba9fa"
    },
    "reason": "FailedScheduling",
    "reportingComponent": "default-scheduler",
@@ -124,23 +141,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "model-trainer-5965dff574",
     "namespace": "ml",
-    "resourceVersion": "71397",
-    "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+    "resourceVersion": "106764",
+    "uid": "10be249b-20bd-40ff-a1ac-af7b6dfee9df"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: model-trainer-5965dff574-lpknt",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
+   "message": "Created pod: model-trainer-5965dff574-p87fr",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "model-trainer-5965dff574.18de62425dbf16e6",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "model-trainer-5965dff574.18df00cc815f7c2f",
     "namespace": "ml",
-    "resourceVersion": "71401",
-    "uid": "0d06e0cb-7c9a-4212-869c-1f28f2499edb"
+    "resourceVersion": "106768",
+    "uid": "ff7d7982-9dc0-410a-8bef-605e772fd825"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -152,23 +169,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "model-trainer",
     "namespace": "ml",
-    "resourceVersion": "71396",
-    "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+    "resourceVersion": "106763",
+    "uid": "945d8340-d81b-4b6a-8fda-24072111424f"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:00:55+00:00",
    "message": "Scaled up replica set model-trainer-5965dff574 from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "model-trainer.18de62425d3bd1c1",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "model-trainer.18df00cc80efd363",
     "namespace": "ml",
-    "resourceVersion": "71398",
-    "uid": "3f5411f6-87cc-4724-981b-a8e95b852af7"
+    "resourceVersion": "106765",
+    "uid": "8726a356-e461-4942-8496-77499c5dd2cb"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -180,10 +197,10 @@
   }
  ],
  "logs": {
-  "model-trainer-5965dff574-lpknt/trainer/current": {
+  "model-trainer-5965dff574-p87fr/trainer/current": {
    "text": ""
   },
-  "model-trainer-5965dff574-lpknt/trainer/previous": {
+  "model-trainer-5965dff574-p87fr/trainer/previous": {
    "text": ""
   }
  },
@@ -205,7 +222,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "106163",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -248,7 +265,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -256,7 +273,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -264,7 +281,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -272,7 +289,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T11:56:08+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -296,19 +313,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -339,14 +356,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generateName": "model-trainer-5965dff574-",
     "generation": 1,
     "labels": {
      "app": "model-trainer",
      "pod-template-hash": "5965dff574"
     },
-    "name": "model-trainer-5965dff574-lpknt",
+    "name": "model-trainer-5965dff574-p87fr",
     "namespace": "ml",
     "ownerReferences": [
      {
@@ -355,11 +372,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "model-trainer-5965dff574",
-      "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+      "uid": "10be249b-20bd-40ff-a1ac-af7b6dfee9df"
      }
     ],
-    "resourceVersion": "71405",
-    "uid": "434bc444-d7da-458a-966c-95e2a4f524d6"
+    "resourceVersion": "106771",
+    "uid": "9f1e7016-d41c-426b-bcda-559caec9828f"
    },
    "spec": {
     "containers": [
@@ -383,7 +400,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-bjrgn",
+        "name": "kube-api-access-ftfpd",
         "readOnly": true
        }
       ]
@@ -415,7 +432,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-bjrgn",
+      "name": "kube-api-access-ftfpd",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -457,7 +474,7 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "message": "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.",
       "observedGeneration": 1,
       "reason": "Unschedulable",
@@ -479,7 +496,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generation": 1,
     "labels": {
      "app": "model-trainer",
@@ -494,11 +511,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "model-trainer",
-      "uid": "c7a99a06-1958-428a-a82e-b0f7a777427c"
+      "uid": "945d8340-d81b-4b6a-8fda-24072111424f"
      }
     ],
-    "resourceVersion": "71406",
-    "uid": "d078e577-73e8-468d-828a-fd9c41bfe965"
+    "resourceVersion": "106774",
+    "uid": "10be249b-20bd-40ff-a1ac-af7b6dfee9df"
    },
    "spec": {
     "replicas": 1,
@@ -552,6 +569,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:37:47.837998+00:00",
+ "captured_at": "2026-10-16T12:01:17.306398+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "notifications",
+    "resourceVersion": "106737",
+    "uid": "18d84493-55d8-4bf0-8406-12ce1d827254"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"notifier\",\"namespace\":\"notifications\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"notifier\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"notifier\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"notifier\"}],\"initContainers\":[{\"command\":[\"sh\",\"-c\",\"echo 'waiting for database notifications-db'; nslookup notifications-db\"],\"image\":\"busybox:1.36\",\"name\":\"wait-for-db\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "notifier",
     "namespace": "notifications",
-    "resourceVersion": "71387",
-    "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+    "resourceVersion": "106754",
+    "uid": "3c95bf04-f2bb-494a-836c-ab41cd79260d"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -74,16 +91,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "ReplicaSet \"notifier-6746ffc74c\" is progressing.",
       "reason": "ReplicaSetUpdated",
       "status": "True",
@@ -101,23 +118,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
-    "resourceVersion": "71379",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "106747",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Successfully assigned notifications/notifier-6746ffc74c-xrc9t to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned notifications/notifier-6746ffc74c-vv525 to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de6242544bbb44",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "notifier-6746ffc74c-vv525.18df00cc7928101c",
     "namespace": "notifications",
-    "resourceVersion": "71385",
-    "uid": "8a84e53d-e634-47f9-8008-c26cf8ff1d87"
+    "resourceVersion": "106752",
+    "uid": "ee1201b1-a717-4ad4-a00d-846151cc53bb"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -128,55 +145,25 @@
    "type": "Normal"
   },
   {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "count": 3,
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.initContainers{wait-for-db}",
     "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "106748",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Pulling image \"busybox:1.36\"",
+   "lastTimestamp": "2026-10-16T12:01:08+00:00",
+   "message": "Container image \"busybox:1.36\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de62426b580f27",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "notifier-6746ffc74c-vv525.18df00cc90b66af1",
     "namespace": "notifications",
-    "resourceVersion": "71433",
-    "uid": "890c51a3-b30c-431b-816c-90729c3fa355"
-   },
-   "reason": "Pulling",
-   "reportingComponent": "kubelet",
-   "reportingInstance": "kubesre-control-plane",
-   "source": {
-    "component": "kubelet",
-    "host": "kubesre-control-plane"
-   },
-   "type": "Normal"
-  },
-  {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:26+00:00",
-   "involvedObject": {
-    "apiVersion": "v1",
-    "fieldPath": "spec.initContainers{wait-for-db}",
-    "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
-    "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
-   },
-   "lastTimestamp": "2026-10-14T11:37:26+00:00",
-   "message": "Successfully pulled image \"busybox:1.36\" in 8.232s (1m47.339s including waiting). Image size: 1906887 bytes.",
-   "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:26+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de625b69517a5c",
-    "namespace": "notifications",
-    "resourceVersion": "71967",
-    "uid": "f54cd78f-9ce5-4147-af28-20880c80d17a"
+    "resourceVersion": "107258",
+    "uid": "734f5394-d882-426c-8632-fbe2c94e45e3"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -189,24 +176,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:37:26+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.initContainers{wait-for-db}",
     "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "106748",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
-   "lastTimestamp": "2026-10-14T11:37:38+00:00",
+   "lastTimestamp": "2026-10-16T12:01:08+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:26+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de625b69cf4910",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "notifier-6746ffc74c-vv525.18df00cc91471907",
     "namespace": "notifications",
-    "resourceVersion": "72075",
-    "uid": "e3b0436f-73ed-46fc-b247-802454db38d7"
+    "resourceVersion": "107259",
+    "uid": "9347586d-893a-499a-843c-9ceeed12b5b6"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -219,24 +206,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:37:26+00:00",
+   "firstTimestamp": "2026-10-16T12:00:55+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.initContainers{wait-for-db}",
     "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "106748",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
-   "lastTimestamp": "2026-10-14T11:37:38+00:00",
+   "lastTimestamp": "2026-10-16T12:01:08+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:26+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de625b6c23fcec",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "notifier-6746ffc74c-vv525.18df00cc9477ebf7",
     "namespace": "notifications",
-    "resourceVersion": "72077",
-    "uid": "523995e1-4560-405a-88e5-37cf68bc129e"
+    "resourceVersion": "107260",
+    "uid": "d3f99118-e38e-4fb3-a4da-e158b76da992"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -248,55 +235,25 @@
    "type": "Normal"
   },
   {
-   "count": 2,
-   "firstTimestamp": "2026-10-14T11:37:27+00:00",
-   "involvedObject": {
-    "apiVersion": "v1",
-    "fieldPath": "spec.initContainers{wait-for-db}",
-    "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
-    "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
-   },
-   "lastTimestamp": "2026-10-14T11:37:38+00:00",
-   "message": "Container image \"busybox:1.36\" already present on machine and can be accessed by the pod",
-   "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:27+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de625b9d07bb86",
-    "namespace": "notifications",
-    "resourceVersion": "72074",
-    "uid": "fa3bb9e3-4ad1-49f1-8561-ce313dd43517"
-   },
-   "reason": "Pulled",
-   "reportingComponent": "kubelet",
-   "reportingInstance": "kubesre-control-plane",
-   "source": {
-    "component": "kubelet",
-    "host": "kubesre-control-plane"
-   },
-   "type": "Normal"
-  },
-  {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:37:28+00:00",
+   "firstTimestamp": "2026-10-16T12:00:57+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.initContainers{wait-for-db}",
     "kind": "Pod",
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
-    "resourceVersion": "71382",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "106748",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
-   "lastTimestamp": "2026-10-14T11:37:39+00:00",
-   "message": "Back-off restarting failed container wait-for-db in pod notifier-6746ffc74c-xrc9t_notifications(40284577-309f-4a21-abb6-0c5e4bdc7b09)",
+   "lastTimestamp": "2026-10-16T12:01:09+00:00",
+   "message": "Back-off restarting failed container wait-for-db in pod notifier-6746ffc74c-vv525_notifications(a28f1582-9ada-47db-b539-592e3aefcc5a)",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:28+00:00",
-    "name": "notifier-6746ffc74c-xrc9t.18de625bd8f8ab66",
+    "creationTimestamp": "2026-10-16T12:00:57+00:00",
+    "name": "notifier-6746ffc74c-vv525.18df00cd0da029d8",
     "namespace": "notifications",
-    "resourceVersion": "72086",
-    "uid": "77b03188-d9d7-4abb-a428-01935424c016"
+    "resourceVersion": "107264",
+    "uid": "087aedf0-11a1-425f-b269-79b0f2de14a6"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -309,23 +266,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "notifier-6746ffc74c",
     "namespace": "notifications",
-    "resourceVersion": "71375",
-    "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+    "resourceVersion": "106743",
+    "uid": "897f1e07-b6dc-4a3e-a51e-2b0782f958af"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: notifier-6746ffc74c-xrc9t",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: notifier-6746ffc74c-vv525",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "notifier-6746ffc74c.18de6242540f46b4",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "notifier-6746ffc74c.18df00cc790268a0",
     "namespace": "notifications",
-    "resourceVersion": "71380",
-    "uid": "a51e5b69-def3-4c47-8bcd-5fc0361f7342"
+    "resourceVersion": "106750",
+    "uid": "5f5646fe-d11b-4b80-a807-d6d6ea34bb60"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -337,23 +294,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "notifier",
     "namespace": "notifications",
-    "resourceVersion": "71373",
-    "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+    "resourceVersion": "106742",
+    "uid": "3c95bf04-f2bb-494a-836c-ab41cd79260d"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
    "message": "Scaled up replica set notifier-6746ffc74c from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "notifier.18de624253bd55d1",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "notifier.18df00cc78bd1440",
     "namespace": "notifications",
-    "resourceVersion": "71377",
-    "uid": "0406a570-b1f3-462e-8193-09af0214daf8"
+    "resourceVersion": "106745",
+    "uid": "10d88e00-a1e9-46d2-8a41-659cab5245c2"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -365,25 +322,25 @@
   }
  ],
  "logs": {
-  "notifier-6746ffc74c-xrc9t/notifier/current": {
+  "notifier-6746ffc74c-vv525/notifier/current": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-xrc9t\\\" is waiting to start: PodInitializing\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-vv525\\\" is waiting to start: PodInitializing\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "notifier-6746ffc74c-xrc9t/notifier/previous": {
+  "notifier-6746ffc74c-vv525/notifier/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-xrc9t\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"notifier\\\" in pod \\\"notifier-6746ffc74c-vv525\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "notifier-6746ffc74c-xrc9t/wait-for-db/current": {
-   "text": "2026-10-14T11:37:38.727542839Z waiting for database notifications-db\n2026-10-14T11:37:38.728416922Z Server:\t\t10.96.0.10\n2026-10-14T11:37:38.728424547Z Address:\t10.96.0.10:53\n2026-10-14T11:37:38.728425381Z \n2026-10-14T11:37:38.728426214Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728426881Z \n2026-10-14T11:37:38.728427631Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728428256Z \n2026-10-14T11:37:38.728428922Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728429547Z \n2026-10-14T11:37:38.728430256Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728430881Z \n2026-10-14T11:37:38.728431547Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728432172Z \n2026-10-14T11:37:38.728432881Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-14T11:37:38.728433506Z \n"
+  "notifier-6746ffc74c-vv525/wait-for-db/current": {
+   "text": "2026-10-16T12:01:08.967787634Z waiting for database notifications-db\n2026-10-16T12:01:08.968533384Z Server:\t\t10.96.0.10\n2026-10-16T12:01:08.968542676Z Address:\t10.96.0.10:53\n2026-10-16T12:01:08.968543509Z \n2026-10-16T12:01:08.968544801Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968545426Z \n2026-10-16T12:01:08.968546093Z ** server can't find notifications-db.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968546634Z \n2026-10-16T12:01:08.968547843Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968548426Z \n2026-10-16T12:01:08.968549093Z ** server can't find notifications-db.svc.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968549634Z \n2026-10-16T12:01:08.968550301Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968550884Z \n2026-10-16T12:01:08.968551551Z ** server can't find notifications-db.notifications.svc.cluster.local: NXDOMAIN\n2026-10-16T12:01:08.968552134Z \n"
   },
-  "notifier-6746ffc74c-xrc9t/wait-for-db/previous": {
-   "text": "unable to retrieve container logs for containerd://eeec65a8ddd3058cb77cf9600fc7a941316344033a2dfd9a8c0cc418345d0290"
+  "notifier-6746ffc74c-vv525/wait-for-db/previous": {
+   "text": "unable to retrieve container logs for containerd://18941d8d5c6829c756256f8a1982f2ba45df503596eaddc9b32723d7ae0b700c"
   }
  },
  "namespace": "notifications",
@@ -404,7 +361,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "107335",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -447,7 +404,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -455,7 +412,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -463,7 +420,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -471,7 +428,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -495,19 +452,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -538,14 +495,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "notifier-6746ffc74c-",
     "generation": 1,
     "labels": {
      "app": "notifier",
      "pod-template-hash": "6746ffc74c"
     },
-    "name": "notifier-6746ffc74c-xrc9t",
+    "name": "notifier-6746ffc74c-vv525",
     "namespace": "notifications",
     "ownerReferences": [
      {
@@ -554,11 +511,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "notifier-6746ffc74c",
-      "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+      "uid": "897f1e07-b6dc-4a3e-a51e-2b0782f958af"
      }
     ],
-    "resourceVersion": "72087",
-    "uid": "40284577-309f-4a21-abb6-0c5e4bdc7b09"
+    "resourceVersion": "107270",
+    "uid": "a28f1582-9ada-47db-b539-592e3aefcc5a"
    },
    "spec": {
     "containers": [
@@ -572,7 +529,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-nq2ng",
+        "name": "kube-api-access-zdqdv",
         "readOnly": true
        }
       ]
@@ -596,7 +553,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-nq2ng",
+        "name": "kube-api-access-zdqdv",
         "readOnly": true
        }
       ]
@@ -627,7 +584,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-nq2ng",
+      "name": "kube-api-access-zdqdv",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -669,13 +626,13 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:55+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with incomplete status: [wait-for-db]",
       "observedGeneration": 1,
       "reason": "ContainersNotInitialized",
@@ -683,7 +640,7 @@
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [notifier]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -691,7 +648,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "message": "containers with unready status: [notifier]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -699,7 +656,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -722,7 +679,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-nq2ng",
+        "name": "kube-api-access-zdqdv",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -737,16 +694,16 @@
     ],
     "initContainerStatuses": [
      {
-      "containerID": "containerd://31222045699cff43de790eb4193edcecd2eac5f9018f16c98d261789d21acc06",
+      "containerID": "containerd://8f73810122f389000285e1f369d6df8c5fd4a231d0887de4aa3987667a5b0fea",
       "image": "docker.io/library/busybox:1.36",
       "imageID": "docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662",
       "lastState": {
        "terminated": {
-        "containerID": "containerd://eeec65a8ddd3058cb77cf9600fc7a941316344033a2dfd9a8c0cc418345d0290",
+        "containerID": "containerd://18941d8d5c6829c756256f8a1982f2ba45df503596eaddc9b32723d7ae0b700c",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T11:37:27+00:00",
+        "finishedAt": "2026-10-16T12:00:56+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T11:37:27+00:00"
+        "startedAt": "2026-10-16T12:00:56+00:00"
        }
       },
       "name": "wait-for-db",
@@ -756,11 +713,11 @@
       "started": false,
       "state": {
        "terminated": {
-        "containerID": "containerd://31222045699cff43de790eb4193edcecd2eac5f9018f16c98d261789d21acc06",
+        "containerID": "containerd://8f73810122f389000285e1f369d6df8c5fd4a231d0887de4aa3987667a5b0fea",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T11:37:38+00:00",
+        "finishedAt": "2026-10-16T12:01:08+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T11:37:38+00:00"
+        "startedAt": "2026-10-16T12:01:08+00:00"
        }
       },
       "user": {
@@ -776,7 +733,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-nq2ng",
+        "name": "kube-api-access-zdqdv",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -785,15 +742,15 @@
     ],
     "observedGeneration": 1,
     "phase": "Pending",
-    "podIP": "10.244.0.11",
+    "podIP": "10.244.0.13",
     "podIPs": [
      {
-      "ip": "10.244.0.11"
+      "ip": "10.244.0.13"
      }
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T11:35:38+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
@@ -806,7 +763,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "notifier",
@@ -821,11 +778,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "notifier",
-      "uid": "e7bf9e2d-1514-47b7-b642-8dc2a35b4c73"
+      "uid": "3c95bf04-f2bb-494a-836c-ab41cd79260d"
      }
     ],
-    "resourceVersion": "71384",
-    "uid": "cf4ede72-4d6b-4028-a688-beb6f036291b"
+    "resourceVersion": "106753",
+    "uid": "897f1e07-b6dc-4a3e-a51e-2b0782f958af"
    },
    "spec": {
     "replicas": 1,
@@ -884,6 +841,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

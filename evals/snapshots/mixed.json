@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:37:44.678076+00:00",
+ "captured_at": "2026-10-16T12:01:17.527448+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "platform",
+    "resourceVersion": "106882",
+    "uid": "d0fc42ff-3915-42ef-9f8c-ca499335620b"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"api-gateway\",\"namespace\":\"platform\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"api-gateway\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"api-gateway\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:2.99-alpine\",\"name\":\"gateway\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generation": 1,
     "name": "api-gateway",
     "namespace": "platform",
-    "resourceVersion": "71548",
-    "uid": "1230f661-ed8a-4c5f-ac18-f18eccb26481"
+    "resourceVersion": "107066",
+    "uid": "99470803-3501-41bf-a3b1-01638793bb79"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -59,16 +76,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:57+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:57+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:57+00:00",
       "message": "ReplicaSet \"api-gateway-6d84d45b6c\" is progressing.",
       "reason": "ReplicaSetUpdated",
       "status": "True",
@@ -88,12 +105,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"metrics-aggregator\",\"namespace\":\"platform\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"metrics-aggregator\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"metrics-aggregator\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"print(\\\"aggregating metrics window\\\", flush=True)\\nwindow = \\\"A\\\" * 200 * 1024 * 1024\\n\"],\"image\":\"python:3.11-slim\",\"name\":\"aggregator\",\"resources\":{\"limits\":{\"memory\":\"48Mi\"}}}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generation": 1,
     "name": "metrics-aggregator",
     "namespace": "platform",
-    "resourceVersion": "71923",
-    "uid": "b233372b-c870-4313-905c-47b9c93c5cbf"
+    "resourceVersion": "107298",
+    "uid": "570b456b-c1fc-4120-a679-3e219768d2a9"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -148,16 +165,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:40+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:57+00:00",
       "message": "ReplicaSet \"metrics-aggregator-5dd65c448c\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
       "type": "Progressing"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:14+00:00",
-      "lastUpdateTime": "2026-10-14T11:37:14+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:10+00:00",
+      "lastUpdateTime": "2026-10-16T12:01:10+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
@@ -177,12 +194,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"status-page\",\"namespace\":\"platform\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"status-page\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"status-page\"}},\"spec\":{\"containers\":[{\"image\":\"nginx:1.27-alpine\",\"name\":\"web\",\"ports\":[{\"containerPort\":80}]}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:55+00:00",
     "generation": 1,
     "name": "status-page",
     "namespace": "platform",
-    "resourceVersion": "72084",
-    "uid": "b6475653-1e6d-446c-9ac8-435aed5f09d7"
+    "resourceVersion": "107072",
+    "uid": "f01017cd-d050-48d8-9ac5-0448fa700584"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -235,16 +252,16 @@
     "availableReplicas": 1,
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:37:39+00:00",
-      "lastUpdateTime": "2026-10-14T11:37:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:57+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:57+00:00",
       "message": "Deployment has minimum availability.",
       "reason": "MinimumReplicasAvailable",
       "status": "True",
       "type": "Available"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
-      "lastUpdateTime": "2026-10-14T11:37:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:57+00:00",
       "message": "ReplicaSet \"status-page-84d497b789\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
@@ -262,23 +279,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71472",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106917",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Successfully assigned platform/api-gateway-6d84d45b6c-5kzq9 to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Successfully assigned platform/api-gateway-6d84d45b6c-7qqbj to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de62427fb24766",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00ccc7dd44ba",
     "namespace": "platform",
-    "resourceVersion": "71477",
-    "uid": "d6843d38-0736-4edb-bb77-87b790877f8c"
+    "resourceVersion": "106921",
+    "uid": "799c049b-f1c5-4d2e-b9c2-4221a77ed874"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -290,24 +307,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{gateway}",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71475",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106919",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Pulling image \"nginx:2.99-alpine\"",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de624296644743",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00ccded1f52e",
     "namespace": "platform",
-    "resourceVersion": "71535",
-    "uid": "a33e6db3-b5ff-41f3-9e87-003583fde829"
+    "resourceVersion": "106988",
+    "uid": "f2f2a0ba-e92b-4eda-a984-43238ee17872"
    },
    "reason": "Pulling",
    "reportingComponent": "kubelet",
@@ -320,24 +337,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:34+00:00",
+   "firstTimestamp": "2026-10-16T12:01:07+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{gateway}",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71475",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106919",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:37:34+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Failed to pull image \"nginx:2.99-alpine\": rpc error: code = NotFound desc = failed to pull and unpack image \"docker.io/library/nginx:2.99-alpine\": failed to resolve reference \"docker.io/library/nginx:2.99-alpine\": docker.io/library/nginx:2.99-alpine: not found",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:34+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de625d5ce971e3",
+    "creationTimestamp": "2026-10-16T12:01:07+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00cf4e996cbd",
     "namespace": "platform",
-    "resourceVersion": "72021",
-    "uid": "d68f9f5d-2e1f-4b85-b38b-99d4f780c1d9"
+    "resourceVersion": "107214",
+    "uid": "b368b072-47ab-451c-830a-757ab4997ba1"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -350,24 +367,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:34+00:00",
+   "firstTimestamp": "2026-10-16T12:01:07+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{gateway}",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71475",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106919",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:37:34+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Error: ErrImagePull",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:34+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de625d5cee9a09",
+    "creationTimestamp": "2026-10-16T12:01:07+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00cf4e9b1f25",
     "namespace": "platform",
-    "resourceVersion": "72022",
-    "uid": "672a1999-3875-4b00-b304-2ccfd6831b3e"
+    "resourceVersion": "107215",
+    "uid": "e1e20872-ab1b-4d73-84e9-ac9310d3bc7f"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -380,24 +397,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:35+00:00",
+   "firstTimestamp": "2026-10-16T12:01:07+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{gateway}",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71475",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106919",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:37:35+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Back-off pulling image \"nginx:2.99-alpine\"",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:35+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de625d7c78683e",
+    "creationTimestamp": "2026-10-16T12:01:07+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00cf6593ca51",
     "namespace": "platform",
-    "resourceVersion": "72023",
-    "uid": "1b68099c-073f-491a-91e1-0deffc5d8b28"
+    "resourceVersion": "107217",
+    "uid": "1e1e8166-c041-4404-9cf2-688eb7bee75f"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -410,24 +427,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:35+00:00",
+   "firstTimestamp": "2026-10-16T12:01:07+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{gateway}",
     "kind": "Pod",
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
-    "resourceVersion": "71475",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "106919",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
-   "lastTimestamp": "2026-10-14T11:37:35+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Error: ImagePullBackOff",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:35+00:00",
-    "name": "api-gateway-6d84d45b6c-5kzq9.18de625d7c7ad6cd",
+    "creationTimestamp": "2026-10-16T12:01:07+00:00",
+    "name": "api-gateway-6d84d45b6c-7qqbj.18df00cf6595d3a4",
     "namespace": "platform",
-    "resourceVersion": "72025",
-    "uid": "6e414f09-f394-43b8-8e44-dd8277f5ca19"
+    "resourceVersion": "107219",
+    "uid": "73fa9342-5fb1-424f-8bef-4ad964753761"
    },
    "reason": "Failed",
    "reportingComponent": "kubelet",
@@ -440,23 +457,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "api-gateway-6d84d45b6c",
     "namespace": "platform",
-    "resourceVersion": "71471",
-    "uid": "a78d234a-dcb7-48f6-beef-d976f77fe73b"
+    "resourceVersion": "106916",
+    "uid": "58a929c7-5915-4754-9d64-d39fefc801ac"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Created pod: api-gateway-6d84d45b6c-5kzq9",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Created pod: api-gateway-6d84d45b6c-7qqbj",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "api-gateway-6d84d45b6c.18de62427f9226ca",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "api-gateway-6d84d45b6c.18df00ccc7ba7d15",
     "namespace": "platform",
-    "resourceVersion": "71474",
-    "uid": "b1d48465-89e2-4329-95d7-ed46f1b32ccd"
+    "resourceVersion": "106918",
+    "uid": "d351d30d-a6aa-4420-8fed-55abd0077b18"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -468,23 +485,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "api-gateway",
     "namespace": "platform",
-    "resourceVersion": "71470",
-    "uid": "1230f661-ed8a-4c5f-ac18-f18eccb26481"
+    "resourceVersion": "106891",
+    "uid": "99470803-3501-41bf-a3b1-01638793bb79"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Scaled up replica set api-gateway-6d84d45b6c from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "api-gateway.18de62427f6c8677",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "api-gateway.18df00ccc789c05b",
     "namespace": "platform",
-    "resourceVersion": "71482",
-    "uid": "dcd51634-bc7c-456e-ae03-1660ad89ae90"
+    "resourceVersion": "107001",
+    "uid": "4c1c12bf-15ba-437b-9151-79d81dfcc7ea"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -496,23 +513,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
-    "resourceVersion": "71489",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "106925",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Successfully assigned platform/metrics-aggregator-5dd65c448c-6tz8q to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Successfully assigned platform/metrics-aggregator-5dd65c448c-2ngsz to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q.18de624286bd3ece",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz.18df00cccb031383",
     "namespace": "platform",
-    "resourceVersion": "71493",
-    "uid": "1f630a7b-6a1e-4231-a57d-6edcad878ef5"
+    "resourceVersion": "106928",
+    "uid": "ace54a2f-7514-4d30-afc8-6073ee243526"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -523,25 +540,25 @@
    "type": "Normal"
   },
   {
-   "count": 5,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "count": 3,
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{aggregator}",
     "kind": "Pod",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
-    "resourceVersion": "71490",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "106926",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
-   "lastTimestamp": "2026-10-14T11:37:13+00:00",
+   "lastTimestamp": "2026-10-16T12:01:09+00:00",
    "message": "Container image \"python:3.11-slim\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q.18de62429cf25139",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz.18df00cce29d41b0",
     "namespace": "platform",
-    "resourceVersion": "71912",
-    "uid": "33eec8c8-69ba-4b1f-a712-ce9b8f720cc1"
+    "resourceVersion": "107280",
+    "uid": "d018b0f4-b023-43a0-b2c8-1fb6dc45fb1a"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -553,25 +570,25 @@
    "type": "Normal"
   },
   {
-   "count": 5,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "count": 3,
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{aggregator}",
     "kind": "Pod",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
-    "resourceVersion": "71490",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "106926",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
-   "lastTimestamp": "2026-10-14T11:37:13+00:00",
+   "lastTimestamp": "2026-10-16T12:01:09+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q.18de62429d713e10",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz.18df00cce332ddfb",
     "namespace": "platform",
-    "resourceVersion": "71914",
-    "uid": "3869c579-0ad4-49ca-9533-c6d228f981c9"
+    "resourceVersion": "107283",
+    "uid": "0b44be64-e865-487d-89b3-d66386a47be3"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -583,25 +600,25 @@
    "type": "Normal"
   },
   {
-   "count": 5,
-   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "count": 3,
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{aggregator}",
     "kind": "Pod",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
-    "resourceVersion": "71490",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "106926",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
-   "lastTimestamp": "2026-10-14T11:37:13+00:00",
+   "lastTimestamp": "2026-10-16T12:01:09+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:40+00:00",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q.18de6242a08383df",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz.18df00cce5d2300e",
     "namespace": "platform",
-    "resourceVersion": "71915",
-    "uid": "94593a23-30b7-4303-abcf-0dcfd6f3f0df"
+    "resourceVersion": "107284",
+    "uid": "e21452c4-a27c-43ad-bc3b-ea33c0e09b12"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -613,25 +630,25 @@
    "type": "Normal"
   },
   {
-   "count": 4,
-   "firstTimestamp": "2026-10-14T11:35:41+00:00",
+   "count": 2,
+   "firstTimestamp": "2026-10-16T12:00:58+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{aggregator}",
     "kind": "Pod",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
-    "resourceVersion": "71490",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "106926",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
-   "lastTimestamp": "2026-10-14T11:37:14+00:00",
-   "message": "Back-off restarting failed container aggregator in pod metrics-aggregator-5dd65c448c-6tz8q_platform(84c0623b-a5b2-4170-a476-fb893b2bdb39)",
+   "lastTimestamp": "2026-10-16T12:01:10+00:00",
+   "message": "Back-off restarting failed container aggregator in pod metrics-aggregator-5dd65c448c-2ngsz_platform(2711c8a4-be3d-4ff2-a22b-370222f0ec46)",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:41+00:00",
-    "name": "metrics-aggregator-5dd65c448c-6tz8q.18de6243074cbd6b",
+    "creationTimestamp": "2026-10-16T12:00:58+00:00",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz.18df00cd48d02a9b",
     "namespace": "platform",
-    "resourceVersion": "71920",
-    "uid": "7838b62a-8c42-4121-af0e-d8bef8d39d8e"
+    "resourceVersion": "107292",
+    "uid": "fbc57752-0ca1-42be-8c82-4140b9214778"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -644,23 +661,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "metrics-aggregator-5dd65c448c",
     "namespace": "platform",
-    "resourceVersion": "71488",
-    "uid": "06339bbc-0ad1-4411-acf4-ad193706e0be"
+    "resourceVersion": "106924",
+    "uid": "61c85b32-6f06-4feb-be4d-3543d3b31461"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Created pod: metrics-aggregator-5dd65c448c-6tz8q",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Created pod: metrics-aggregator-5dd65c448c-2ngsz",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "metrics-aggregator-5dd65c448c.18de6242869a1ab6",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "metrics-aggregator-5dd65c448c.18df00cccaba8015",
     "namespace": "platform",
-    "resourceVersion": "71492",
-    "uid": "b7855f6c-7c8d-45fa-8f76-42bfb39ba07d"
+    "resourceVersion": "106930",
+    "uid": "29ba9177-840f-44fd-8356-9760e847d404"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -672,23 +689,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "metrics-aggregator",
     "namespace": "platform",
-    "resourceVersion": "71473",
-    "uid": "b233372b-c870-4313-905c-47b9c93c5cbf"
+    "resourceVersion": "106892",
+    "uid": "570b456b-c1fc-4120-a679-3e219768d2a9"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Scaled up replica set metrics-aggregator-5dd65c448c from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "metrics-aggregator.18de6242866e8746",
+    "creationTimestamp": "2026-10-16T12:00:57+00:00",
+    "name": "metrics-aggregator.18df00ccca9f5c2b",
     "namespace": "platform",
-    "resourceVersion": "71527",
-    "uid": "2c2cbb10-2dc1-4fcf-871f-d9457ab76b1a"
+    "resourceVersion": "107018",
+    "uid": "d3c75aa7-f231-4e06-9d1b-c3448d89c762"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -700,23 +717,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "status-page-84d497b789-s7cxl",
+    "name": "status-page-84d497b789-frbg6",
     "namespace": "platform",
-    "resourceVersion": "71498",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
+    "resourceVersion": "106974",
+    "uid": "3091e872-6a81-42d6-bc78-18d69849924d"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Successfully assigned platform/status-page-84d497b789-s7cxl to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Successfully assigned platform/status-page-84d497b789-frbg6 to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "status-page-84d497b789-s7cxl.18de62428990a418",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "status-page-84d497b789-frbg6.18df00ccd7d088cf",
     "namespace": "platform",
-    "resourceVersion": "71502",
-    "uid": "5a5c1485-a5e2-4a70-86d6-3b4c94112d2e"
+    "resourceVersion": "106976",
+    "uid": "8e253c0b-fc43-44da-9d74-d814324d40a0"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -728,54 +745,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "status-page-84d497b789-s7cxl",
+    "name": "status-page-84d497b789-frbg6",
     "namespace": "platform",
-    "resourceVersion": "71500",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
+    "resourceVersion": "106975",
+    "uid": "3091e872-6a81-42d6-bc78-18d69849924d"
    },
-   "lastTimestamp": "2026-10-14T11:35:40+00:00",
-   "message": "Pulling image \"nginx:1.27-alpine\"",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Container image \"nginx:1.27-alpine\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:40+00:00",
-    "name": "status-page-84d497b789-s7cxl.18de6242a09d99c4",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "status-page-84d497b789-frbg6.18df00ccee6eec7d",
     "namespace": "platform",
-    "resourceVersion": "71557",
-    "uid": "453cdf48-f108-4fb4-a6d0-fed6815760c7"
-   },
-   "reason": "Pulling",
-   "reportingComponent": "kubelet",
-   "reportingInstance": "kubesre-control-plane",
-   "source": {
-    "component": "kubelet",
-    "host": "kubesre-control-plane"
-   },
-   "type": "Normal"
-  },
-  {
-   "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:39+00:00",
-   "involvedObject": {
-    "apiVersion": "v1",
-    "fieldPath": "spec.containers{web}",
-    "kind": "Pod",
-    "name": "status-page-84d497b789-s7cxl",
-    "namespace": "platform",
-    "resourceVersion": "71500",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
-   },
-   "lastTimestamp": "2026-10-14T11:37:39+00:00",
-   "message": "Successfully pulled image \"nginx:1.27-alpine\" in 4.345s (1m59.173s including waiting). Image size: 21832241 bytes.",
-   "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:39+00:00",
-    "name": "status-page-84d497b789-s7cxl.18de625e5fee9755",
-    "namespace": "platform",
-    "resourceVersion": "72079",
-    "uid": "74de2fe4-6df4-4c09-8434-56eb3b086dfa"
+    "resourceVersion": "107004",
+    "uid": "5bf2088e-67d1-4892-961e-18113265d4a6"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -788,24 +775,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "status-page-84d497b789-s7cxl",
+    "name": "status-page-84d497b789-frbg6",
     "namespace": "platform",
-    "resourceVersion": "71500",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
+    "resourceVersion": "106975",
+    "uid": "3091e872-6a81-42d6-bc78-18d69849924d"
    },
-   "lastTimestamp": "2026-10-14T11:37:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:39+00:00",
-    "name": "status-page-84d497b789-s7cxl.18de625e60ad13a8",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "status-page-84d497b789-frbg6.18df00cceef149b3",
     "namespace": "platform",
-    "resourceVersion": "72080",
-    "uid": "f49d4fce-6014-46f0-9e5d-0940256670de"
+    "resourceVersion": "107006",
+    "uid": "b3d2db45-b147-44ff-a5fa-73e1cc9c7a8c"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -818,24 +805,24 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:37:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{web}",
     "kind": "Pod",
-    "name": "status-page-84d497b789-s7cxl",
+    "name": "status-page-84d497b789-frbg6",
     "namespace": "platform",
-    "resourceVersion": "71500",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
+    "resourceVersion": "106975",
+    "uid": "3091e872-6a81-42d6-bc78-18d69849924d"
    },
-   "lastTimestamp": "2026-10-14T11:37:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:37:39+00:00",
-    "name": "status-page-84d497b789-s7cxl.18de625e630f834e",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "status-page-84d497b789-frbg6.18df00ccf18e2b19",
     "namespace": "platform",
-    "resourceVersion": "72081",
-    "uid": "9743d4ef-f2fc-44e2-a9cd-ea7b8bef575e"
+    "resourceVersion": "107009",
+    "uid": "d3aafbd7-8980-43ad-8a52-2d04038f9055"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -848,23 +835,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "status-page-84d497b789",
     "namespace": "platform",
-    "resourceVersion": "71497",
-    "uid": "d4e20f87-96be-4d31-8787-dcc99edb20a3"
+    "resourceVersion": "106954",
+    "uid": "2481a994-a542-4c73-bf0d-de4e86d01116"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
-   "message": "Created pod: status-page-84d497b789-s7cxl",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
+   "message": "Created pod: status-page-84d497b789-frbg6",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
-    "name": "status-page-84d497b789.18de624289734a19",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "status-page-84d497b789.18df00ccd7a17c36",
     "namespace": "platform",
-    "resourceVersion": "71499",
-    "uid": "af8a0276-bcdf-4032-9177-5f8bb855c6c8"
+    "resourceVersion": "106990",
+    "uid": "1cb983ae-91ea-47da-bf28-11b500c01459"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -876,23 +863,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:39+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "status-page",
     "namespace": "platform",
-    "resourceVersion": "71479",
-    "uid": "b6475653-1e6d-446c-9ac8-435aed5f09d7"
+    "resourceVersion": "106893",
+    "uid": "f01017cd-d050-48d8-9ac5-0448fa700584"
    },
-   "lastTimestamp": "2026-10-14T11:35:39+00:00",
+   "lastTimestamp": "2026-10-16T12:00:56+00:00",
    "message": "Scaled up replica set status-page-84d497b789 from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:40+00:00",
-    "name": "status-page.18de6242894e1026",
+    "creationTimestamp": "2026-10-16T12:00:57+00:00",
+    "name": "status-page.18df00ccd0b9d5d2",
     "namespace": "platform",
-    "resourceVersion": "71562",
-    "uid": "bc1130fa-ceea-465a-b216-6a1f1933aa21"
+    "resourceVersion": "107037",
+    "uid": "05b09168-20c2-4f7e-a625-00aae0ad632d"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -904,32 +891,32 @@
   }
  ],
  "logs": {
-  "api-gateway-6d84d45b6c-5kzq9/gateway/current": {
+  "api-gateway-6d84d45b6c-7qqbj/gateway/current": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"gateway\\\" in pod \\\"api-gateway-6d84d45b6c-5kzq9\\\" is waiting to start: image can't be pulled\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"container \\\"gateway\\\" in pod \\\"api-gateway-6d84d45b6c-7qqbj\\\" is waiting to start: image can't be pulled\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "api-gateway-6d84d45b6c-5kzq9/gateway/previous": {
+  "api-gateway-6d84d45b6c-7qqbj/gateway/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"gateway\\\" in pod \\\"api-gateway-6d84d45b6c-5kzq9\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"gateway\\\" in pod \\\"api-gateway-6d84d45b6c-7qqbj\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
   },
-  "metrics-aggregator-5dd65c448c-6tz8q/aggregator/current": {
-   "text": "2026-10-14T11:37:13.743061425Z aggregating metrics window\n"
+  "metrics-aggregator-5dd65c448c-2ngsz/aggregator/current": {
+   "text": "2026-10-16T12:01:10.000638551Z aggregating metrics window\n"
   },
-  "metrics-aggregator-5dd65c448c-6tz8q/aggregator/previous": {
-   "text": "unable to retrieve container logs for containerd://4b0bc5a905e1d1ae3ebee0e2e58bb15347ffaf35500d8efc0ce082b99927bd20"
+  "metrics-aggregator-5dd65c448c-2ngsz/aggregator/previous": {
+   "text": "unable to retrieve container logs for containerd://920427a414c71e4f64a6ff0c0fa5a5a01461ae8ce367a9d65f7af52da20bd29a"
   },
-  "status-page-84d497b789-s7cxl/web/current": {
-   "text": "2026-10-14T11:37:39.267412506Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-14T11:37:39.267433881Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-14T11:37:39.267944673Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-14T11:37:39.271592339Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:39.276607548Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-14T11:37:39.276729298Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-14T11:37:39.276738089Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-14T11:37:39.278069714Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-14T11:37:39.278760923Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-14T11:37:39.283363089Z 2026/10/14 11:37:39 [notice] 1#1: using the \"epoll\" event method\n2026-10-14T11:37:39.283372964Z 2026/10/14 11:37:39 [notice] 1#1: nginx/1.27.5\n2026-10-14T11:37:39.283373964Z 2026/10/14 11:37:39 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-14T11:37:39.283374548Z 2026/10/14 11:37:39 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-14T11:37:39.283375381Z 2026/10/14 11:37:39 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-14T11:37:39.283378673Z 2026/10/14 11:37:39 [notice] 1#1: start worker processes\n2026-10-14T11:37:39.283447256Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 34\n2026-10-14T11:37:39.283507048Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 35\n2026-10-14T11:37:39.283561214Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 36\n2026-10-14T11:37:39.283563714Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 37\n2026-10-14T11:37:39.283755298Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 38\n2026-10-14T11:37:39.283760464Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 39\n2026-10-14T11:37:39.283761339Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 40\n2026-10-14T11:37:39.283890173Z 2026/10/14 11:37:39 [notice] 1#1: start worker process 41\n"
+  "status-page-84d497b789-frbg6/web/current": {
+   "text": "2026-10-16T12:00:56.941222087Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration\n2026-10-16T12:00:56.941235462Z /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/\n2026-10-16T12:00:56.941732504Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh\n2026-10-16T12:00:56.946570879Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:56.951848212Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf\n2026-10-16T12:00:56.951915212Z /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh\n2026-10-16T12:00:56.951968837Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh\n2026-10-16T12:00:56.953466587Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh\n2026-10-16T12:00:56.954111962Z /docker-entrypoint.sh: Configuration complete; ready for start up\n2026-10-16T12:00:56.959029129Z 2026/10/16 12:00:56 [notice] 1#1: using the \"epoll\" event method\n2026-10-16T12:00:56.959037962Z 2026/10/16 12:00:56 [notice] 1#1: nginx/1.27.5\n2026-10-16T12:00:56.959039045Z 2026/10/16 12:00:56 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) \n2026-10-16T12:00:56.959039587Z 2026/10/16 12:00:56 [notice] 1#1: OS: Linux 6.10.14-linuxkit\n2026-10-16T12:00:56.959040629Z 2026/10/16 12:00:56 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816\n2026-10-16T12:00:56.959041212Z 2026/10/16 12:00:56 [notice] 1#1: start worker processes\n2026-10-16T12:00:56.959072045Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 34\n2026-10-16T12:00:56.959145629Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 35\n2026-10-16T12:00:56.959242004Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 36\n2026-10-16T12:00:56.959324045Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 37\n2026-10-16T12:00:56.959472837Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 38\n2026-10-16T12:00:56.959717670Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 39\n2026-10-16T12:00:56.959721837Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 40\n2026-10-16T12:00:56.959722587Z 2026/10/16 12:00:56 [notice] 1#1: start worker process 41\n"
   },
-  "status-page-84d497b789-s7cxl/web/previous": {
+  "status-page-84d497b789-frbg6/web/previous": {
    "error": {
-    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"status-page-84d497b789-s7cxl\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
+    "body": "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"previous terminated container \\\"web\\\" in pod \\\"status-page-84d497b789-frbg6\\\" not found\",\"reason\":\"BadRequest\",\"code\":400}\n",
     "reason": "Bad Request",
     "status": 400
    }
@@ -953,7 +940,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "107335",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -996,7 +983,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -1004,7 +991,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -1012,7 +999,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -1020,7 +1007,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -1044,19 +1031,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -1087,14 +1074,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generateName": "api-gateway-6d84d45b6c-",
     "generation": 1,
     "labels": {
      "app": "api-gateway",
      "pod-template-hash": "6d84d45b6c"
     },
-    "name": "api-gateway-6d84d45b6c-5kzq9",
+    "name": "api-gateway-6d84d45b6c-7qqbj",
     "namespace": "platform",
     "ownerReferences": [
      {
@@ -1103,11 +1090,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "api-gateway-6d84d45b6c",
-      "uid": "a78d234a-dcb7-48f6-beef-d976f77fe73b"
+      "uid": "58a929c7-5915-4754-9d64-d39fefc801ac"
      }
     ],
-    "resourceVersion": "72024",
-    "uid": "e65b3d9a-0f2e-4c80-aed3-9b7c6d5f69d6"
+    "resourceVersion": "107218",
+    "uid": "42368c3a-abf2-4553-b194-3e939155556c"
    },
    "spec": {
     "containers": [
@@ -1121,7 +1108,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-bg68s",
+        "name": "kube-api-access-vmgk2",
         "readOnly": true
        }
       ]
@@ -1154,7 +1141,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-bg68s",
+      "name": "kube-api-access-vmgk2",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -1196,19 +1183,19 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "message": "containers with unready status: [gateway]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -1216,7 +1203,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "message": "containers with unready status: [gateway]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -1224,7 +1211,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -1248,7 +1235,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-bg68s",
+        "name": "kube-api-access-vmgk2",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -1263,27 +1250,27 @@
     ],
     "observedGeneration": 1,
     "phase": "Pending",
-    "podIP": "10.244.0.15",
+    "podIP": "10.244.0.18",
     "podIPs": [
      {
-      "ip": "10.244.0.15"
+      "ip": "10.244.0.18"
      }
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T11:35:39+00:00"
+    "startTime": "2026-10-16T12:00:56+00:00"
    }
   },
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generateName": "metrics-aggregator-5dd65c448c-",
     "generation": 1,
     "labels": {
      "app": "metrics-aggregator",
      "pod-template-hash": "5dd65c448c"
     },
-    "name": "metrics-aggregator-5dd65c448c-6tz8q",
+    "name": "metrics-aggregator-5dd65c448c-2ngsz",
     "namespace": "platform",
     "ownerReferences": [
      {
@@ -1292,11 +1279,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "metrics-aggregator-5dd65c448c",
-      "uid": "06339bbc-0ad1-4411-acf4-ad193706e0be"
+      "uid": "61c85b32-6f06-4feb-be4d-3543d3b31461"
      }
     ],
-    "resourceVersion": "71921",
-    "uid": "84c0623b-a5b2-4170-a476-fb893b2bdb39"
+    "resourceVersion": "107293",
+    "uid": "2711c8a4-be3d-4ff2-a22b-370222f0ec46"
    },
    "spec": {
     "containers": [
@@ -1322,7 +1309,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-jvj62",
+        "name": "kube-api-access-25dgb",
         "readOnly": true
        }
       ]
@@ -1355,7 +1342,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-jvj62",
+      "name": "kube-api-access-25dgb",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -1400,19 +1387,19 @@
     },
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:14+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:10+00:00",
       "message": "containers with unready status: [aggregator]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -1420,7 +1407,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:14+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:10+00:00",
       "message": "containers with unready status: [aggregator]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -1428,7 +1415,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -1439,16 +1426,16 @@
       "allocatedResources": {
        "memory": "48Mi"
       },
-      "containerID": "containerd://76daa4eb51d71173611042bb07bddc214b82d7f570be31bc5340ce3b4233b20d",
+      "containerID": "containerd://1d18b30cb7174ebecac2d4091aeaf5238cec613444fd9812553f1ca37d3b1b25",
       "image": "docker.io/library/python:3.11-slim",
       "imageID": "docker.io/library/python@sha256:da047cb8f9d1d98e5c070f5300ba9f7274e33b8fc0e5be5ed88740aed1b95ba9",
       "lastState": {
        "terminated": {
-        "containerID": "containerd://4b0bc5a905e1d1ae3ebee0e2e58bb15347ffaf35500d8efc0ce082b99927bd20",
+        "containerID": "containerd://920427a414c71e4f64a6ff0c0fa5a5a01461ae8ce367a9d65f7af52da20bd29a",
         "exitCode": 137,
-        "finishedAt": "2026-10-14T11:36:15+00:00",
+        "finishedAt": "2026-10-16T12:00:57+00:00",
         "reason": "OOMKilled",
-        "startedAt": "2026-10-14T11:36:15+00:00"
+        "startedAt": "2026-10-16T12:00:57+00:00"
        }
       },
       "name": "aggregator",
@@ -1461,15 +1448,15 @@
         "memory": "48Mi"
        }
       },
-      "restartCount": 4,
+      "restartCount": 2,
       "started": false,
       "state": {
        "terminated": {
-        "containerID": "containerd://76daa4eb51d71173611042bb07bddc214b82d7f570be31bc5340ce3b4233b20d",
+        "containerID": "containerd://1d18b30cb7174ebecac2d4091aeaf5238cec613444fd9812553f1ca37d3b1b25",
         "exitCode": 137,
-        "finishedAt": "2026-10-14T11:37:13+00:00",
+        "finishedAt": "2026-10-16T12:01:10+00:00",
         "reason": "OOMKilled",
-        "startedAt": "2026-10-14T11:37:13+00:00"
+        "startedAt": "2026-10-16T12:01:09+00:00"
        }
       },
       "user": {
@@ -1484,7 +1471,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-jvj62",
+        "name": "kube-api-access-25dgb",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -1499,10 +1486,10 @@
     ],
     "observedGeneration": 1,
     "phase": "Running",
-    "podIP": "10.244.0.16",
+    "podIP": "10.244.0.19",
     "podIPs": [
      {
-      "ip": "10.244.0.16"
+      "ip": "10.244.0.19"
      }
     ],
     "qosClass": "Burstable",
@@ -1514,19 +1501,19 @@
       "memory": "48Mi"
      }
     },
-    "startTime": "2026-10-14T11:35:39+00:00"
+    "startTime": "2026-10-16T12:00:56+00:00"
    }
   },
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generateName": "status-page-84d497b789-",
     "generation": 1,
     "labels": {
      "app": "status-page",
      "pod-template-hash": "84d497b789"
     },
-    "name": "status-page-84d497b789-s7cxl",
+    "name": "status-page-84d497b789-frbg6",
     "namespace": "platform",
     "ownerReferences": [
      {
@@ -1535,11 +1522,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "status-page-84d497b789",
-      "uid": "d4e20f87-96be-4d31-8787-dcc99edb20a3"
+      "uid": "2481a994-a542-4c73-bf0d-de4e86d01116"
      }
     ],
-    "resourceVersion": "72082",
-    "uid": "fb0223e5-a058-4403-b3df-dedad2a2cee0"
+    "resourceVersion": "107011",
+    "uid": "3091e872-6a81-42d6-bc78-18d69849924d"
    },
    "spec": {
     "containers": [
@@ -1559,7 +1546,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-zmvlc",
+        "name": "kube-api-access-7dvxz",
         "readOnly": true
        }
       ]
@@ -1592,7 +1579,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-zmvlc",
+      "name": "kube-api-access-7dvxz",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -1634,31 +1621,31 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:40+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:37:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:39+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:56+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -1666,7 +1653,7 @@
     ],
     "containerStatuses": [
      {
-      "containerID": "containerd://11ef93a17dbb3ba7bd388303a54664a14ae2563b5577837cbedf520125a30543",
+      "containerID": "containerd://62ea03ece746fba5c7508b6b92ef5f704a28b62e20b9bb09071c399556ff5cf5",
       "image": "docker.io/library/nginx:1.27-alpine",
       "imageID": "docker.io/library/nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10",
       "lastState": {},
@@ -1677,7 +1664,7 @@
       "started": true,
       "state": {
        "running": {
-        "startedAt": "2026-10-14T11:37:39+00:00"
+        "startedAt": "2026-10-16T12:00:56+00:00"
        }
       },
       "user": {
@@ -1702,7 +1689,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-zmvlc",
+        "name": "kube-api-access-7dvxz",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -1717,15 +1704,15 @@
     ],
     "observedGeneration": 1,
     "phase": "Running",
-    "podIP": "10.244.0.17",
+    "podIP": "10.244.0.20",
     "podIPs": [
      {
-      "ip": "10.244.0.17"
+      "ip": "10.244.0.20"
      }
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T11:35:39+00:00"
+    "startTime": "2026-10-16T12:00:56+00:00"
    }
   }
  ],
@@ -1738,7 +1725,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generation": 1,
     "labels": {
      "app": "api-gateway",
@@ -1753,11 +1740,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "api-gateway",
-      "uid": "1230f661-ed8a-4c5f-ac18-f18eccb26481"
+      "uid": "99470803-3501-41bf-a3b1-01638793bb79"
      }
     ],
-    "resourceVersion": "71478",
-    "uid": "a78d234a-dcb7-48f6-beef-d976f77fe73b"
+    "resourceVersion": "106922",
+    "uid": "58a929c7-5915-4754-9d64-d39fefc801ac"
    },
    "spec": {
     "replicas": 1,
@@ -1807,7 +1794,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generation": 1,
     "labels": {
      "app": "metrics-aggregator",
@@ -1822,11 +1809,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "metrics-aggregator",
-      "uid": "b233372b-c870-4313-905c-47b9c93c5cbf"
+      "uid": "570b456b-c1fc-4120-a679-3e219768d2a9"
      }
     ],
-    "resourceVersion": "71922",
-    "uid": "06339bbc-0ad1-4411-acf4-ad193706e0be"
+    "resourceVersion": "107295",
+    "uid": "61c85b32-6f06-4feb-be4d-3543d3b31461"
    },
    "spec": {
     "replicas": 1,
@@ -1885,7 +1872,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:39+00:00",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
     "generation": 1,
     "labels": {
      "app": "status-page",
@@ -1900,11 +1887,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "status-page",
-      "uid": "b6475653-1e6d-446c-9ac8-435aed5f09d7"
+      "uid": "f01017cd-d050-48d8-9ac5-0448fa700584"
      }
     ],
-    "resourceVersion": "72083",
-    "uid": "d4e20f87-96be-4d31-8787-dcc99edb20a3"
+    "resourceVersion": "107017",
+    "uid": "2481a994-a542-4c73-bf0d-de4e86d01116"
    },
    "spec": {
     "replicas": 1,
@@ -1956,6 +1943,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }

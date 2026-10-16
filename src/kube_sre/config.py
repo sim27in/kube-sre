@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     agent_model: str = "gpt-5-mini"
     judge_model: str = "gpt-6.1-sol"  # used by evals (Phase 2); must differ from the model under test
     judge_votes: int = 3  # gradings per incident; each score is their median (O6)
+    llm_request_timeout_seconds: int = 120  # per model call; a stalled request is retried, not waited out
+    llm_max_retries: int = 2
 
     # Agent run bounds. LangGraph counts each model call and each tool round as a step.
     agent_recursion_limit: int = 40

@@ -58,6 +58,8 @@ from kubernetes.client.rest import ApiException
 from kube_sre.config import get_settings
 from kube_sre.tools import k8s_read
 from kube_sre.tools.k8s_read import (
+    describe_config_impl,
+    describe_service_impl,
     describe_workload_impl,
     get_events_impl,
     get_owner_impl,
@@ -572,3 +574,106 @@ def test_list_nodes_shows_taints_pressure_and_allocatable():
     assert node.taints == ["dedicated=batch:NoSchedule", "node.kubernetes.io/disk-pressure:NoSchedule"]
     assert node.pressure == ["DiskPressure"]
     assert node.allocatable == {"cpu": "8", "memory": "8Gi", "pods": "110"}
+
+
+# --- services and config ----------------------------------------------------
+
+
+def _deployment(name, labels, replicas, ready=0):
+    return {
+        "metadata": {"name": name, "namespace": NS},
+        "spec": {
+            "replicas": replicas,
+            "selector": {"matchLabels": labels},
+            "template": {"metadata": {"labels": labels}, "spec": {"containers": [{"name": "c", "image": "img"}]}},
+        },
+        "status": {"readyReplicas": ready},
+    }
+
+
+def _api_snapshot(**kinds):
+    from kube_sre.evals.snapshot import SNAPSHOT_VERSION
+
+    empty = ["pods", "events", "pvcs", "replicasets", "deployments", "statefulsets", "daemonsets", "nodes"]
+    empty += ["services", "configmaps", "secrets"]
+    snap = {"version": SNAPSHOT_VERSION, "namespace": NS, "captured_at": "2026-10-14T12:00:00+00:00", "logs": {}}
+    return snap | dict.fromkeys(empty, []) | kinds
+
+
+def _service(name, selector):
+    return {
+        "metadata": {"name": name, "namespace": NS},
+        "spec": {"type": "ClusterIP", "selector": selector, "ports": [{"port": 8080, "targetPort": 80}]},
+    }
+
+
+def test_describe_service_shows_scaled_down_backend():
+    from kube_sre.evals.snapshot import FakeAppsApi, FakeCoreApi
+
+    snap = _api_snapshot(
+        services=[_service("payments", {"app": "payments"})],
+        deployments=[_deployment("payments", {"app": "payments"}, 0), _deployment("web", {"app": "web"}, 2, 2)],
+    )
+    info = describe_service_impl(FakeCoreApi(snap), FakeAppsApi(snap), "payments", NS)
+    assert info.exists and info.selector == {"app": "payments"} and info.ports == ["8080->80/TCP"]
+    assert info.ready_pods == 0 and info.not_ready_pods == 0
+    assert [(b.kind, b.name, b.desired, b.ready) for b in info.backends] == [("Deployment", "payments", 0, 0)]
+
+
+def test_describe_service_counts_ready_pods_and_reports_missing_service():
+    from kube_sre.evals.snapshot import FakeAppsApi, FakeCoreApi
+
+    def pod(name, ready):
+        return {
+            "metadata": {"name": name, "namespace": NS, "labels": {"app": "api", "tier": "x"}},
+            "spec": {"containers": [{"name": "c", "image": "img"}]},
+            "status": {"phase": "Running", "conditions": [{"type": "Ready", "status": str(ready)}]},
+        }
+
+    snap = _api_snapshot(services=[_service("api", {"app": "api"})], pods=[pod("a", True), pod("b", False)])
+    core, apps = FakeCoreApi(snap), FakeAppsApi(snap)
+    info = describe_service_impl(core, apps, "api", NS)
+    assert (info.ready_pods, info.not_ready_pods) == (1, 1)
+    missing = describe_service_impl(core, apps, "notifications-db", NS)
+    assert not missing.exists and missing.selector == {}
+
+
+def test_describe_config_returns_configmap_values_but_only_secret_key_names():
+    from kube_sre.evals.snapshot import FakeCoreApi
+
+    snap = _api_snapshot(
+        configmaps=[
+            {
+                "metadata": {"name": "app-config", "namespace": NS},
+                "data": {"LOG_LEVEL": "debug", "DB_PASSWORD": "hunter2", "big": "x" * 2000},
+            }
+        ],
+        secrets=[
+            {
+                "metadata": {"name": "ghcr-pull", "namespace": NS},
+                "type": "kubernetes.io/dockerconfigjson",
+                "data": {".dockerconfigjson": "c2VjcmV0"},
+            }
+        ],
+    )
+    core = FakeCoreApi(snap)
+    cm = describe_config_impl(core, "ConfigMap", "app-config", NS)
+    assert cm.exists and cm.keys == ["DB_PASSWORD", "LOG_LEVEL", "big"]
+    assert cm.values["LOG_LEVEL"] == "debug" and "hunter2" not in cm.model_dump_json()
+    assert len(cm.values["big"]) == 500
+
+    secret = describe_config_impl(core, "Secret", "ghcr-pull", NS)
+    assert secret.exists and secret.type == "kubernetes.io/dockerconfigjson" and secret.keys == [".dockerconfigjson"]
+    assert secret.values == {} and "c2VjcmV0" not in secret.model_dump_json()
+
+    assert not describe_config_impl(core, "Secret", "nope", NS).exists
+    assert not describe_config_impl(core, "ConfigMap", "nope", NS).exists
+
+
+def test_describe_config_other_api_errors_are_raised():
+    class Forbidden:
+        def read_namespaced_secret(self, name, namespace):
+            raise ApiException(status=403, reason="Forbidden")
+
+    with pytest.raises(ApiException):
+        describe_config_impl(Forbidden(), "Secret", "s", NS)

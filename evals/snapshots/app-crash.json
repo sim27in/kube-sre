@@ -1,5 +1,22 @@
 {
- "captured_at": "2026-10-14T11:35:59.233993+00:00",
+ "captured_at": "2026-10-16T12:01:17.072655+00:00",
+ "configmaps": [
+  {
+   "data": {
+    "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIDBTCCAe2gAwIBAgIIIQ264tC/6SEwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczAeFw0yNjA5MjQxNzAwMDRaFw0zNjA5MjExNzA1MDRaMBUx\nEzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQC0zqULUk6uAYGkD4zUd+Afd2GwTa89MUHEq/WBPnAO7dcCxQFicpSiAlCd\nY8hr3Zp8U426aAYVlKZ237+TDEFSx+zLterW2Pilb3mQkbVRnBzxI/8V42v5sxQQ\nCWR1ebtDe+RL9hL3q1hkKZ6ebY7n7A201srCUH3A8kfV9F8Mf1+QQlfghvk3G9Zl\nNobwrdX4wspXy1/yNBYn6waNt4tbYhxPISEF4/WIB3nwdNFH+ra4c9t8wmnwPXwn\nBFC75Kq7og9SVVJXh6QGNemx+RqV4gYQ1yQKlcw0UyoRaXeWCulQKSBfARX/T9iy\nK4kyhxM4pUvX9EttQfTAyjSLPcvzAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP\nBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSZQJO6vOoho2Bu4FTGuLAGa7m7/DAV\nBgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQAaMnu3mBaL\nnvNd0j8VWgcyj9R4ysg9TXpISK15JwQO8H596uw+oio4TW6xNsrC6BvCwNCiUjDz\nM6LcLHFXpuDvdChPnOrFfqdtHST7O9KElNfgJ6JS3jqxCxAsBMNyVZa6xGi6w8HO\ns0Rh54sETf2HLC4O4dSoUdv8V9DWeD6qq92B/EoeL0f74gsB0Bl+3WnN73gi6D34\nN+OkwfThiSprquCl+/mm/DgsknXXxBC+c73fScosOvQDvwQ7P3lUOZT2+pkNLawD\n8QWbFTvgQiLOurxVp4N3wB+6fqFgGmc5T2eMpSpHvgLe3gjr7ppsi71L9WDiBmFL\nRicml2FU7qzE\n-----END CERTIFICATE-----\n"
+   },
+   "metadata": {
+    "annotations": {
+     "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+    },
+    "creationTimestamp": "2026-10-16T12:00:53+00:00",
+    "name": "kube-root-ca.crt",
+    "namespace": "orders",
+    "resourceVersion": "106618",
+    "uid": "7506bcc5-d11d-452d-bc6f-d59a07179b39"
+   }
+  }
+ ],
  "daemonsets": [],
  "deployments": [
   {
@@ -8,12 +25,12 @@
      "deployment.kubernetes.io/revision": "1",
      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"order-worker\",\"namespace\":\"orders\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"order-worker\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"order-worker\"}},\"spec\":{\"containers\":[{\"command\":[\"python\",\"-c\",\"print(\\\"order-worker 2.4.1 starting\\\", flush=True)\\nprint(\\\"loading shard map\\\", flush=True)\\n\\ndef load_shards():\\n    return {}\\n\\ndef orders_per_shard(total, shards):\\n    return total // len(shards)\\n\\nshards = load_shards()\\nprint(\\\"shards loaded:\\\", len(shards), flush=True)\\nprint(\\\"batch size:\\\", orders_per_shard(1200, shards), flush=True)\\n\"],\"image\":\"python:3.11-slim\",\"name\":\"worker\"}]}}}}\n"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "name": "order-worker",
     "namespace": "orders",
-    "resourceVersion": "71663",
-    "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+    "resourceVersion": "107249",
+    "uid": "ff03df3f-5f6a-4adf-ad20-1d07f476ae14"
    },
    "spec": {
     "progressDeadlineSeconds": 600,
@@ -64,16 +81,16 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
+      "lastUpdateTime": "2026-10-16T12:00:54+00:00",
       "message": "ReplicaSet \"order-worker-7dbdc597df\" has successfully progressed.",
       "reason": "NewReplicaSetAvailable",
       "status": "True",
       "type": "Progressing"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
-      "lastUpdateTime": "2026-10-14T11:35:50+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:08+00:00",
+      "lastUpdateTime": "2026-10-16T12:01:08+00:00",
       "message": "Deployment does not have minimum availability.",
       "reason": "MinimumReplicasUnavailable",
       "status": "False",
@@ -91,23 +108,23 @@
  "events": [
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "kind": "Pod",
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
-    "resourceVersion": "71324",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "106624",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Successfully assigned orders/order-worker-7dbdc597df-9tx6b to kubesre-control-plane",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Successfully assigned orders/order-worker-7dbdc597df-hq22z to kubesre-control-plane",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker-7dbdc597df-9tx6b.18de62423c86963a",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker-7dbdc597df-hq22z.18df00cc44ffc107",
     "namespace": "orders",
-    "resourceVersion": "71330",
-    "uid": "4ea6068f-bb01-45de-b64d-d5c80fdecfef"
+    "resourceVersion": "106629",
+    "uid": "4afb1643-6f57-40e2-a99c-fd94532fba40"
    },
    "reason": "Scheduled",
    "reportingComponent": "default-scheduler",
@@ -119,24 +136,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{worker}",
     "kind": "Pod",
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
-    "resourceVersion": "71328",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "106628",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
-   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Container image \"python:3.11-slim\" already present on machine and can be accessed by the pod",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker-7dbdc597df-9tx6b.18de6242536cf140",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker-7dbdc597df-hq22z.18df00cc5d425371",
     "namespace": "orders",
-    "resourceVersion": "71653",
-    "uid": "efce3832-9da2-4874-be3d-9d7143160704"
+    "resourceVersion": "107234",
+    "uid": "d5756bac-6538-4cba-bd5c-0088daed43d5"
    },
    "reason": "Pulled",
    "reportingComponent": "kubelet",
@@ -149,24 +166,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{worker}",
     "kind": "Pod",
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
-    "resourceVersion": "71328",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "106628",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
-   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Container created",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker-7dbdc597df-9tx6b.18de6242546c719d",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker-7dbdc597df-hq22z.18df00cc5dc769c1",
     "namespace": "orders",
-    "resourceVersion": "71655",
-    "uid": "0fe8762b-3bed-469f-9e54-4e66cfb9d414"
+    "resourceVersion": "107238",
+    "uid": "409f8514-4918-4234-a89e-e70b2a5aa754"
    },
    "reason": "Created",
    "reportingComponent": "kubelet",
@@ -179,24 +196,24 @@
   },
   {
    "count": 3,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{worker}",
     "kind": "Pod",
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
-    "resourceVersion": "71328",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "106628",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
-   "lastTimestamp": "2026-10-14T11:35:50+00:00",
+   "lastTimestamp": "2026-10-16T12:01:07+00:00",
    "message": "Container started",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker-7dbdc597df-9tx6b.18de6242572e60da",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker-7dbdc597df-hq22z.18df00cc61776201",
     "namespace": "orders",
-    "resourceVersion": "71656",
-    "uid": "91c65b8b-ca78-476a-b20d-1aaa03b39d73"
+    "resourceVersion": "107239",
+    "uid": "86d8e066-e48d-4bb5-90d6-5a76cdc8a4b7"
    },
    "reason": "Started",
    "reportingComponent": "kubelet",
@@ -209,24 +226,24 @@
   },
   {
    "count": 2,
-   "firstTimestamp": "2026-10-14T11:35:40+00:00",
+   "firstTimestamp": "2026-10-16T12:00:56+00:00",
    "involvedObject": {
     "apiVersion": "v1",
     "fieldPath": "spec.containers{worker}",
     "kind": "Pod",
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
-    "resourceVersion": "71328",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "106628",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
-   "lastTimestamp": "2026-10-14T11:35:50+00:00",
-   "message": "Back-off restarting failed container worker in pod order-worker-7dbdc597df-9tx6b_orders(5368292b-8b8c-461a-8520-00dde0312b96)",
+   "lastTimestamp": "2026-10-16T12:01:08+00:00",
+   "message": "Back-off restarting failed container worker in pod order-worker-7dbdc597df-hq22z_orders(22d68a6a-221b-4c49-85df-ed60be139cf0)",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:40+00:00",
-    "name": "order-worker-7dbdc597df-9tx6b.18de6242cafeae5a",
+    "creationTimestamp": "2026-10-16T12:00:56+00:00",
+    "name": "order-worker-7dbdc597df-hq22z.18df00ccd0412f43",
     "namespace": "orders",
-    "resourceVersion": "71660",
-    "uid": "2f592d81-11d5-4fb6-a4f5-77a7a3bc10d5"
+    "resourceVersion": "107245",
+    "uid": "80e081ea-6e2b-4309-badd-522f2672fc22"
    },
    "reason": "BackOff",
    "reportingComponent": "kubelet",
@@ -239,23 +256,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "ReplicaSet",
     "name": "order-worker-7dbdc597df",
     "namespace": "orders",
-    "resourceVersion": "71321",
-    "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+    "resourceVersion": "106621",
+    "uid": "f16318e2-ed1e-4c14-a741-88d3ae9c02e3"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
-   "message": "Created pod: order-worker-7dbdc597df-9tx6b",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
+   "message": "Created pod: order-worker-7dbdc597df-hq22z",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker-7dbdc597df.18de62423c3b1d6d",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker-7dbdc597df.18df00cc44c46005",
     "namespace": "orders",
-    "resourceVersion": "71327",
-    "uid": "4a3025e6-18f8-4b74-8778-a6a640a6aa5e"
+    "resourceVersion": "106626",
+    "uid": "fdf1f909-69f8-44c6-b401-70979eca3a1b"
    },
    "reason": "SuccessfulCreate",
    "reportingComponent": "replicaset-controller",
@@ -267,23 +284,23 @@
   },
   {
    "count": 1,
-   "firstTimestamp": "2026-10-14T11:35:38+00:00",
+   "firstTimestamp": "2026-10-16T12:00:54+00:00",
    "involvedObject": {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
     "name": "order-worker",
     "namespace": "orders",
-    "resourceVersion": "71320",
-    "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+    "resourceVersion": "106620",
+    "uid": "ff03df3f-5f6a-4adf-ad20-1d07f476ae14"
    },
-   "lastTimestamp": "2026-10-14T11:35:38+00:00",
+   "lastTimestamp": "2026-10-16T12:00:54+00:00",
    "message": "Scaled up replica set order-worker-7dbdc597df from 0 to 1",
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
-    "name": "order-worker.18de62423bcebb02",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
+    "name": "order-worker.18df00cc44757f79",
     "namespace": "orders",
-    "resourceVersion": "71323",
-    "uid": "85297eae-89a3-4b2b-a323-4408614096fa"
+    "resourceVersion": "106623",
+    "uid": "8519c16c-0512-436e-8d11-d5eacd061c63"
    },
    "reason": "ScalingReplicaSet",
    "reportingComponent": "deployment-controller",
@@ -295,11 +312,11 @@
   }
  ],
  "logs": {
-  "order-worker-7dbdc597df-9tx6b/worker/current": {
-   "text": "2026-10-14T11:35:50.739513803Z Traceback (most recent call last):\n2026-10-14T11:35:50.739530136Z   File \"<string>\", line 12, in <module>\n2026-10-14T11:35:50.739531345Z   File \"<string>\", line 8, in orders_per_shard\n2026-10-14T11:35:50.739532053Z ZeroDivisionError: integer division or modulo by zero\n2026-10-14T11:35:50.739519678Z order-worker 2.4.1 starting\n2026-10-14T11:35:50.739534803Z loading shard map\n2026-10-14T11:35:50.739535511Z shards loaded: 0\n"
+  "order-worker-7dbdc597df-hq22z/worker/current": {
+   "text": "2026-10-16T12:01:07.979620467Z Traceback (most recent call last):\n2026-10-16T12:01:07.979634426Z   File \"<string>\", line 12, in <module>\n2026-10-16T12:01:07.979635592Z   File \"<string>\", line 8, in orders_per_shard\n2026-10-16T12:01:07.979636259Z ZeroDivisionError: integer division or modulo by zero\n2026-10-16T12:01:07.979621634Z order-worker 2.4.1 starting\n2026-10-16T12:01:07.979638467Z loading shard map\n2026-10-16T12:01:07.979639176Z shards loaded: 0\n"
   },
-  "order-worker-7dbdc597df-9tx6b/worker/previous": {
-   "text": "unable to retrieve container logs for containerd://6f16dd5f1dd7f541e3973bd3faf13fa03b744fa643dad0aeab8577853473f504"
+  "order-worker-7dbdc597df-hq22z/worker/previous": {
+   "text": "unable to retrieve container logs for containerd://98cd03e60859dad9204a4c8050549a23a73b8f3d26874f09bc3a27145fe0930e"
   }
  },
  "namespace": "orders",
@@ -320,7 +337,7 @@
      "node-role.kubernetes.io/control-plane": ""
     },
     "name": "kubesre-control-plane",
-    "resourceVersion": "102727",
+    "resourceVersion": "107335",
     "uid": "173bab49-4f0d-4fb8-ab34-f306408a5f83"
    },
    "spec": {
@@ -363,7 +380,7 @@
     },
     "conditions": [
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient memory available",
       "reason": "KubeletHasSufficientMemory",
@@ -371,7 +388,7 @@
       "type": "MemoryPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has no disk pressure",
       "reason": "KubeletHasNoDiskPressure",
@@ -379,7 +396,7 @@
       "type": "DiskPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:07+00:00",
       "message": "kubelet has sufficient PID available",
       "reason": "KubeletHasSufficientPID",
@@ -387,7 +404,7 @@
       "type": "PIDPressure"
      },
      {
-      "lastHeartbeatTime": "2026-10-14T19:11:34+00:00",
+      "lastHeartbeatTime": "2026-10-16T12:01:14+00:00",
       "lastTransitionTime": "2026-09-24T17:05:29+00:00",
       "message": "kubelet is posting ready status",
       "reason": "KubeletReady",
@@ -411,19 +428,19 @@
     },
     "nodeInfo": {
      "architecture": "arm64",
-     "bootID": "20322f84-9e1f-4eed-8129-2fb6de01fb88",
+     "bootID": "62a23a32-304b-43a1-b830-e79775b69d3b",
      "containerRuntimeVersion": "containerd://2.3.4",
      "kernelVersion": "6.10.14-linuxkit",
      "kubeProxyVersion": "",
      "kubeletVersion": "v1.37.0",
-     "machineID": "e384050a470c4abf9ca189f66230a8d9",
+     "machineID": "0dae031e55194f70ac9c8ebd38305879",
      "operatingSystem": "linux",
      "osImage": "Debian GNU/Linux 13 (trixie)",
      "runningInUserNamespace": false,
      "swap": {
       "capacity": 1073737728
      },
-     "systemUUID": "e384050a470c4abf9ca189f66230a8d9"
+     "systemUUID": "0dae031e55194f70ac9c8ebd38305879"
     },
     "runtimeHandlers": [
      {
@@ -454,14 +471,14 @@
  "pods": [
   {
    "metadata": {
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generateName": "order-worker-7dbdc597df-",
     "generation": 1,
     "labels": {
      "app": "order-worker",
      "pod-template-hash": "7dbdc597df"
     },
-    "name": "order-worker-7dbdc597df-9tx6b",
+    "name": "order-worker-7dbdc597df-hq22z",
     "namespace": "orders",
     "ownerReferences": [
      {
@@ -470,11 +487,11 @@
       "controller": true,
       "kind": "ReplicaSet",
       "name": "order-worker-7dbdc597df",
-      "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+      "uid": "f16318e2-ed1e-4c14-a741-88d3ae9c02e3"
      }
     ],
-    "resourceVersion": "71661",
-    "uid": "5368292b-8b8c-461a-8520-00dde0312b96"
+    "resourceVersion": "107246",
+    "uid": "22d68a6a-221b-4c49-85df-ed60be139cf0"
    },
    "spec": {
     "containers": [
@@ -493,7 +510,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-5hprs",
+        "name": "kube-api-access-cpz5g",
         "readOnly": true
        }
       ]
@@ -526,7 +543,7 @@
     ],
     "volumes": [
      {
-      "name": "kube-api-access-5hprs",
+      "name": "kube-api-access-cpz5g",
       "projected": {
        "defaultMode": 420,
        "sources": [
@@ -568,19 +585,19 @@
    "status": {
     "conditions": [
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodReadyToStartContainers"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "Initialized"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:08+00:00",
       "message": "containers with unready status: [worker]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -588,7 +605,7 @@
       "type": "Ready"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:50+00:00",
+      "lastTransitionTime": "2026-10-16T12:01:08+00:00",
       "message": "containers with unready status: [worker]",
       "observedGeneration": 1,
       "reason": "ContainersNotReady",
@@ -596,7 +613,7 @@
       "type": "ContainersReady"
      },
      {
-      "lastTransitionTime": "2026-10-14T11:35:38+00:00",
+      "lastTransitionTime": "2026-10-16T12:00:54+00:00",
       "observedGeneration": 1,
       "status": "True",
       "type": "PodScheduled"
@@ -604,16 +621,16 @@
     ],
     "containerStatuses": [
      {
-      "containerID": "containerd://f6c370f50372f10d598dc9288b1123f33109f53ec8772d9695ba322f36844930",
+      "containerID": "containerd://49a639456ad739e9cfd122963dd53dbc761023eec127b208a58167bddbf3170d",
       "image": "docker.io/library/python:3.11-slim",
       "imageID": "docker.io/library/python@sha256:da047cb8f9d1d98e5c070f5300ba9f7274e33b8fc0e5be5ed88740aed1b95ba9",
       "lastState": {
        "terminated": {
-        "containerID": "containerd://6f16dd5f1dd7f541e3973bd3faf13fa03b744fa643dad0aeab8577853473f504",
+        "containerID": "containerd://98cd03e60859dad9204a4c8050549a23a73b8f3d26874f09bc3a27145fe0930e",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T11:35:39+00:00",
+        "finishedAt": "2026-10-16T12:00:55+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T11:35:39+00:00"
+        "startedAt": "2026-10-16T12:00:55+00:00"
        }
       },
       "name": "worker",
@@ -623,11 +640,11 @@
       "started": false,
       "state": {
        "terminated": {
-        "containerID": "containerd://f6c370f50372f10d598dc9288b1123f33109f53ec8772d9695ba322f36844930",
+        "containerID": "containerd://49a639456ad739e9cfd122963dd53dbc761023eec127b208a58167bddbf3170d",
         "exitCode": 1,
-        "finishedAt": "2026-10-14T11:35:50+00:00",
+        "finishedAt": "2026-10-16T12:01:07+00:00",
         "reason": "Error",
-        "startedAt": "2026-10-14T11:35:50+00:00"
+        "startedAt": "2026-10-16T12:01:07+00:00"
        }
       },
       "user": {
@@ -642,7 +659,7 @@
       "volumeMounts": [
        {
         "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-        "name": "kube-api-access-5hprs",
+        "name": "kube-api-access-cpz5g",
         "readOnly": true,
         "recursiveReadOnly": "Disabled"
        }
@@ -665,7 +682,7 @@
     ],
     "qosClass": "BestEffort",
     "resources": {},
-    "startTime": "2026-10-14T11:35:38+00:00"
+    "startTime": "2026-10-16T12:00:54+00:00"
    }
   }
  ],
@@ -678,7 +695,7 @@
      "deployment.kubernetes.io/max-replicas": "2",
      "deployment.kubernetes.io/revision": "1"
     },
-    "creationTimestamp": "2026-10-14T11:35:38+00:00",
+    "creationTimestamp": "2026-10-16T12:00:54+00:00",
     "generation": 1,
     "labels": {
      "app": "order-worker",
@@ -693,11 +710,11 @@
       "controller": true,
       "kind": "Deployment",
       "name": "order-worker",
-      "uid": "d5777c56-169b-40fc-a469-2db41aba1308"
+      "uid": "ff03df3f-5f6a-4adf-ad20-1d07f476ae14"
      }
     ],
-    "resourceVersion": "71662",
-    "uid": "72e517fe-d180-4194-aca5-ab8d276f0f70"
+    "resourceVersion": "107248",
+    "uid": "f16318e2-ed1e-4c14-a741-88d3ae9c02e3"
    },
    "spec": {
     "replicas": 1,
@@ -746,6 +763,8 @@
    }
   }
  ],
+ "secrets": [],
+ "services": [],
  "statefulsets": [],
- "version": 1
+ "version": 2
 }
